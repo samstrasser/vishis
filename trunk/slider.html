@@ -127,7 +127,7 @@ value.  These techniques can help inform assistive technologies
     Event.onDOMReady(function() {
 
         slider = YAHOO.widget.Slider.getHorizSlider(bg, 
-                         thumb, topConstraint, bottomConstraint, 20);
+                         thumb, topConstraint, bottomConstraint);
 
         slider.getRealValue = function() {
             return Math.round(this.getValue() * scaleFactor);
