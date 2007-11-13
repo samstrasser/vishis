@@ -1,0 +1,88 @@
+/* Main styles */
+
+html, body{
+	height:98%; /* so there is no vertical scroll bar in FF */
+	margin:0px;
+	padding:.5%;
+}
+
+body{
+	padding:0px;
+}
+
+#header{
+	height:10%;
+	width:100%;
+}
+
+h1{
+	
+}
+
+/* h3: links in nav bar
+ * generally for headings that aren't the main title
+ */
+ h3{
+	color:Black;
+ }
+ 
+a, a:link, a:hover, a:visited{
+	color:Black;
+	text-decoration:none;
+}
+
+a:hover{
+	text-decoration:underline;
+}
+ 
+
+#panels{
+	width:100%;
+	height:85%;
+	white-space:nowrap;
+	
+	margin-top:.2em;
+	margin-bottom:.5em;
+	padding:0px;
+}
+
+#viewing-panel{
+	width:80%;
+	float:left;
+	height:100%;
+	
+	white-space:normal;
+	
+	border-right:1px solid black;
+}
+
+#map{
+	height:100%;
+	width:100%;
+	margin:auto;
+
+}
+
+#nav-panel{
+	float:right;
+	height:100%;
+	width:19%;
+	padding-left:.5em;
+	
+	white-space:normal;
+	
+	/*background-color:Orange; /* tmp to figure out layout stuff */
+}
+
+#footer{
+	text-align:center;
+	clear: both;
+	height:5%;
+	
+	
+	
+}
+
+.simple-border{
+	border: 1px solid black;
+}
