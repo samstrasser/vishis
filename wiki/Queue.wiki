@@ -1,0 +1,16 @@
+#summary The programming queue for quick and simple notes
+
+= Current =
+ * Time Slider
+  * Mockup YDN slider
+  * Add YDN slider to map
+  *  Add functionality to slider 
+
+ * Display Event 
+
+
+ * Nav bar
+ 
+ * Distinct locations for Yale data 
+
+ * Support IE 
