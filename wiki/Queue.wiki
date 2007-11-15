@@ -2,16 +2,12 @@
 #labels Featured,Phase-Implementation
 
 = Current =
- * Time Slider
-  * Mockup YDN slider
-  * Add YDN slider to map
-  *  Add functionality to slider 
+ * Framework
+  * Type up new skeleton
+  * Reuse whatever code is possible
+
+ * TimeSlider
 
  * Display Event 
 
-
  * Nav bar
- 
- * Distinct locations for Yale data 
-
- * Support IE 
