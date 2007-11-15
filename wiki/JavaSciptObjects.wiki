@@ -1,0 +1,61 @@
+#summary An API-looking reference for the objects in use
+*Bold* represents the variable's type
+^s^ denotes a function that will make an asynchronous call to the Server and is always directly followed by the callback function
+^c^ denotes a function that will be the callback of some Event
+
+===Vishis===
+Represents a single, active session for the user.
+
+*Node* currTopic
+*Cookie* cookie
+*Array* topicCache
+
+*NavPanel* nav
+*ViewPanel* view
+
+^s^switchTopicById(newTopicId)
+switchTopic(newTopicObj)
+
+===ViewPanel===
+*int* currMode
+
+*GMap2* map
+
+*TimeSlider* slider
+
+^s^switchTopic(newTopicObj)
+showCurrTopic(children)
+
+showEvents(nowStart, nowEnd)
+
+===NavPanel===
+*int* currMode
+
+switchTopic(newTopicObj)
+browse()
+newSession()
+
+===TimeSlider===
+*YAHOO.widget.Slider* slStart
+*YAHOO.widget.Slider* slEnd
+
+adjustSliders(thisSlider, otherSlider, offset)
+
+changeSlStart(offset)
+changeSlEnd(offset)
+
+===Event===
+display(node)
+
+===Node===
+*int* type
+*int* uid
+*Date* startdate
+*Date* enddate
+*string* blurb
+
+*Array* children
+*Array* subTopics
+
+*Array* pts
+*string* color
