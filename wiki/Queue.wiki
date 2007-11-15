@@ -6,7 +6,7 @@
   * Type up new skeleton
   * Reuse whatever code is possible
 
- * TimeSlider
+ * Time Slider
 
  * Display Event 
 
