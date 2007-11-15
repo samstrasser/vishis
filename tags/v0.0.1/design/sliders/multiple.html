@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Sample sliders</title>
+		<style type="text/css" media="screen">
+			#sliderbg {
+				position: relative;
+				background: url(http://elementalmarkup.com/projects/sliders/images/timeslots_bg.png) 0 0 no-repeat;
+				height: 24px;
+				width: 332px; 
+			}
+			#sliderthumb, #sliderthumb2 {
+				position: absolute;
+				z-index: 40;
+			}
+			#spanner {
+				position: absolute;
+				background-image: url(http://elementalmarkup.com/projects/sliders/images/trans_bg.png);
+				height: 10px;
+				z-index: 10;
+			}
+		</style>
+		
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/element/element-beta-min.js"></script>
+
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/dragdrop/dragdrop-min.js"></script>
+		<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/slider/slider-min.js" ></script>
+
+		<script type="text/javascript">
+			var slider2;
+			var slider; 
+
+			function figureValues(offset) {
+				var width = slider2.thumb.getValue() - slider.thumb.getValue();
+				if (width >= 0){
+					var spanner = document.getElementById('spanner');
+					spanner.style.left = (10+slider.thumb.getValue()) + 'px';
+					spanner.style.width = width+'px';
+				} else {
+					var other;
+					if(this.thumb.id == "sliderthumb2") {
+						other = slider;
+						slider.setValue(offset, true);
+					} else {
+						other = slider2;
+						slider2.setValue(offset, true);
+					}
+					//other.setValue(this.getValue(), true);
+				}
+				document.getElementById('txtStart').value = timeFormat(Math.ceil(slider.getValue()/10)/2+7);
+				document.getElementById('txtEnd').value = timeFormat(Math.ceil(slider2.getValue()/10)/2+7);
+			}
+			function timeFormat(t) {
+				var ap = 'am';
+				if (t >= 12) { t = (t<13)?t:t - 12; ap = 'pm';}
+				var ft =  (Math.floor(t) == t)?t+':00'+ap:Math.floor(t)+':30'+ap;
+				return ft;
+			}
+
+			function init() {
+				// setup sliders
+				slider2 = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb2", -10, 300, 10);
+				slider2.backgroundEnabled = false;
+				slider2.subscribe("change", figureValues);
+				slider2.setValue(80,true);
+
+				slider = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb",  0, 290, 10); 
+				slider.backgroundEnabled = false;
+				slider.subscribe("change", figureValues); 	
+				slider.setValue(60,true);
+				
+			}
+			YAHOO.util.Event.onDOMReady(init);
+		</script>
+	</head>
+	<body>
+		<h1>Multiple Thumb Slider Example</h1>
+
+		
+		<p>I made this to show that two thumbs could be used on the same "background" which essentially creates two thumbs on the same slider.  It does, however take away some of the properties of the slider object and you have to make some calculations manually.</p>
+		<form action="#" method="get">
+			<p><label for="txtStart">Start: </label><input type="text" name="startTime" id="txtStart"></p>
+			<p><label for="txtEnd">End: </label><input type="text" name="endTime" id="txtEnd"></p>
+		</form>
+	
+		<div id="sliderbg">
+			<div id="sliderthumb"><img src="http://elementalmarkup.com/projects/sliders/images/slider-images-handle.png" alt=""></div>
+
+			<div id="sliderthumb2"><img src="http://elementalmarkup.com/projects/sliders/images/slider-images-handle.png" alt=""></div>
+			<div id="spanner"></div>
+		</div>
+	</body>
+</html>
