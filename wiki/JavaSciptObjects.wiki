@@ -1,4 +1,5 @@
 #summary An API-looking reference for the objects in use
+#labels Featured
 *Bold* represents the variable's type
 
 ^s^ denotes a function that will make an asynchronous call to the Server and is always directly followed by the callback function
