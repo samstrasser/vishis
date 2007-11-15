@@ -39,11 +39,15 @@
 					spanner.style.left = (10+slider.thumb.getValue()) + 'px';
 					spanner.style.width = width+'px';
 				} else {
+					var other;
 					if(this.thumb.id == "sliderthumb2") {
+						other = slider;
 						slider.setValue(offset, true);
 					} else {
+						other = slider2;
 						slider2.setValue(offset, true);
 					}
+					//other.setValue(this.getValue(), true);
 				}
 				document.getElementById('txtStart').value = timeFormat(Math.ceil(slider.getValue()/10)/2+7);
 				document.getElementById('txtEnd').value = timeFormat(Math.ceil(slider2.getValue()/10)/2+7);
