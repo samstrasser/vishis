@@ -2,11 +2,13 @@
 #labels Featured,Phase-Implementation
 
 = Current =
- * Framework
-  * Type up new skeleton
-  * Reuse whatever code is possible
+ * ~~Framework: change to use closures~~
 
  * Time Slider
+  * Layout data flow
+  * Add programmatic functionality
+  * Create slider gui
+  * Display gui on the map
 
  * Display Event 
 
