@@ -2,13 +2,12 @@ function TimeSlider(){
 	slider2 = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb2", -10, 300, 10);
 	slider2.backgroundEnabled = false;
 	slider2.subscribe("change", TimeSlider.adjustSlider);
-	slider2.setValue(80,true);
+	//slider2.setValue(80,true);
 
 	slider = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb",  0, 290, 10); 
 	slider.backgroundEnabled = false;
 	slider.subscribe("change", TimeSlider.adjustSlider); 	
-	slider.subscribe("change", TimeSlider.s2); 	
-	slider.setValue(60,true);
+	//slider.setValue(60,true);
 }
 
 TimeSlider.adjustSlider = function(offset){
