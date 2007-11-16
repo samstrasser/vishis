@@ -5,12 +5,17 @@
  * ~~Framework: change to use closures~~
 
  * Time Slider
-  * Layout data flow
-  * Add programmatic functionality
+  * ~~Layout data flow~~
+  * ~~Add programmatic functionality~~
   * Create slider gui
-  * Display gui on the map
-  * Have the sliders insert themselves in the DOM
-  * (thought): don't use Date objs for now, always as internal ints
+   * Show sliders on the page
+   * implement function valueToDate(value)
+   * Display gui on the map
+   * Make sure nowStart and nowEnd don't overlap
+   * Add spanner div
+  
+  * (thought): Have the sliders insert themselves in the DOM
+  * (thought): don't use Date objs for Now, always as internal ints
 
  * Display Event 
 
