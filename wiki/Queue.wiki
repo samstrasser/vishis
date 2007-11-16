@@ -9,6 +9,7 @@
   * Add programmatic functionality
   * Create slider gui
   * Display gui on the map
+  * Have the sliders insert themselves in the DOM
 
  * Display Event 
 
