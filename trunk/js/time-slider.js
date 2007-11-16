@@ -7,6 +7,7 @@ function TimeSlider(){
 	slider = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb",  0, 290, 10); 
 	slider.backgroundEnabled = false;
 	slider.subscribe("change", TimeSlider.adjustSlider); 	
+	slider.subscribe("change", TimeSlider.s2); 	
 	slider.setValue(60,true);
 }
 
@@ -28,7 +29,12 @@ TimeSlider.adjustSlider = function(offset){
 	
 }
 
+TimeSlider.s2 = function(offset){
+	slider2.setValue(100);
+}
+
 var timeslider = null;
 function init(){
 	timeslider = new TimeSlider();
 }
+
