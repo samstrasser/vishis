@@ -10,6 +10,7 @@
   * Create slider gui
   * Display gui on the map
   * Have the sliders insert themselves in the DOM
+  * (thought): don't use Date objs for now, always as internal ints
 
  * Display Event 
 
