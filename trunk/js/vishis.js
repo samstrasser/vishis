@@ -1,4 +1,7 @@
 var vh;
+var g1 = {};
+var g2 = {};
+
 function load(){
 	vh = new Vishis();
 }
@@ -38,15 +41,7 @@ function Vishis(){
 	};
 }
 
-function ViewingPanel(){
-	var currTopic = false;
-	
-	var currMode = Vishis.NEWSESSION_MODE;
-	
-	var map = new Map();
-	
-	var slider = new TimeSlider();
-	
+function ViewingPanel(){	
 	this.switchTopic = function(newTopic){
 		currTopic = newTopic;
 	
@@ -108,21 +103,29 @@ function ViewingPanel(){
 
 	};
 	
-	this.showEvents = function(nowStart, nowEnd){
+	var showCurrEvents  = function(nowStart, nowEnd){
 		var nStart = nowStart.getTime();
 		var nEnd = nowEnd.getTime();
 			
-		for(var cid in children){
+		for(var cid in currTopic.children){
 			var c = currTopic.children[cid];
 			
 			var cStart = c.start_date.getTime();
 			var cEnd = c.end_date.getTime();
 
 			if(cStart <= nEnd && cEnd >= nStart){
-				Event.display(c);
+				map.displayEvent(c);
 			}
 		}
 	};
+	
+	var currTopic = false;
+	
+	var currMode = Vishis.NEWSESSION_MODE;
+	
+	var map = new Map();
+	
+	var slider = new TimeSlider(showCurrEvents);
 }
 
 
@@ -143,25 +146,59 @@ function NavigationPanel(){
 	
 }
 
-function TimeSlider(){
-	var sliderStart = false,
-		sliderEnd = false;
-	
+function TimeSlider(callback){
+
 	this.switchTopic = function(newTopic){
+		this.sliderStartChanged(0);
 	
 	};
 	
-	this.adjustSliders = function(thisSlider, otherSlider, offset){
-	
+	var adjustSliders = function(thisSlider, otherSlider, offset){
+		// Adjust spanner elt
+		// Make sure the sliders don't overlap
+		
+		// Convert values to Date objects
+		var nowStart = TimeSlider.valueToDate(sliderStart.getValue());
+		var nowEnd   = new Date();//TimeSlider.valueToDate(sliderEnd.getValue());
+		
+		// Callback the viewing panel
+		callback(nowStart, nowEnd);
 	};
 	
 	this.sliderStartChanged = function(offset){
-	
+		adjustSliders();
 	};
 	
 	this.sliderEndChanged = function(offset){
-	
+		adjustSliders();
 	};
+	
+	
+	// initialize the  sliders
+	var sliderStart = TimeSlider.createSlider(1);
+	sliderStart.subscribe("change", this.sliderStartChanged);
+	
+	var sliderEnd = TimeSlider.createSlider(2);
+	sliderEnd.subscribe("change", this.sliderEndChanged);
+
+}
+
+TimeSlider.createSlider = function(num){
+	var bg = "sliderbg";
+	var thumb = "sliderthumb" + num;
+	var iLeft = 0;
+	var iRight = 300;
+	var iTickSize = false;
+	
+	var s = YAHOO.widget.Slider.getHorizSlider(bg, thumb, iLeft, iRight);
+	s.backgroundEnabled = false; 	// disable background clicks so that both don't jump around
+									// todo: fix this by allowing background clicks on the spanner
+	
+	return s;
+}
+
+TimeSlider.valueToDate = function(val){
+	return new Date('1/1/1600');
 }
 
 function Node(){
