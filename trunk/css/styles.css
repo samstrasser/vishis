@@ -87,7 +87,7 @@ a:hover{
 	border: 1px solid black;
 }
 
-/* Time SLider */
+/* Time Slider */
 #sliderbg {
 	position: relative;
 	background: url(http://elementalmarkup.com/projects/sliders/images/timeslots_bg.png) 0 0 no-repeat;
@@ -95,7 +95,7 @@ a:hover{
 	width: 332px; 
 }
 
-#sliderthumb, #sliderthumb2 {
+#sliderthumb1, #sliderthumb2 {
 	position: absolute;
 	z-index: 40;
 }
