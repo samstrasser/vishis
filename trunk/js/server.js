@@ -27,7 +27,7 @@ Server.getSubTopics = function(topicId){
 
 Server.getRelatedTopics = function(topicId){
 	var url = Server.getUrl('getNodeList.py?what=relatedTopics&tid='+topicId);
-	Serve.getNodeList(url, callback);
+	Server.getNodeList(url, callback);
 }
 
 Server.getNodeById = function(nodeId, callback){
