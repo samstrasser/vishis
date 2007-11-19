@@ -71,9 +71,9 @@ display(node)
 
 *int* uid
 
-*Date* startdate
+*Date* startDate
 
-*Date* enddate
+*Date* endDate
 
 *string* blurb
 
