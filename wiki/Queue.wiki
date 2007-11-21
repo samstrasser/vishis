@@ -2,21 +2,23 @@
 #labels Featured,Phase-Implementation
 
 = Current =
- * ~~Framework: change to use closures~~
-
  * Time Slider
-  * ~~Layout data flow~~
-  * ~~Add programmatic functionality~~
-  * Create slider gui
-   * Show sliders on the page
-   * implement function valueToDate(value)
-   * Display gui on the map
-   * Make sure nowStart and nowEnd don't overlap
+  * Spanner
    * Add spanner div
-  
-  * (thought): Have the sliders insert themselves in the DOM
-  * (thought): don't use Date objs for Now, always as internal ints
-
- * Display Event 
-
- * Nav bar
+   * Make spanner draggable
+  * Graphics and layouts
+   * Create thumbnail pngs
+   * Create background pngs
+   * Display gui on top of the map
+  * Deferred
+   * Make sure nowStart and nowEnd don't overlap
+   * Have the sliders insert themselves in the DOM
+   * Don't use Date objs for Now, always as internal ints
+ * Display An Event
+  * Functionality
+   * Add dom elt to the GMarker
+   * Add onMouseOver, onMouseOut actions to the dom elts
+  * Graphics and layouts
+   * Make marker png
+   * Add CSS to DOM elts
+ * Navigation panel
