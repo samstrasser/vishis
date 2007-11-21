@@ -4,6 +4,7 @@ html, body{
 	height:98%; /* so there is no vertical scroll bar in FF */
 	margin:0px;
 	padding:.5%;
+	
 }
 
 body{
@@ -70,16 +71,12 @@ a:hover{
 	padding-left:.5em;
 	
 	white-space:normal;
-	
-	/*background-color:Orange; /* tmp to figure out layout stuff */
 }
 
 #footer{
 	text-align:center;
 	clear: both;
-	height:5%;
-	
-	
+	height:5%;	
 	
 }
 
