@@ -79,6 +79,10 @@ function ViewingPanel(){
 			minlong = Number.POSITIVE_INFINITY,
 			maxlat  = Number.NEGATIVE_INFINITY,
 			maxlong = Number.NEGATIVE_INFINITY;
+			
+		// keep track of earliest start and latest end time
+		currTopic.startTime = Number.POSITIVE_INFINITY,
+		currTopic.endTime = Number.NEGATIVE_INFINITY;
 		
 		for(var cid in children){
 			var c = children[cid];
@@ -95,6 +99,15 @@ function ViewingPanel(){
 			}else if(c.longitude > maxlong){
 				maxlong = c.longitude;
 			}
+			
+			// Find min  start and max end times
+			if(c.start_date.getTime() <= currTopic.startTime){
+				currTopic.startTime = c.start_date.getTime()-1;
+			}
+			if(c.end_date.getTime() >= currTopic.endTime){
+				currTopic.endTime = c.end_date.getTime()+1;
+			}
+			
 		}
 
 		map.adjustToFitPoints(minlat, maxlong, maxlat, minlong);
@@ -104,6 +117,8 @@ function ViewingPanel(){
 	};
 	
 	var showCurrEvents  = function(nowStart, nowEnd){
+		map.clear();
+		
 		var nStart = nowStart.getTime();
 		var nEnd = nowEnd.getTime();
 			
@@ -149,7 +164,12 @@ function NavigationPanel(){
 function TimeSlider(callback){
 
 	this.switchTopic = function(newTopic){
-		this.sliderStartChanged(0);
+		// Scale and shift needed to map values on the slider to human dates
+		var max = newTopic.endTime;
+		
+		shift = newTopic.startTime;
+		scale = (max - shift) / 300; // todo: make slider width a variable
+		
 	
 	};
 	
@@ -158,29 +178,54 @@ function TimeSlider(callback){
 		// Make sure the sliders don't overlap
 		
 		// Convert values to Date objects
-		var nowStart = TimeSlider.valueToDate(sliderStart.getValue());
-		var nowEnd   = new Date();//TimeSlider.valueToDate(sliderEnd.getValue());
+		var nowStart = valueToDate(sliderStart.getValue());
+		var nowEnd   = valueToDate(sliderEnd.getValue());
 		
 		// Callback the viewing panel
 		callback(nowStart, nowEnd);
 	};
 	
-	this.sliderStartChanged = function(offset){
-		adjustSliders();
-	};
+	var setConstraints = function(slider, iLeft, iRight){
+		g1 = slider;
+		g2 = new Array(iLeft, iRight);
+		
+		slider.setXConstraint(iLeft, iRight);
+	}
 	
-	this.sliderEndChanged = function(offset){
-		adjustSliders();
-	};
+	var valueToDate = function(val){
+		var time = (val * scale) + shift;
+		
+		return new Date(time);
+	}
+
 	
+	var shift = 0, scale = 0;
 	
 	// initialize the  sliders
 	var sliderStart = TimeSlider.createSlider(1);
-	sliderStart.subscribe("change", this.sliderStartChanged);
+	sliderStart.subscribe("change", 
+		(function(offset){ adjustSliders(sliderEnd, sliderStart, offset);})
+	);
+	sliderStart.subscribe("slideStart", function() { 
+		setConstraints(sliderStart, 0, 50);
+	}); 
+	/*
+	sliderStart.subscribe("slideStart", 
+		(function(){ setConstraints(sliderStart,	// moving the start slider
+									bgOffset,		// restrict the slider so it does not overlap the end slider
+									sliderEnd.getValue()
+									);
+									g1 = sliderEnd;
+									alert(sliderEnd.getValue());
+									})
+	);
+	*/
 	
 	var sliderEnd = TimeSlider.createSlider(2);
-	sliderEnd.subscribe("change", this.sliderEndChanged);
-
+	sliderEnd.subscribe("change", 
+		(function(offset){ adjustSliders(sliderStart, sliderEnd, offset);})
+	)
+	sliderEnd.setValue(10);
 }
 
 TimeSlider.createSlider = function(num){
@@ -197,9 +242,6 @@ TimeSlider.createSlider = function(num){
 	return s;
 }
 
-TimeSlider.valueToDate = function(val){
-	return new Date('1/1/1600');
-}
 
 function Node(){
 	var type;  // one of Region, Event, Topic
@@ -208,8 +250,8 @@ function Node(){
 	var uid;
 	var title;
 	var blurb;
-	var startdate;
-	var enddate;
+	var start_date; // these vars have underscores b/c I'm going directly off the SQL.
+	var end_date;	// to change them, the Server object would need to convert: sql schema -> JavaScript var names
 	
 	// Topic Only
 	var children;

@@ -4,7 +4,7 @@ function TimeSlider(){
 	slider2.subscribe("change", TimeSlider.adjustSlider);
 	//slider2.setValue(80,true);
 
-	slider = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb",  0, 290, 10); 
+	slider = YAHOO.widget.Slider.getHorizSlider("sliderbg", "sliderthumb1",  0, 290, 10); 
 	slider.backgroundEnabled = false;
 	slider.subscribe("change", TimeSlider.adjustSlider); 	
 	//slider.setValue(60,true);
@@ -17,11 +17,12 @@ TimeSlider.adjustSlider = function(offset){
 		spanner.style.left = (10+slider.thumb.getValue()) + 'px';
 		spanner.style.width = width+'px';
 	} else {
-		var other;
 		if(this.thumb.id == "sliderthumb2") {
-			slider.setValue(offset, true);
+			//YAHOO.util.DragDropMgr.stopDrag();
+			//slider2.setValue(offset, true);
 		} else {
-			slider2.setValue(offset, true);
+			//YAHOO.util.DragDropMgr.stopDrag();
+			//slider.setValue(offset, true);
 		}
 	}
 	
