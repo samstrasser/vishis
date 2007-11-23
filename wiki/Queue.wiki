@@ -6,13 +6,14 @@
   * Spanner
    * Add spanner div
    * Make spanner draggable
+   * Update sliders to stick with the spanner
   * Graphics and layouts
    * Create thumbnail pngs
    * Create background pngs
-   * Display gui on top of the map
+   * Display gui on top of the map (Subclass GControl)
+    * Have the sliders insert themselves in the DOM
   * Deferred
    * Make sure nowStart and nowEnd don't overlap
-   * Have the sliders insert themselves in the DOM
    * Don't use Date objs for Now, always as internal ints
  * Display An Event
   * Functionality
