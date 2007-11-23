@@ -99,8 +99,8 @@ a:hover{
 }
 #spanner {
 	position: absolute;
-	background-image: url(../img/slider.spanner.png);
+	background-image: url(../img/slider.spanner.orange.png);
 	height: 22px;
 	width:10px;
-	z-index: 50;
+	z-index: 30;
 }
