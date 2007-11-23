@@ -87,7 +87,8 @@ a:hover{
 /* Time Slider */
 #sliderbg {
 	position: relative;
-	background: url(../img/slider.bg.png) 0 0 no-repeat;
+	/*background: url(../img/slider.bg.png) 0 0 no-repeat;*/
+	background: url(../img/slider.bg.red.png) 0 0 no-repeat;
 	height: 24px;
 	width: 332px; 
 }
@@ -98,7 +99,8 @@ a:hover{
 }
 #spanner {
 	position: absolute;
-	background-image: url(http://elementalmarkup.com/projects/sliders/images/trans_bg.png);
-	height: 10px;
-	z-index: 10;
+	background-image: url(../img/slider.spanner.png);
+	height: 22px;
+	width:10px;
+	z-index: 50;
 }

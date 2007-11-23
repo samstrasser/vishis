@@ -189,9 +189,27 @@ function TimeSlider(callback){
 		callback(nowStart, nowEnd);
 	};
 	
+	var slideSpanner = function(center, spanner, startSlider, endSlider){
+		var width = spanner.getWidth();
+		
+		var leftEdge  = center - (width/2);
+		var rightEdge = center + (width/2);
+		
+		string = "Spanner width: " + width + 
+			" left:" + leftEdge + " right:" + rightEdge +
+			" sliderOffset:" + 5 + 
+			" start: " + startSlider.getValue() + 
+			" end: " + endSlider.getValue();
+
+		
+		startSlider.setValue(leftEdge);
+		endSlider.setValue(rightEdge + 5);//endSlider.width);
+		
+	};
+	
 	var setConstraints = function(slider, iLeft, iRight){
-		g1 = slider;
-		g2 = new Array(iLeft, iRight);
+		//g1 = slider;
+		//g2 = new Array(iLeft, iRight);
 		
 		slider.setXConstraint(iLeft, iRight);
 	}
@@ -230,6 +248,14 @@ function TimeSlider(callback){
 		(function(offset){ adjustSliders(sliderStart, sliderEnd, offset);})
 	)
 	sliderEnd.setValue(10);
+	
+	var spanner = TimeSlider.createSpanner();
+	spanner.subscribe("change", 
+		(function(offset){ slideSpanner(offset, spanner, sliderStart, sliderEnd);})
+	)
+	
+	spanner.setValue(100);
+	slideSpanner(100, spanner, sliderStart, sliderEnd);
 }
 
 TimeSlider.createSlider = function(num){
@@ -242,6 +268,22 @@ TimeSlider.createSlider = function(num){
 	var s = YAHOO.widget.Slider.getHorizSlider(bg, thumb, iLeft, iRight);
 	s.backgroundEnabled = false; 	// disable background clicks so that both don't jump around
 									// todo: fix this by allowing background clicks on the spanner
+	
+	s.width = 5;
+	return s;
+}
+
+TimeSlider.createSpanner = function(){
+	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", 0, 300);
+	s.backgroundEnabled = true;
+	
+	//TMP ONLY
+	s.width = 10;
+	// END TMP
+	
+	s.getWidth = function(){
+		return this.width;
+	}
 	
 	return s;
 }
@@ -276,18 +318,18 @@ Node.REGION = 0;
 Node.EVENT = 1;
 Node.TOPIC = 2;
 
-// API so that the other code doesn't know about Google Maps
+// API-ish so that the other code doesn't have to know about Google Maps
 function Map(){
-	var map = false;
+	var gmap = false;
 	
 	if (GBrowserIsCompatible()) {
-		map = new GMap2(document.getElementById("map"));
+		gmap = new GMap2(document.getElementById("map"));
 
 
-		map.addControl(new GLargeMapControl());
-		map.addControl(new GScaleControl());
+		gmap.addControl(new GLargeMapControl());
+		gmap.addControl(new GScaleControl());
 
-		map.setCenter(new GLatLng(41.313038,-72.925224), 15);
+		gmap.setCenter(new GLatLng(41.313038,-72.925224), 15);
 	}
 	
 	this.displayEvent = function(node){
@@ -298,7 +340,7 @@ function Map(){
 	            marker.openInfoWindowHtml("<b>" + node.title+ "</b>: "+node.blurb.substring(0,255)+"...");
 	          });
 		
-		map.addOverlay(marker);
+		gmap.addOverlay(marker);
 	};
 	
 	this.adjustToFitPoints = function(s, w, n, e){
@@ -308,11 +350,11 @@ function Map(){
 			ne = new GLatLng(n, e);
 		var bounds = new GLatLngBounds(sw,  ne);
 		
-		var zoom = map.getBoundsZoomLevel(bounds)
-		map.setCenter(bounds.getCenter(), zoom);
+		var zoom = gmap.getBoundsZoomLevel(bounds)
+		gmap.setCenter(bounds.getCenter(), zoom);
 	};
 	
 	this.clear = function(){
-		map.clearOverlays();
+		gmap.clearOverlays();
 	}
 }
