@@ -1,6 +1,10 @@
 var vh;
 var g1 = {};
-var g2 = {};
+var g2 = true;//{};
+
+var slStart = false;
+var slEnd = false;
+var slSpan = false;
 
 function load(){
 	vh = new Vishis();
@@ -177,40 +181,46 @@ function TimeSlider(callback){
 	
 	};
 	
-	var adjustSliders = function(thisSlider, otherSlider, offset){
-		// Adjust spanner elt
-		// Make sure the sliders don't overlap
+	var adjustSliders = function(offset){
+		if(spannerIsSliding){
+			return;
+		}
+	
+		// Adjust spanner
+		var startValue = sliderStart.getValue(),
+			endValue   = sliderEnd.getValue();
+		var spanWidth = endValue - startValue;
+		var spanCenter = (startValue + endValue)/2;
+		
+		// make sure to adjust only when necessary
+		// otherwise get stuck in an infinite loop
+		spanner.setValue(spanCenter-(spanWidth/2));
+		spanner.setWidth(spanWidth);
 		
 		// Convert values to Date objects
-		var nowStart = valueToDate(sliderStart.getValue());
-		var nowEnd   = valueToDate(sliderEnd.getValue());
+		var nowStart = valueToDate(startValue);
+		var nowEnd   = valueToDate(endValue);
 		
 		// Callback the viewing panel
 		callback(nowStart, nowEnd);
 	};
 	
-	var slideSpanner = function(center, spanner, startSlider, endSlider){
+	var slideSpanner = function(left){
+		if(sliderIsSliding){
+			return;
+		}
+		
 		var width = spanner.getWidth();
 		
-		var leftEdge  = center - (width/2);
-		var rightEdge = center + (width/2);
+		var leftEdge  = left;// - (width/2);
+		var rightEdge = left + width - 5;//center + (width/2);
 		
-		string = "Spanner width: " + width + 
-			" left:" + leftEdge + " right:" + rightEdge +
-			" sliderOffset:" + 5 + 
-			" start: " + startSlider.getValue() + 
-			" end: " + endSlider.getValue();
-
-		
-		startSlider.setValue(leftEdge);
-		endSlider.setValue(rightEdge + 5);//endSlider.width);
+		sliderStart.setValue(leftEdge);
+		sliderEnd.setValue(rightEdge + 5);
 		
 	};
 	
 	var setConstraints = function(slider, iLeft, iRight){
-		//g1 = slider;
-		//g2 = new Array(iLeft, iRight);
-		
 		slider.setXConstraint(iLeft, iRight);
 	}
 	
@@ -222,40 +232,39 @@ function TimeSlider(callback){
 
 	
 	var shift = 0, scale = 0;
+	var sliderIsSliding = false,
+		spannerIsSliding = false;
 	
 	// initialize the  sliders
 	var sliderStart = TimeSlider.createSlider(1);
 	sliderStart.subscribe("change", 
-		(function(offset){ adjustSliders(sliderEnd, sliderStart, offset);})
+		(function(offset){ adjustSliders(offset);})
 	);
-	sliderStart.subscribe("slideStart", function() { 
-		setConstraints(sliderStart, 0, 50);
-	}); 
-	/*
-	sliderStart.subscribe("slideStart", 
-		(function(){ setConstraints(sliderStart,	// moving the start slider
-									bgOffset,		// restrict the slider so it does not overlap the end slider
-									sliderEnd.getValue()
-									);
-									g1 = sliderEnd;
-									alert(sliderEnd.getValue());
-									})
-	);
-	*/
+	sliderStart.subscribe("slideStart", (function(offset){ sliderIsSliding = true;}))
+	sliderStart.subscribe("slideEnd", (function(offset){ sliderIsSliding = false;}))
+	sliderStart.setValue(40);
 	
 	var sliderEnd = TimeSlider.createSlider(2);
 	sliderEnd.subscribe("change", 
-		(function(offset){ adjustSliders(sliderStart, sliderEnd, offset);})
+		(function(offset){ adjustSliders(offset);})
 	)
-	sliderEnd.setValue(10);
+	sliderEnd.subscribe("slideStart", (function(offset){ sliderIsSliding = true;}))
+	sliderEnd.subscribe("slideEnd", (function(offset){ sliderIsSliding = false;}))
+	sliderEnd.setValue(50);
 	
 	var spanner = TimeSlider.createSpanner();
 	spanner.subscribe("change", 
-		(function(offset){ slideSpanner(offset, spanner, sliderStart, sliderEnd);})
+		(function(offset){ slideSpanner(offset);})
 	)
+	spanner.subscribe("slideStart", (function(offset){ spannerIsSliding = true;}))
+	spanner.subscribe("slideEnd", (function(offset){ spannerIsSliding = false;}))
+	spanner.setValue(45);
+	slideSpanner(45);//, spanner, sliderStart, sliderEnd);
 	
-	spanner.setValue(100);
-	slideSpanner(100, spanner, sliderStart, sliderEnd);
+	//DEBUG
+	slStart = sliderStart;
+	slEnd = sliderEnd;
+	slSpan = spanner;
 }
 
 TimeSlider.createSlider = function(num){
@@ -283,6 +292,12 @@ TimeSlider.createSpanner = function(){
 	
 	s.getWidth = function(){
 		return this.width;
+	}
+	
+	s.setWidth = function(newWidth){
+		this.width = newWidth;
+		var spannerDiv = document.getElementById('spanner');
+		spannerDiv.style.width = newWidth+'px';
 	}
 	
 	return s;
