@@ -6,6 +6,10 @@ function load(){
 	vh = new Vishis();
 }
 
+function unload(){
+	GUnload();
+}
+
 Vishis.BROWSE_MODE = 1;
 Vishis.NEWSESSION_MODE = 2;
 Vishis.VISUALIZING_MODE = 3;
