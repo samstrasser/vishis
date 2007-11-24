@@ -96,16 +96,12 @@ a:hover{
 	position: absolute;
 	z-index: 40;
 }
-
 #sliderthumb1{
 	cursor: e-resize;
 }
-
 #sliderthumb2{
 	cursor: w-resize;
 }
-
-
 
 #spanner {
 	position: absolute;
