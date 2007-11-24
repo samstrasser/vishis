@@ -13,10 +13,11 @@
    * Display gui on top of the map (Subclass GControl)
     * ~~Have the sliders insert themselves in the DOM~~
     * Bump slider bg down 2 pixels
-    * Center the Slider on the map
+    * ~~Center the Slider on the map~~
   * Deferred
    * Make sure nowStart and nowEnd don't overlap
    * Don't use Date objs for Now, always as internal ints
+   * Center the map even after page resize
  * Display An Event
   * Functionality
    * Add dom elt to the GMarker
