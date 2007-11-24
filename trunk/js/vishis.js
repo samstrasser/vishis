@@ -303,7 +303,7 @@ TimeSlider.createSlider = function(num){
 
 TimeSlider.createSpanner = function(){
 	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", 0, 300);
-	s.backgroundEnabled = true;
+	s.backgroundEnabled = false;
 	
 	//TMP ONLY
 	s.width = 10;
