@@ -143,12 +143,10 @@ function ViewingPanel(){
 	};
 	
 	var currTopic = false;
-	
 	var currMode = Vishis.NEWSESSION_MODE;
-	
 	var map = new Map();
-	
 	var slider = new TimeSlider(showCurrEvents);
+	map.addTimeSlider(slider);
 }
 
 
@@ -267,6 +265,20 @@ function TimeSlider(callback){
 	slSpan = spanner;
 }
 
+TimeSlider.prototype = new GControl();
+
+TimeSlider.prototype.initialize = function(map){
+	var container = document.getElementById("timeslider");
+	
+	map.getContainer().appendChild(container);
+	return container;
+}
+
+TimeSlider.prototype.getDefaultPosition = function(){
+	return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+
+}
+
 TimeSlider.createSlider = function(num){
 	var bg = "sliderbg";
 	var thumb = "sliderthumb" + num;
@@ -319,10 +331,7 @@ function Node(){
 	var childrenByStartDate;
 	var childrenByEndDate;
 	
-	var subTopics; // a subset of children
-	
-	var parent //? Do I need this
-	
+	var subTopics; // a subset of children	
 	
 	// Region Only
 	var pts;
@@ -369,7 +378,11 @@ function Map(){
 		gmap.setCenter(bounds.getCenter(), zoom);
 	};
 	
+	this.addTimeSlider = function(slider){
+		gmap.addControl(slider);
+	};
+	
 	this.clear = function(){
 		gmap.clearOverlays();
-	}
+	};
 }
