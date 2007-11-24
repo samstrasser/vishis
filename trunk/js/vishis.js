@@ -270,12 +270,19 @@ TimeSlider.prototype = new GControl();
 TimeSlider.prototype.initialize = function(map){
 	var container = document.getElementById("timeslider");
 	
+	// Hack: I need the map in getDefaultPosition so that I can center the control
+	this.gmap = map;
+	
 	map.getContainer().appendChild(container);
 	return container;
 }
 
 TimeSlider.prototype.getDefaultPosition = function(){
-	return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(7, 7));
+	var viewWidth = this.gmap.getSize().width;
+	
+	var xOffset = (viewWidth/2) - (300/2);
+	
+	return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(xOffset, 7));
 
 }
 
