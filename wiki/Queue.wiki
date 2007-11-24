@@ -4,12 +4,12 @@
 = Current =
  * Time Slider
   * Spanner
-   * Add spanner div
-   * Make spanner draggable
-   * Update sliders to stick with the spanner
+   * ~~Add spanner div~~
+   * ~~Make spanner draggable~~
+   * ~~Update sliders to stick with the spanner~~
   * Graphics and layouts
-   * Create thumbnail pngs
-   * Create background pngs
+   * ~~Create thumbnail pngs~~
+   * ~~Create background pngs~~
    * Display gui on top of the map (Subclass GControl)
     * Have the sliders insert themselves in the DOM
   * Deferred
