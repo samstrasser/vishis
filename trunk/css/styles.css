@@ -87,7 +87,6 @@ a:hover{
 /* Time Slider */
 #sliderbg {
 	position: relative;
-	/*background: url(../img/slider.bg.png) 0 0 no-repeat;*/
 	background: url(../img/slider.bg.red.png) 0 0 no-repeat;
 	height: 24px;
 	width: 332px; 
@@ -97,10 +96,22 @@ a:hover{
 	position: absolute;
 	z-index: 40;
 }
+
+#sliderthumb1{
+	cursor: e-resize;
+}
+
+#sliderthumb2{
+	cursor: w-resize;
+}
+
+
+
 #spanner {
 	position: absolute;
-	background-image: url(../img/slider.spanner.orange.png);
+	background-image: url(../img/slider.spanner.png);
 	height: 22px;
 	width:10px;
 	z-index: 30;
+	cursor:move;
 }
