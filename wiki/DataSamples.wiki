@@ -1,12 +1,12 @@
 #summary Data Samples
+#labels Featured
 
+= Already Done =
     * Civil War Battles
     * Yale University 
 
-
-
-    * Later
-          o The Civil War
-          o Strasser Family history
-          o American Presidents
-          o Electoral College Results 
+= To do =
+ * The Civil War
+ * Strasser Family history
+ * American Presidents
+ * Electoral College Results 
