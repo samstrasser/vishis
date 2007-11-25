@@ -176,7 +176,13 @@ function TimeSlider(callback){
 		shift = newTopic.startTime;
 		scale = (max - shift) / 300; // todo: make slider width a variable
 		
+		this.resetPosition(newTopic);
+	};
 	
+	this.resetPosition = function(topic){
+		sliderStart.setValue(0);
+		sliderEnd.setValue(10);
+		adjustSliders();
 	};
 	
 	var adjustSliders = function(offset){
@@ -247,7 +253,6 @@ function TimeSlider(callback){
 	);
 	sliderStart.subscribe("slideStart", (function(offset){ sliderIsSliding = true;}))
 	sliderStart.subscribe("slideEnd", (function(offset){ sliderIsSliding = false;}))
-	sliderStart.setValue(40);
 	
 	var sliderEnd = TimeSlider.createSlider(2);
 	sliderEnd.subscribe("change", 
@@ -255,21 +260,21 @@ function TimeSlider(callback){
 	)
 	sliderEnd.subscribe("slideStart", (function(offset){ sliderIsSliding = true;}))
 	sliderEnd.subscribe("slideEnd", (function(offset){ sliderIsSliding = false;}))
-	sliderEnd.setValue(50);
 	
 	var spanner = TimeSlider.createSpanner();
 	spanner.subscribe("change", 
 		(function(offset){ slideSpanner(offset);})
 	)
 	spanner.subscribe("slideStart", (function(offset){ spannerIsSliding = true;}))
-	spanner.subscribe("slideEnd", (function(offset){ spannerIsSliding = false;}))
-	spanner.setValue(45);
-	slideSpanner(45);//, spanner, sliderStart, sliderEnd);
+	spanner.subscribe("slideEnd", (function(offset){ spannerIsSliding = false;}))	
 	
-	//DEBUG
+	this.resetPosition();
+	
+	// DEBUG ONLY
 	slStart = sliderStart;
 	slEnd = sliderEnd;
 	slSpan = spanner;
+	// END DEBUG
 }
 
 TimeSlider.prototype = new GControl();
@@ -311,10 +316,6 @@ TimeSlider.createSlider = function(num){
 TimeSlider.createSpanner = function(){
 	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", 0, 300);
 	s.backgroundEnabled = false;
-	
-	//TMP ONLY
-	s.width = 10;
-	// END TMP
 	
 	s.getWidth = function(){
 		return this.width;
