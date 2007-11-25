@@ -195,12 +195,8 @@ function TimeSlider(callback){
 		spanner.setValue(spanCenter-(spanWidth/2));
 		spanner.setWidth(spanWidth);
 		
-		// Convert values to Date objects
-		var nowStart = valueToDate(startValue);
-		var nowEnd   = valueToDate(endValue);
-		
-		// Callback the viewing panel
-		callback(nowStart, nowEnd);
+		doCallback(startValue, endValue);
+
 	};
 	
 	var slideSpanner = function(left){
@@ -210,23 +206,34 @@ function TimeSlider(callback){
 		
 		var width = spanner.getWidth();
 		
-		var leftEdge  = left;// - (width/2);
-		var rightEdge = left + width - 5;//center + (width/2);
+		var startValue  = left;
+		var endValue = left + width;
 		
-		sliderStart.setValue(leftEdge);
-		sliderEnd.setValue(rightEdge + 5);
+		sliderStart.setValue(startValue);
+		sliderEnd.setValue(endValue);
+		
+		doCallback(startValue, endValue);
 		
 	};
 	
 	var setConstraints = function(slider, iLeft, iRight){
 		slider.setXConstraint(iLeft, iRight);
-	}
+	};
+	
+	var doCallback = function(startValue, endValue){
+		// Convert values to Date objects
+		var nowStart = valueToDate(startValue);
+		var nowEnd   = valueToDate(endValue);
+		
+		// Callback the viewing panel
+		callback(nowStart, nowEnd);
+	};
 	
 	var valueToDate = function(val){
 		var time = (val * scale) + shift;
 		
 		return new Date(time);
-	}
+	};
 
 	
 	var shift = 0, scale = 0;
