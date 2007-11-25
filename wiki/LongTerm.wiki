@@ -1,5 +1,7 @@
 #summary Stuff to do, you know, in my wildest dreams
+#labels Phase-Design
 
- *  Add Categories
+ * Add Categories
  * Add Tags
  * Handle non-supported browsers gracefully 
+ * Add Users
