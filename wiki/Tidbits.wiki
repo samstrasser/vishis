@@ -1,4 +1,0 @@
-#summary Things that I should change, in a perfect world
-
- * variable naming
-  * change end_date to endDate in JavaScript.  Will require .php to map sql schema to JavaScript code
