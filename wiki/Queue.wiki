@@ -2,12 +2,12 @@
 #labels Featured,Phase-Implementation
 
 = Current =
- * Time Slider
  * Display An Event
   * Functionality
-   * Add dom elt to the GMarker
+   * Install Labeled Marker library (http://code.google.com/p/gmaps-utility-library/)
    * Add onMouseOver, onMouseOut actions to the dom elts
   * Graphics and layouts
    * Make marker png
-   * Add CSS to DOM elts
+
+= Next Semester =
  * Navigation panel
