@@ -1,4 +1,8 @@
 /*
+ * Downloaded from http://gmaps-utility-library.googlecode.com
+ */
+
+/*
 * LabeledMarker Class, v1.1
 *
 * Copyright 2007 Mike Purvis (http://uwmike.com)
