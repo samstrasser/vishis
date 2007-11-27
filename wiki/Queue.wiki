@@ -4,7 +4,7 @@
 = Current =
  * Display An Event
   * Functionality
-   * Install Labeled Marker library (http://code.google.com/p/gmaps-utility-library/)
+   * ~~Install Labeled Marker library (http://code.google.com/p/gmaps-utility-library/)~~
    * Add onMouseOver, onMouseOut actions to the dom elts
   * Graphics and layouts
    * Make marker png
