@@ -372,13 +372,28 @@ function Map(){
 	}
 	
 	this.displayEvent = function(node){
-		var pt = new GLatLng(node.lat,  node.longitude);
-		var marker = new GMarker(pt, {title: node.title});
-		
+		var latlng = new GLatLng(node.lat,  node.longitude);
+	
+		/*
+		var icon = new GIcon();
+		//icon.image = 'red_marker.png';
+		icon.iconSize = new GSize(32, 32);
+		icon.iconAnchor = new GPoint(16, 16);
+		icon.infoWindowAnchor = new GPoint(25, 7);
+		*/
+
+		opts = { 
+		  "clickable": true,
+		  "labelText": node.title,
+		  "labelOffset": new GSize(-6, -10),
+		  "labelClass": "marker"
+		};
+		var marker = new LabeledMarker(latlng, opts);
+
 		GEvent.addListener(marker, "click", function() {
-	            marker.openInfoWindowHtml("<b>" + node.title+ "</b>: "+node.blurb.substring(0,255)+"...");
-	          });
-		
+		  marker.openInfoWindowHtml("I'm a Labeled Marker!");
+		});
+
 		gmap.addOverlay(marker);
 	};
 	
