@@ -174,7 +174,7 @@ function TimeSlider(callback){
 		var max = newTopic.endTime;
 		
 		shift = newTopic.startTime;
-		scale = (max - shift) / 300; // todo: make slider width a variable
+		scale = (max - shift) / 400; // todo: make slider width a variable
 		
 		this.resetPosition(newTopic);
 	};
@@ -283,26 +283,27 @@ TimeSlider.prototype.initialize = function(map){
 	var container = document.getElementById("timeslider");
 	
 	// Hack: I need the map in getDefaultPosition so that I can center the control
-	this.gmap = map;
+	//this.gmap = map;
 	
 	map.getContainer().appendChild(container);
 	return container;
 }
 
 TimeSlider.prototype.getDefaultPosition = function(){
-	var viewWidth = this.gmap.getSize().width;
+	//var viewWidth = this.gmap.getSize().width;
 	
-	var xOffset = (viewWidth/2) - (300/2);
+	//var xOffset = (viewWidth/2) - (200/2);
 	
-	return new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(xOffset, 7));
+	return new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10, 15));
 
 }
 
 TimeSlider.createSlider = function(num){
 	var bg = "sliderbg";
 	var thumb = "sliderthumb" + num;
-	var iLeft = 0;
-	var iRight = 300;
+	var fudge = 7 * num;
+	var iLeft = 0+fudge;
+	var iRight = 400-fudge;
 	var iTickSize = false;
 	
 	var s = YAHOO.widget.Slider.getHorizSlider(bg, thumb, iLeft, iRight);
@@ -314,7 +315,7 @@ TimeSlider.createSlider = function(num){
 }
 
 TimeSlider.createSpanner = function(){
-	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", 0, 300);
+	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", 0, 400);
 	s.backgroundEnabled = false;
 	
 	s.getWidth = function(){
