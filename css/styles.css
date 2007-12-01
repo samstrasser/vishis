@@ -88,8 +88,8 @@ a:hover{
 #sliderbg {
 	position: relative;
 	background: url(../img/slider.bg.png) 0 0 no-repeat;
-	height: 22px;
-	width: 332px; 
+	height: 45px;
+	width: 400px; 
 }
 
 #sliderthumb1, #sliderthumb2 {
@@ -106,7 +106,7 @@ a:hover{
 #spanner {
 	position: absolute;
 	background-image: url(../img/slider.spanner.png);
-	height: 20px;
+	height: 40px;
 	width:10px;
 	z-index: 30;
 	cursor:move;
