@@ -218,3 +218,14 @@ LabeledMarker.prototype.hideLabel = function() {
 LabeledMarker.prototype.showLabel = function() {
   this.div_.style.visibility = 'visible';
 }
+
+/**
+ * (Extended by Sam)
+ * Sets the label text
+ */
+ LabeledMarker.prototype.setLabelText = function(text){
+	this.labelText_ = text;
+	this.div_.innerHTML = this.labelText_;
+	
+	this.redraw(true);
+ }
