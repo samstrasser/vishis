@@ -1,88 +1,68 @@
 /* Main styles */
+html { overflow: hidden; }
 
-html, body{
-	height:98%; /* so there is no vertical scroll bar in FF */
-	margin:0px;
-	padding:.5%;
-	
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
 }
 
-body{
-	padding:0px;
+body { margin: 10px; }
+
+#content {
+	margin-top: 10px;
+	position: relative;
+	height:80%;
 }
 
-#header{
-	height:10%;
-	width:100%;
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 1px solid #aaa;
 }
 
-h1{
-	
+#viewing-panel {
+	position: relative;
+	height: 100%;
 }
 
-/* h3: links in nav bar
- * generally for headings that aren't the main title
- */
- h3{
-	color:Black;
- }
- 
-a, a:link, a:hover, a:visited{
-	color:Black;
-	text-decoration:none;
+#nav-panel {
+	position: absolute;
+	border: 1px solid #aaa;
+	top: 0;
+	width: 220px;
+	height: 100%;
+	overflow: auto;
 }
 
-a:hover{
-	text-decoration:underline;
-}
- 
+body.sidebar-right #viewing-panel { margin-right: 230px; }
+body.sidebar-right #nav-panel { right: 0; }
 
-#panels{
-	width:100%;
-	height:85%;
-	white-space:nowrap;
-	
-	margin-top:.2em;
-	margin-bottom:.5em;
-	padding:0px;
-}
+body.nosidebar #viewing-panel { margin: 0; }
+body.nosidebar #nav-panel { display: none; }
 
-#viewing-panel{
-	width:80%;
-	float:left;
-	height:100%;
-	
-	white-space:normal;
-	
-	border-right:1px solid black;
-}
-
-#map{
-	height:100%;
-	width:100%;
-	margin:auto;
-
-}
-
-#nav-panel{
-	float:right;
-	height:100%;
-	width:19%;
-	padding-left:.5em;
-	
-	white-space:normal;
-}
-
-#footer{
-	text-align:center;
-	clear: both;
-	height:5%;	
-	
-}
-
-.simple-border{
+#header {
+	background: white;
+	padding: 4px;
 	border: 1px solid black;
+	position: relative;
+	height:32px;
 }
+
+/* holly hack for IE to get position:bottom right
+   see: http://www.positioniseverything.net/abs_relbugs.html
+ \*/
+* html #header { height: 1px; }
+/* */
+
+#header h1 {
+	margin: 0;
+	font: bold 30px Helvetica, sans-serif;
+}
+
 
 /* Time Slider */
 #sliderbg {
