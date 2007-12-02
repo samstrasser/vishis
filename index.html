@@ -21,12 +21,11 @@
 	
 	<script src="js/time-slider.js" type="text/javascript"></script>
   </head>
-  <body  onload="load()" onunload="GUnload()">
-  <div id="header" class="simple-border">
+  <body class="sidebar-right" onload="load()" onunload="unload()">
+  <div id="header">
 	<h1>VisualizeHistory.com</h1>
-  </div
-  <div id="panels" class="simple-border">
-	
+  </div>
+  <div id="content">
 	<div id="viewing-panel">
 		<div id="map"></div>
 		<div id="timeslider">
@@ -46,9 +45,6 @@
 		<h3>Your Recent Topics</h3>
 		<h3><a href="/tour.html">Take a Tour</a></h3>
 	</div>
-  </div>
-  <div id="footer" class="simple-border">
-	<em>Footer</em>
   </div>
   </body>
 </html>
