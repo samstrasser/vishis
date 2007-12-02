@@ -229,3 +229,4 @@ LabeledMarker.prototype.showLabel = function() {
 	
 	this.redraw(true);
  }
+ 

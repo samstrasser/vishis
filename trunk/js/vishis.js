@@ -394,24 +394,31 @@ function Map(){
 	this.displayEvent = function(node){
 		var latlng = new GLatLng(node.lat,  node.longitude);
 	
-		/*
+		
 		var icon = new GIcon();
-		//icon.image = 'red_marker.png';
-		icon.iconSize = new GSize(32, 32);
-		icon.iconAnchor = new GPoint(16, 16);
-		icon.infoWindowAnchor = new GPoint(25, 7);
-		*/
+		icon.image = 'img/event.icon.png';
+		icon.iconSize = new GSize(10, 10);
+		icon.iconAnchor = new GPoint(5, 5);
+		icon.infoWindowAnchor = new GPoint(5, 5);
 
 		opts = { 
+		  "icon": icon,
 		  "clickable": true,
 		  "labelText": node.title,
-		  "labelOffset": new GSize(-6, -10),
+		  "labelOffset": new GSize(10, -11),
 		  "labelClass": "marker"
 		};
 		var marker = new LabeledMarker(latlng, opts);
-
-		GEvent.addListener(marker, "click", function() {
-		  marker.openInfoWindowHtml("I'm a Labeled Marker!");
+		
+		GEvent.addListener(marker, "mouseover", function() {
+		  // show blurb
+		  var html = node.title + '<p class="blurb">' + node.blurb + '</p>';
+		  marker.setLabelText(html);
+		});
+		
+		GEvent.addListener(marker, "mouseout", function() {
+		  // hide blurb
+		  marker.setLabelText(node.title);
 		});
 
 		gmap.addOverlay(marker);
