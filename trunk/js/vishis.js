@@ -174,14 +174,14 @@ function TimeSlider(callback){
 		var max = newTopic.endTime;
 		
 		shift = newTopic.startTime;
-		scale = (max - shift) / 400; // todo: make slider width a variable
+		scale = (max - shift) / TimeSlider.imgWidth;
 		
 		this.resetPosition(newTopic);
 	};
 	
 	this.resetPosition = function(topic){
-		sliderStart.setValue(0);
-		sliderEnd.setValue(10);
+		sliderStart.setValue(sliderStart.initPos);
+		sliderEnd.setValue(sliderEnd.initPos);
 		adjustSliders();
 	};
 	
@@ -269,53 +269,54 @@ function TimeSlider(callback){
 	spanner.subscribe("slideEnd", (function(offset){ spannerIsSliding = false;}))	
 	
 	this.resetPosition();
-	
-	// DEBUG ONLY
-	slStart = sliderStart;
-	slEnd = sliderEnd;
-	slSpan = spanner;
-	// END DEBUG
 }
+TimeSlider.bgOffset = 20;
+TimeSlider.sliderWidth = 360;
+TimeSlider.imgWidth = 400;
+TimeSlider.spannerMin = 5;
+TimeSlider.thumbWidth = 8;
 
+		
 TimeSlider.prototype = new GControl();
 
 TimeSlider.prototype.initialize = function(map){
 	var container = document.getElementById("timeslider");
-	
-	// Hack: I need the map in getDefaultPosition so that I can center the control
-	//this.gmap = map;
 	
 	map.getContainer().appendChild(container);
 	return container;
 }
 
 TimeSlider.prototype.getDefaultPosition = function(){
-	//var viewWidth = this.gmap.getSize().width;
-	
-	//var xOffset = (viewWidth/2) - (200/2);
-	
 	return new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10, 15));
-
 }
 
 TimeSlider.createSlider = function(num){
 	var bg = "sliderbg";
 	var thumb = "sliderthumb" + num;
-	var fudge = 7 * num;
-	var iLeft = 0+fudge;
-	var iRight = 400-fudge;
-	var iTickSize = false;
+	var iLeft = 0, iRight = 0;
+	
+	if(num == 1){// startSlider
+		iLeft = TimeSlider.bgOffset;
+		iRight = TimeSlider.imgWidth - TimeSlider.bgOffset - TimeSlider.spannerMin - TimeSlider.thumbWidth;
+	}else if(num == 2){
+		iLeft = TimeSlider.bgOffset + TimeSlider.spannerMin;
+		iRight = TimeSlider.imgWidth - TimeSlider.bgOffset - TimeSlider.thumbWidth;
+	}
+	iLeft = iLeft * -1;
 	
 	var s = YAHOO.widget.Slider.getHorizSlider(bg, thumb, iLeft, iRight);
 	s.backgroundEnabled = false; 	// disable background clicks so that both don't jump around
 									// todo: fix this by allowing background clicks on the spanner
-	
-	s.width = 5;
+	s.initPos = iLeft;
+	s.width = TimeSlider.thumbWidth;
 	return s;
 }
 
 TimeSlider.createSpanner = function(){
-	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", 0, 400);
+	var iLeft = -1 * (TimeSlider.bgOffset);
+	var iRight = TimeSlider.imgWidth - TimeSlider.bgOffset - TimeSlider.thumbWidth - TimeSlider.spannerMin;
+
+	var s = YAHOO.widget.Slider.getHorizSlider("sliderbg", "spanner", iLeft, iRight);
 	s.backgroundEnabled = false;
 	
 	s.getWidth = function(){
