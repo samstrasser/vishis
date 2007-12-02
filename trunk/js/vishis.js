@@ -6,6 +6,11 @@ var slStart = false;
 var slEnd = false;
 var slSpan = false;
 
+var start = false;
+var end = false;
+
+var vToD = false;
+
 function load(){
 	vh = new Vishis();
 }
@@ -174,7 +179,7 @@ function TimeSlider(callback){
 		var max = newTopic.endTime;
 		
 		shift = newTopic.startTime;
-		scale = (max - shift) / TimeSlider.imgWidth;
+		scale = (max - shift) / TimeSlider.sliderWidth;
 		
 		this.resetPosition(newTopic);
 	};
@@ -231,15 +236,24 @@ function TimeSlider(callback){
 		var nowStart = valueToDate(startValue);
 		var nowEnd   = valueToDate(endValue);
 		
+		//DEBUG ONLY
+		start = nowStart;
+		end = nowEnd;
+		// DEBUG ONLY
+		
 		// Callback the viewing panel
 		callback(nowStart, nowEnd);
 	};
 	
 	var valueToDate = function(val){
+		val = val - (-1 * sliderStart.initPos);
+	
 		var time = (val * scale) + shift;
 		
 		return new Date(time);
 	};
+	
+	vToD = valueToDate;
 
 	
 	var shift = 0, scale = 0;
@@ -267,6 +281,10 @@ function TimeSlider(callback){
 	)
 	spanner.subscribe("slideStart", (function(offset){ spannerIsSliding = true;}))
 	spanner.subscribe("slideEnd", (function(offset){ spannerIsSliding = false;}))	
+	
+	slStart = sliderStart;
+	slEnd = sliderEnd;
+	slSpan = spanner;
 	
 	this.resetPosition();
 }
