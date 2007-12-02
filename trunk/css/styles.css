@@ -107,3 +107,21 @@ p.blurb{
 	white-space:normal;
 	font-size:10pt;
 }
+
+
+#sliderlabel1, #sliderlabel2 {
+	color:white;
+	background-color:#aaa;
+	padding:1px;
+	position:absolute;
+	top:-1.5em;
+	white-space:nowrap;
+}
+
+#sliderlabel1{
+	right:0;
+}
+
+#sliderlabel2{
+	left:0;
+}
