@@ -247,10 +247,8 @@ function TimeSlider(callback){
 		var nowEnd   = valueToDate(endValue);
 		
 		// Change slider labels
-		var nowStartString = nowStart.getMonth() + '/' + nowStart.getDate() + '/' + nowStart.getFullYear();
-		var nowEndString = nowEnd.getMonth() + '/' + nowEnd.getDate() + '/' + nowEnd.getFullYear();
-		changeLabelText(1, nowStartString);
-		changeLabelText(2, nowEndString);
+		changeLabelText(1, formatDate(nowStart));
+		changeLabelText(2, formatDate(nowEnd));
 		
 		//DEBUG ONLY
 		start = nowStart;
@@ -259,6 +257,11 @@ function TimeSlider(callback){
 		
 		// Callback the viewing panel
 		callback(nowStart, nowEnd);
+	};
+	
+	var formatDate = function(d){
+		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+		return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 	};
 	
 	var valueToDate = function(val){
