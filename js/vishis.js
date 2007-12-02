@@ -227,14 +227,30 @@ function TimeSlider(callback){
 		
 	};
 	
-	var setConstraints = function(slider, iLeft, iRight){
-		slider.setXConstraint(iLeft, iRight);
+	var showLabels = function(){
+		document.getElementById('sliderlabel1').style.visibility = 'visible';
+		document.getElementById('sliderlabel2').style.visibility = 'visible';
+	};
+	
+	var hideLabels = function(){
+		document.getElementById('sliderlabel1').style.visibility = 'hidden';
+		document.getElementById('sliderlabel2').style.visibility = 'hidden';	
+	};
+	
+	var changeLabelText = function(sliderNum, text){
+		document.getElementById('sliderlabel'+sliderNum).innerHTML = text;
 	};
 	
 	var doCallback = function(startValue, endValue){
 		// Convert values to Date objects
 		var nowStart = valueToDate(startValue);
 		var nowEnd   = valueToDate(endValue);
+		
+		// Change slider labels
+		var nowStartString = nowStart.getMonth() + '/' + nowStart.getDate() + '/' + nowStart.getFullYear();
+		var nowEndString = nowEnd.getMonth() + '/' + nowEnd.getDate() + '/' + nowEnd.getFullYear();
+		changeLabelText(1, nowStartString);
+		changeLabelText(2, nowEndString);
 		
 		//DEBUG ONLY
 		start = nowStart;
@@ -253,9 +269,6 @@ function TimeSlider(callback){
 		return new Date(time);
 	};
 	
-	vToD = valueToDate;
-
-	
 	var shift = 0, scale = 0;
 	var sliderIsSliding = false,
 		spannerIsSliding = false;
@@ -265,22 +278,61 @@ function TimeSlider(callback){
 	sliderStart.subscribe("change", 
 		(function(offset){ adjustSliders(offset);})
 	);
-	sliderStart.subscribe("slideStart", (function(offset){ sliderIsSliding = true;}))
-	sliderStart.subscribe("slideEnd", (function(offset){ sliderIsSliding = false;}))
+	sliderStart.subscribe("slideStart", 
+		(function(offset){ 
+			sliderIsSliding = true;
+			showLabels();
+		})
+	);
+	sliderStart.subscribe("slideEnd", 
+		(function(offset){ 
+			sliderIsSliding = false;
+			if(!spannerIsSliding){
+				hideLabels();
+			}
+		})
+	);
 	
 	var sliderEnd = TimeSlider.createSlider(2);
 	sliderEnd.subscribe("change", 
 		(function(offset){ adjustSliders(offset);})
 	)
-	sliderEnd.subscribe("slideStart", (function(offset){ sliderIsSliding = true;}))
-	sliderEnd.subscribe("slideEnd", (function(offset){ sliderIsSliding = false;}))
-	
+	sliderEnd.subscribe("slideStart", 
+		(function(offset){ 
+			sliderIsSliding = true;
+			showLabels();
+		})
+	);
+	sliderEnd.subscribe("slideEnd", 
+		(function(offset){ 
+			sliderIsSliding = false;
+			if(!spannerIsSliding){
+				hideLabels();
+			}
+		})
+	);
+
 	var spanner = TimeSlider.createSpanner();
 	spanner.subscribe("change", 
-		(function(offset){ slideSpanner(offset);})
+		(function(offset){
+			slideSpanner(offset);
+			
+		})
 	)
-	spanner.subscribe("slideStart", (function(offset){ spannerIsSliding = true;}))
-	spanner.subscribe("slideEnd", (function(offset){ spannerIsSliding = false;}))	
+	spanner.subscribe("slideStart", 
+		(function(offset){
+			spannerIsSliding = true;
+			showLabels();
+		})
+	);
+	spanner.subscribe("slideEnd", 
+		(function(offset){
+			spannerIsSliding = false;
+			if(!sliderIsSliding){
+				hideLabels();
+			}
+		})
+	);
 	
 	slStart = sliderStart;
 	slEnd = sliderEnd;
