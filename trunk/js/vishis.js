@@ -443,7 +443,8 @@ function Map(){
 		gmap.addControl(new GLargeMapControl());
 		gmap.addControl(new GScaleControl());
 
-		gmap.setCenter(new GLatLng(41.313038,-72.925224), 15);
+		//gmap.setCenter(new GLatLng(41.313038,-72.925224), 15); // Yale zoomed in
+		gmap.setCenter(new GLatLng(36.879621,-98.525391), 4);
 	}
 	
 	this.displayEvent = function(node){
