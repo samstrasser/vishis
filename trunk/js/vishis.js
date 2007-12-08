@@ -468,10 +468,9 @@ function Map(){
 		
 		GEvent.addListener(marker, "mouseover", function() {
 		  // show blurb
-		  var html = node.title + 
-			'<div class="date-range">' + 
-				formatDate(node.start_date) + ' - ' + formatDate(node.end_date) + 
-			'</div>' + 
+		  var html = //'<h3>' + node.title + '</h3>' + 
+			node.title + 
+			'<div class="date-range">' + formatDate(node.start_date) + ' - ' + formatDate(node.end_date) + '</div>' + 
 			'<p class="blurb">' + node.blurb + '</p>';
 		  marker.setLabelText(html);
 		});
