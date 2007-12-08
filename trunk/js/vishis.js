@@ -19,6 +19,11 @@ function unload(){
 	GUnload();
 }
 
+function formatDate(d){
+	var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+};
+
 Vishis.BROWSE_MODE = 1;
 Vishis.NEWSESSION_MODE = 2;
 Vishis.VISUALIZING_MODE = 3;
@@ -259,11 +264,6 @@ function TimeSlider(callback){
 		callback(nowStart, nowEnd);
 	};
 	
-	var formatDate = function(d){
-		var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-		return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
-	};
-	
 	var valueToDate = function(val){
 		val = val - (-1 * sliderStart.initPos);
 	
@@ -444,7 +444,7 @@ function Map(){
 		gmap.addControl(new GScaleControl());
 
 		//gmap.setCenter(new GLatLng(41.313038,-72.925224), 15); // Yale zoomed in
-		gmap.setCenter(new GLatLng(36.879621,-98.525391), 4);
+		gmap.setCenter(new GLatLng(36.879621,-98.525391), 4); // U.S. map centered out
 	}
 	
 	this.displayEvent = function(node){
@@ -468,7 +468,11 @@ function Map(){
 		
 		GEvent.addListener(marker, "mouseover", function() {
 		  // show blurb
-		  var html = node.title + '<p class="blurb">' + node.blurb + '</p>';
+		  var html = node.title + 
+			'<div class="date-range">' + 
+				formatDate(node.start_date) + ' - ' + formatDate(node.end_date) + 
+			'</div>' + 
+			'<p class="blurb">' + node.blurb + '</p>';
 		  marker.setLabelText(html);
 		});
 		
