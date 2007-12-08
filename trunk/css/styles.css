@@ -108,6 +108,11 @@ p.blurb{
 	font-size:10pt;
 }
 
+div.date-range{
+	font-size:10pt;
+	font-weight:bold;
+}
+
 
 #sliderlabel1, #sliderlabel2 {
 	color:white;
