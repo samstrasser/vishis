@@ -25,7 +25,7 @@ function TimeSlider(mapElt, callback){
 		}
 		
         this.sliders[num].subscribe("change", function(offset) {
-			//this.change(offset);
+			this.change(offset);
 		});
 
         this.sliders[num].subscribe("slideStart", function() {
@@ -213,7 +213,7 @@ Slider.prototype.adjustOtherSliders = function(){
 	var spanCenter = (startValue + endValue)/2;
 	
 	var spanner = this.getOtherSlider('spanner');
-	spanner.setValue(spanCenter-(spanWidth/2));
+	spanner.setValueSilently(spanCenter-(spanWidth/2));
 	spanner.setWidth(spanWidth);
 }
 
@@ -235,6 +235,11 @@ Slider.prototype.adjustLabelText = function(text){
 	this.labelElt.innerHTML = text;
 }
 
+Slider.prototype.setValueSilently = function(newOffset){
+	//  boolean setValue  ( newOffset , skipAnim , force , silent )
+	this.setValue(newOffset, false, false, true);
+};
+
 Slider.prototype.initConstraints = {
 	// = distance from (0,0) to the start of slider
 	left: -25, 
@@ -251,8 +256,6 @@ Slider.prototype.setConstraints = function(){ alert("You forgot to implement set
  * Callbacks for the Sliders
 */
 Slider.prototype.slideStart = function(){
-	console.log("Slide end:");
-	console.log(this);
 	this.hasLock = this.ts.getLock(this.num);
 	if(this.hasLock){
 		this.ts.showLabels();
@@ -261,8 +264,6 @@ Slider.prototype.slideStart = function(){
 }
 
 Slider.prototype.slideEnd = function(){
-	console.log("Slide end:");
-	console.log(this);
 	if(this.hasLock){
 		this.ts.hideLabels();
 	}
@@ -284,9 +285,7 @@ Slider.prototype.change = function(offset){
  * @class Spanner
  */
 function Spanner(ts, num, name, iLeft, iRight, iTickSize){
-	this.before = "Before";
 	Slider.call(this, ts, num, name, iLeft, iRight, iTickSize);
-	this.after = "After";
 }
 YAHOO.lang.extend(Spanner, Slider);
 
@@ -298,16 +297,19 @@ Spanner.prototype.setWidth = function(newWidth){
 	this.width = newWidth;
 	this.thumbElt.style.width = newWidth+'px';
 	
-	// this.setThumbCenterPoint();
+	// Set the center point since the width has changed
+	this.setThumbCenterPoint();
 };
 
 
 Spanner.prototype.adjustOtherSliders = function(){
+	console.log("Adjusting start and end sliders");
 	var startValue  = this.getValue();
 	var endValue = this.getValue() + this.getWidth();
-	
-	this.getSlider('start').setValue(startValue);
-	this.getSlider('end').setValue(endValue);
+	console.log("" + startValue + ", " + endValue);
+
+	this.getOtherSlider('start').setValueSilently(startValue);
+	this.getOtherSlider('end').setValueSilently(endValue);
 };
 
 // Spanner's do not have labels
