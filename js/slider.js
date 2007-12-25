@@ -12,26 +12,29 @@ function TimeSlider(mapElt, callback){
 	TimeSlider.createSliderInDom(mapElt);
 	
 	this.callback = callback;
+	this.hasLock = false;
 	this.sliders = new Array(3);
 
 	// Create the sliders //
 	for(var name in TimeSlider.sliderNames){
 		var num = TimeSlider.sliderNames[name];
-		var s = new Slider(this, num, name, 0, 400);
+		if(num == 2){// if it's the spanner, create an instance of the the subclassed object 
+			this.sliders[num] = new Spanner(this, num, name, 0, 400);
+		}else{
+			this.sliders[num] = new Slider(this, num, name, 0, 400);
+		}
 		
-        s.subscribe("change", function(offset) {
-			//s.change(offset);
+        this.sliders[num].subscribe("change", function(offset) {
+			//this.change(offset);
 		});
 
-        s.subscribe("slideStart", function() {
-			s.slideStart();
+        this.sliders[num].subscribe("slideStart", function() {
+			this.slideStart();
 		});
 
-        s.subscribe("slideEnd", function() {
-			s.slideEnd();
+        this.sliders[num].subscribe("slideEnd", function() {
+			this.slideEnd();
 		});
-
-		this.sliders[num] = s;
 	}
 	
 	// Override setConstraints for each of the sliders
@@ -47,14 +50,13 @@ function TimeSlider(mapElt, callback){
 			this.initConstraints.right);
 	};
 	
-	var spanner = this.getSlider('spanner').getValue();
+	var spanner = this.getSlider('spanner');
 	spanner.setConstraints = function(){
 		this.setXConstraint(
 			this.getOtherSlider('start').initConstraints.left, // 
 			this.getOtherSlider('end').initConstraints.right - (this.getWidth()/2)
 		);
 	};
-	TimeSlider.overrideSpannerMethods(spanner);
 
 }
 YAHOO.lang.extend(TimeSlider, GControl);
@@ -75,28 +77,6 @@ TimeSlider.createSliderInDom = function(mapElt){
 	mapElt.appendChild(sliderDiv);
 	
 	TimeSlider.sliderWidth = sliderBgDiv.offsetWidth;
-}
-
-TimeSlider.overrideSpannerMethods = function(spanner){
-	spanner.getWidth = function(){
-		return this.width;
-	}
-	
-	spanner.setWidth = function(newWidth){
-		this.width = newWidth;
-		this.thumbElt.style.width = newWidth+'px';
-	};
-	
-	spanner.adjustOtherSliders = function(){
-		var startValue  = this.getValue();
-		var endValue = this.getValue() + this.getWidth();
-		
-		this.getSlider('start').setValue(startValue);
-		this.getSlider('end').setValue(endValue);
-	};
-	
-	spanner.showLabel = function(){ return true; }
-	spanner.hideLabel = function(){ return true; }
 }
 
 TimeSlider.prototype.initialize = function(map){
@@ -122,7 +102,6 @@ TimeSlider.prototype.getSlider = function(name){
 
 // Returns whether or not Slider 'num' got the lock
 TimeSlider.prototype.getLock = function(num){
-	console.log("Getting lock from " + num);
 	if(this.hasLock === false){
 		this.hasLock = num;
 		return true;
@@ -132,7 +111,6 @@ TimeSlider.prototype.getLock = function(num){
 
 // Returns whether or not Slider 'num' has the lock
 TimeSlider.prototype.releaseLock = function(num){
-	console.log("Releasing lock from " + num);
 	var hadLock = this.hasLock;
 	this.hasLock = false;
 
@@ -267,13 +245,13 @@ Slider.prototype.initConstraints = {
 	right: 360 + 25
 };
 
-Slider.prototype.setContraints = function(){ alert("You forgot to implement setConstraints for a slider (" + this.num + ")"); }
+Slider.prototype.setConstraints = function(){ alert("You forgot to implement setConstraints for a slider (" + this.num + ")"); }
 
 /**
  * Callbacks for the Sliders
 */
 Slider.prototype.slideStart = function(){
-	console.log("Slide started:");
+	console.log("Slide end:");
 	console.log(this);
 	this.hasLock = this.ts.getLock(this.num);
 	if(this.hasLock){
@@ -301,3 +279,37 @@ Slider.prototype.change = function(offset){
 		this.ts.doCallback();
 	}
 }
+
+/**
+ * @class Spanner
+ */
+function Spanner(ts, num, name, iLeft, iRight, iTickSize){
+	this.before = "Before";
+	Slider.call(this, ts, num, name, iLeft, iRight, iTickSize);
+	this.after = "After";
+}
+YAHOO.lang.extend(Spanner, Slider);
+
+Spanner.prototype.getWidth = function(){
+	return this.width;
+}
+
+Spanner.prototype.setWidth = function(newWidth){
+	this.width = newWidth;
+	this.thumbElt.style.width = newWidth+'px';
+	
+	// this.setThumbCenterPoint();
+};
+
+
+Spanner.prototype.adjustOtherSliders = function(){
+	var startValue  = this.getValue();
+	var endValue = this.getValue() + this.getWidth();
+	
+	this.getSlider('start').setValue(startValue);
+	this.getSlider('end').setValue(endValue);
+};
+
+// Spanner's do not have labels
+Spanner.prototype.showLabel = function(){}
+Spanner.prototype.hideLabel = function(){}
