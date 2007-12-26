@@ -1,5 +1,12 @@
 function load(){
-	var m = new Map();
+	// Don't show vishis to the public
+	var urlVars = Util.getUrlVariables();
+	if(urlVars['v'] == 'hidden'){
+		Cookie.set('v', 'hidden');
+	}
+	if(Cookie.get('v') == 'hidden'){
+		var m = new Map();
+	}
 }
 
 function unload(){
@@ -29,6 +36,29 @@ Util.include = function(file, headElt) {
 	headElt.appendChild(js);
 
 	return false;
+}
+
+/**
+ * Returns a url with GET variables to an object literal of key => val pairs
+ */
+Util.getUrlVariables = function(url){
+	if(!url){
+		url = document.location;
+	}
+
+	url = decodeURI(url);
+	qmark = url.indexOf('?');
+	endPart = url.substring(qmark+1);
+	parts = endPart.split('&');
+
+	vars = {};
+
+	for(var i=0; i<parts.length; i++){
+		kv = parts[i].split('=');
+		vars[kv[0]] = kv[1];
+	}
+	
+	return vars;
 }
 
 function UNOBTRUSIVE_JAVASCRIPT(){
