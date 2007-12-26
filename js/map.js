@@ -9,16 +9,19 @@
  /**
   * @class Map
   */
-function Map(div){
+function Map(mapDiv){
 	// Create and set up the map first
-	var mapDiv = document.getElementById("map");
+	if(!mapDiv){
+		mapDiv = document.getElementById("map");
+	}
 	this.constructor.superclass.constructor.call(this, mapDiv);
 
 	this.addControl(new GLargeMapControl());
 	this.addControl(new GScaleControl());
-	
-	// this.ts = new TimeSlider();// todo: TS constructor called
-	// this.addControl(this.ts);
+
+	// todo: callback function
+	this.ts = new TimeSlider(mapDiv, (function(s) {return true; }));
+	this.addControl(this.ts);
 
 	//this.setCenter(new GLatLng(41.313038,-72.925224), 15); // Yale zoomed in
 	this.setCenter(new GLatLng(36.879621,-98.525391), 4); // U.S. map centered out
@@ -38,19 +41,15 @@ Map.prototype.addTopic = function(topic){
 	for(var k in topic.children){
 		var child = topic.children[k];
 		
-		// this is ok b/c id is globally unique
+		// this is ok b/c child.id is globally unique
 		this.currEvents[child.id] = child;
 		
-		try{
-			this.addOverlay(child);
-		}catch(e){
-			g3 = e;
-			g2 = child;
-		}
+		this.addOverlay(child);
+		child.hide();
 	}
 	
 	// display this (and all other) topics
-	this.displayEvents(new Date('1/1/1900'), new Date());
+	this.displayEvents();
 	
 }
 
@@ -70,15 +69,25 @@ Map.prototype.removeTopic = function(topic){
 }
 
 Map.prototype.clearTopics = function(){
+	for(var id in this.currEvents){
+		this.currEvents[id].hide();
+		delete this.currEvents[id];
+	}
+
 	delete this.currTopics;
 	
-	// todo: make sure the Events are hidden or deleted
-	
 	this.currTopics = new Array();
+	this.currEvents = new Array();
 }
 
 Map.prototype.displayEvents = function(start, end){
-	// todo: if start or end is undef, then default to the start and end of all currTopics
+	if(!start){
+		// todo: set start as the min of the children of topic
+		start = new Date('1/1/1001');
+	}
+	if(!end){
+		end = new Date();
+	}
 
 	var nowStart = start.getTime();
 	var nowEnd = end.getTime();
@@ -120,9 +129,8 @@ function Event(node){
 	this.children = new Array();
 	this.domElt;
 	this.titleElt;
-	this.node = node;
 
-	this.latlng = new GLatLng(node.lat,  node.longitude);
+	var latlng = new GLatLng(node.lat,  node.longitude);
 	
 	var icon = new GIcon();
 	icon.image = 'img/event.icon.png';
@@ -130,7 +138,7 @@ function Event(node){
 	icon.iconAnchor = new GPoint(5, 5);
 	icon.infoWindowAnchor = new GPoint(5, 5);
 
-	this.opts = { 
+	var opts = { 
 	  "icon": icon,
 	  "clickable": true,
 	  "labelText": node.title,
@@ -138,9 +146,7 @@ function Event(node){
 	  "labelClass": "marker"
 	};
 	
-	// todo: make sure event starts as hidden
-	
-	LabeledMarker.call(this, this.latlng, this.opts);
+	LabeledMarker.call(this, latlng, opts);
 	
 	// todo: add mouseover, mouseout actions
 	//GEvent.addListener(titleElt, "mouseover", showBlurb());
