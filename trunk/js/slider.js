@@ -11,8 +11,8 @@ function TimeSlider(mapElt, callback){
 
 	TimeSlider.createSliderInDom(mapElt);
 	
-	this.callback = callback;
 	this.hasLock = false;
+	this.callback = callback;
 	this.sliders = new Array(3);
 
 	// Create the sliders //
@@ -40,22 +40,25 @@ function TimeSlider(mapElt, callback){
 	// Override setConstraints for each of the sliders
 	this.getSlider('start').setConstraints = function(){
 		var end = this.getOtherSlider('end');
-		this.setXConstraint(this.initConstraints.left,
-			end.getValue() + end.getWidth());
+		var left = this.initConstraints.left;
+		var right = end.getValue() + end.getWidth();
+		
+		this.thumb.setXConstraint(left, right);
 	};
-	
+		
 	this.getSlider('end').setConstraints = function(){
 		var start = this.getOtherSlider('start');
-		this.setXConstraint(start.getValue() + start.getWidth(),
-			this.initConstraints.right);
+		var left = -1 * (start.getValue() - start.getWidth());
+		var right = this.initConstraints.right;
+		
+		this.thumb.setXConstraint(left, right);
 	};
-	
-	var spanner = this.getSlider('spanner');
-	spanner.setConstraints = function(){
-		this.setXConstraint(
-			this.getOtherSlider('start').initConstraints.left, // 
-			this.getOtherSlider('end').initConstraints.right - (this.getWidth()/2)
-		);
+
+	this.getSlider('spanner').setConstraints = function(){
+		var left = this.getOtherSlider('start').initConstraints.left;
+		var right = this.getOtherSlider('end').initConstraints.right - this.getWidth();
+		
+		this.thumb.setXConstraint(left, right);
 	};
 
 }
@@ -189,14 +192,17 @@ function Slider(ts, num, name, iLeft, iRight, iTickSize){
 	YAHOO.widget.Slider.call(this, bgEltId, bgEltId, 
             new YAHOO.widget.SliderThumb(thumbEltId, bgEltId, 
                                iLeft, iRight, 0, 0, iTickSize), "horiz");
+	// Slider should not move when the bg is clicked
+	this.backgroundEnabled = false;
 							   
 	this.num = num;
 	this.ts = ts;
+	this.width = Slider.width;
 	
 	this.hasLock = false;
 }
 YAHOO.lang.extend(Slider, YAHOO.widget.Slider);
-
+Slider.width = 5;
 
 Slider.prototype.getOtherSlider = function(name){	
 	return this.ts.getSlider(name);
@@ -238,7 +244,32 @@ Slider.prototype.adjustLabelText = function(text){
 Slider.prototype.setValueSilently = function(newOffset){
 	//  boolean setValue  ( newOffset , skipAnim , force , silent )
 	this.setValue(newOffset, false, false, true);
-};
+}
+
+Slider.prototype.getWidth = function(){
+	return this.width;
+}
+
+Slider.prototype.getTargetCoord = function(iPageX, iPageY) {
+	var x = iPageX - this.deltaX;
+	var y = iPageY - this.deltaY;
+	
+	if (this.constrainX) {
+		if (x < this.minX) { x = this.minX; }
+		if (x > this.maxX) { x = this.maxX; }
+	}
+
+	if (this.constrainY) {
+		if (y < this.minY) { y = this.minY; }
+		if (y > this.maxY) { y = this.maxY; }
+	}
+
+	x = this.getTick(x, this.xTicks);
+	y = this.getTick(y, this.yTicks);
+
+	return {x:x, y:y};
+}
+
 
 Slider.prototype.initConstraints = {
 	// = distance from (0,0) to the start of slider
@@ -259,7 +290,7 @@ Slider.prototype.slideStart = function(){
 	this.hasLock = this.ts.getLock(this.num);
 	if(this.hasLock){
 		this.ts.showLabels();
-		//this.setConstraints();
+		this.setConstraints();
 	}
 }
 
@@ -286,12 +317,11 @@ Slider.prototype.change = function(offset){
  */
 function Spanner(ts, num, name, iLeft, iRight, iTickSize){
 	Slider.call(this, ts, num, name, iLeft, iRight, iTickSize);
+	
+	// The Spanner is the only one that should react to bg clicks
+	this.backgroundEnabled = true;
 }
 YAHOO.lang.extend(Spanner, Slider);
-
-Spanner.prototype.getWidth = function(){
-	return this.width;
-}
 
 Spanner.prototype.setWidth = function(newWidth){
 	this.width = newWidth;
@@ -303,10 +333,8 @@ Spanner.prototype.setWidth = function(newWidth){
 
 
 Spanner.prototype.adjustOtherSliders = function(){
-	console.log("Adjusting start and end sliders");
 	var startValue  = this.getValue();
 	var endValue = this.getValue() + this.getWidth();
-	console.log("" + startValue + ", " + endValue);
 
 	this.getOtherSlider('start').setValueSilently(startValue);
 	this.getOtherSlider('end').setValueSilently(endValue);
