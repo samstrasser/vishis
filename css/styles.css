@@ -69,7 +69,7 @@ body.nosidebar #nav-panel { display: none; }
 	position: relative;
 	background: url(../img/slider.bg.png) 0 0 no-repeat;
 	height: 45px;
-	width: 400px; 
+	width: 275px; 
 }
 
 #slider-thumb-start, #slider-thumb-end {
