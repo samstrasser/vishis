@@ -1,56 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>VisualizeHistory.com</title>
+<head>
+	<title>VisualizeHistory.com</title>
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
-	
-	<script type="text/javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAbNpbJQzOmQ3LpYb48UbbNxSZT5Tpn1taJFQH4Y5Wf2aA8FIGoRR00-ePrq_DDT5-FUNm7KoXKkB1lQ"></script>
 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/element/element-beta-min.js"></script>
+	<!-- Yahoo! User Interface core -->
+	<script src="http://yui.yahooapis.com/2.3.1/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
+	<script src="http://yui.yahooapis.com/2.3.1/build/element/element-beta-min.js" type="text/javascript"></script>
 
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/dragdrop/dragdrop-min.js"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.3.1/build/slider/slider-min.js" ></script>
-	  
-	<script src="js/util.js" type="text/javascript"></script>
-	<script src="js/server.js" type="text/javascript"></script>
+	<!-- Specific Yahoo! API requirements -->
+	<script src="http://yui.yahooapis.com/2.3.1/build/dragdrop/dragdrop-min.js" type="text/javascript"></script>
+	<script src="http://yui.yahooapis.com/2.3.1/build/slider/slider-min.js" type="text/javascript"></script>
+
+	<!-- Google Maps API -->
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAbNpbJQzOmQ3LpYb48UbbNxSZT5Tpn1taJFQH4Y5Wf2aA8FIGoRR00-ePrq_DDT5-FUNm7KoXKkB1lQ" type="text/javascript"></script>
+
+	<!-- Open sourced LabeledMarker for Google Maps -->
 	<script src="js/labeledmarker.js" type="text/javascript"></script>
+
+	<!-- vishis-specific scripts -->
+	<script src="js/map.js" type="text/javascript"></script>
+	<script src="js/slider.js" type="text/javascript"></script>
 	<script src="js/vishis.js" type="text/javascript"></script>
-	
-	
-	<script src="js/time-slider.js" type="text/javascript"></script>
-  </head>
-  <body class="sidebar-right" onload="load()" onunload="unload()">
+
+</head>
+<body class="sidebar-right" onload="load()" onunload="unload()">
   <div id="header">
-	<h1>VisualizeHistory.com</h1>
+	<h1>VisualizeHistory.com - JavaScript tester</h1>
   </div>
   <div id="content">
 	<div id="viewing-panel">
 		<div id="map"></div>
-		<div id="timeslider">
-			<div id="sliderbg">
-				<div id="sliderthumb1">
-					<div id="sliderlabel1"></div>
-					<img src="img/slider.thumb.left.png" alt="" />
-				</div>
-				<div id="sliderthumb2">
-					<div id="sliderlabel2"></div>
-					<img src="img/slider.thumb.right.png" alt="" />
-				</div>
-				<div id="spanner"></div>
-			</div>
-		</div>
 	</div>
 	<div id="nav-panel">
 		<h3>Popular Examples</h3>
-		<ul>
-			<li><a href="javascript:vh.switchTopicById(1);">Civil War Battles</a></li>
-			<li><a href="javascript:vh.switchTopicById(29);">History of Yale University</a></li>
-		</ul>
-		<h3>Your Recent Topics</h3>
-		<h3><a href="/tour.html">Take a Tour</a></h3>
 	</div>
   </div>
-  </body>
+</body>
 </html>
