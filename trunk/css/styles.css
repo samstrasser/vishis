@@ -72,24 +72,17 @@ body.nosidebar #nav-panel { display: none; }
 	width: 400px; 
 }
 
-#sliderthumb1, #sliderthumb2 {
+#slider-thumb-start, #slider-thumb-end {
 	position: absolute;
 	z-index: 40;
 }
-#sliderthumb1{
-	cursor: e-resize;
-}
-#sliderthumb2{
-	cursor: w-resize;
-}
 
-#spanner {
+#slider-thumb-spanner {
 	position: absolute;
 	background-image: url(../img/slider.spanner.png);
 	height: 40px;
 	width:10px;
 	z-index: 30;
-	cursor:move;
 }
 
 /* Event Display */
@@ -114,7 +107,7 @@ div.date-range{
 }
 
 
-#sliderlabel1, #sliderlabel2 {
+#slider-label-start, #slider-label-end{
 	color:white;
 	background-color:#aaa;
 	padding:1px;
@@ -126,10 +119,10 @@ div.date-range{
 	border:1px solid Black;
 }
 
-#sliderlabel1{
+#slider-label-start{
 	right:0;
 }
 
-#sliderlabel2{
+#slider-label-end{
 	left:0;
 }
