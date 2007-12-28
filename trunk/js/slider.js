@@ -14,14 +14,21 @@ function TimeSlider(mapElt, callback){
 	this.hasLock = false;
 	this.callback = callback;
 	this.sliders = new Array(3);
+	
+	var startInitPos = TimeSlider.bgOffsetStart;
+	var spannerInitPos = startInitPos + Slider.width;
+	var endInitPos = spannerInitPos + Spanner.minWidth;
+
 
 	// Create the sliders //
 	for(var name in TimeSlider.sliderNames){
 		var num = TimeSlider.sliderNames[name];
-		if(num == 2){// if it's the spanner, create an instance of the the subclassed object 
-			this.sliders[num] = new Spanner(this, num, name, 0, 400);
+		if(name == 'spanner'){// if it's the spanner, create an instance of the the subclassed object 
+			this.sliders[num] = 
+				new Spanner(this, num, name, -TimeSlider.bgOffsetStart, TimeSlider.bgWidth);
 		}else{
-			this.sliders[num] = new Slider(this, num, name, 0, 400);
+			this.sliders[num] = new 
+				Slider(this, num, name, -TimeSlider.bgOffsetStart, TimeSlider.bgWidth);
 		}
 		
         this.sliders[num].subscribe("change", function(offset) {
@@ -40,29 +47,40 @@ function TimeSlider(mapElt, callback){
 	// Override setConstraints for each of the sliders
 	this.getSlider('start').setConstraints = function(){
 		var end = this.getOtherSlider('end');
+		
 		var left = this.initConstraints.left;
-		var right = end.getValue() + end.getWidth();
+		var right = end.getValue() - this.getWidth();
 		
 		this.thumb.setXConstraint(left, right);
 	};
+	this.getSlider('start').setValueSilently(startInitPos);
 		
 	this.getSlider('end').setConstraints = function(){
 		var start = this.getOtherSlider('start');
-		var left = -1 * (start.getValue() - start.getWidth());
-		var right = this.initConstraints.right;
+		
+		var left = -1 * (start.getValue() + start.getWidth());
+		var right = this.initConstraints.right - this.getWidth();
 		
 		this.thumb.setXConstraint(left, right);
 	};
-
+	this.getSlider('end').setValueSilently(endInitPos);
+	
 	this.getSlider('spanner').setConstraints = function(){
+		var end = this.getOtherSlider('end');
+		
 		var left = this.getOtherSlider('start').initConstraints.left;
-		var right = this.getOtherSlider('end').initConstraints.right - this.getWidth();
+		var right = end.initConstraints.right - end.getWidth() - this.getWidth();
 		
 		this.thumb.setXConstraint(left, right);
 	};
+	this.getSlider('spanner').setValueSilently(spannerInitPos);
 
 }
 YAHOO.lang.extend(TimeSlider, GControl);
+TimeSlider.bgOffsetStart = 5;
+TimeSlider.bgOffsetEnd = 244;
+TimeSlider.bgArrowStart = 250;
+TimeSlider.bgWidth = 275;
 TimeSlider.sliderId = 'timeslider';
 TimeSlider.sliderBgId = 'sliderbg';
 TimeSlider.sliderNames = {
@@ -125,12 +143,21 @@ TimeSlider.prototype.calculateShift = function(start, end){
 	var max = end.getTime();
 	
 	this.shift = start.getTime();
-	this.scale = (max - shift) / TimeSlider.sliderWidth;
+	this.scale = (max - shift) / TimeSlider.bgWidth;
 }
 
 TimeSlider.prototype.valueToDate = function(val){
-	// pass
-	return new Date('12/31/1985');
+	var shiftToZero = val - TimeSlider.bgOffsetStart
+	var time = (shiftToZero * this.scale) + this.shift;
+
+	return new Date(time);
+}
+
+TimeSlider.prototype.clearAllConstraints = function(){
+	for(var i in this.sliders){
+		// This isn't a good way to do this since we have to get into the API
+		this.sliders[i].thumb.constrainX = false;
+	}
 }
 
 TimeSlider.prototype.hideLabels = function(){
@@ -194,6 +221,9 @@ function Slider(ts, num, name, iLeft, iRight, iTickSize){
                                iLeft, iRight, 0, 0, iTickSize), "horiz");
 	// Slider should not move when the bg is clicked
 	this.backgroundEnabled = false;
+	
+	// It would be nice to animate but the sliders arne't updated fast enough
+	this.animate = false;
 							   
 	this.num = num;
 	this.ts = ts;
@@ -219,8 +249,8 @@ Slider.prototype.adjustOtherSliders = function(){
 	var spanCenter = (startValue + endValue)/2;
 	
 	var spanner = this.getOtherSlider('spanner');
-	spanner.setValueSilently(spanCenter-(spanWidth/2));
 	spanner.setWidth(spanWidth);
+	spanner.setValueSilently(spanCenter-(spanWidth/2));
 }
 
 Slider.prototype.showLabel = function(){
@@ -243,42 +273,21 @@ Slider.prototype.adjustLabelText = function(text){
 
 Slider.prototype.setValueSilently = function(newOffset){
 	//  boolean setValue  ( newOffset , skipAnim , force , silent )
-	this.setValue(newOffset, false, false, true);
+	this.setValue(newOffset, true, false, true);
 }
 
 Slider.prototype.getWidth = function(){
 	return this.width;
 }
 
-Slider.prototype.getTargetCoord = function(iPageX, iPageY) {
-	var x = iPageX - this.deltaX;
-	var y = iPageY - this.deltaY;
-	
-	if (this.constrainX) {
-		if (x < this.minX) { x = this.minX; }
-		if (x > this.maxX) { x = this.maxX; }
-	}
-
-	if (this.constrainY) {
-		if (y < this.minY) { y = this.minY; }
-		if (y > this.maxY) { y = this.maxY; }
-	}
-
-	x = this.getTick(x, this.xTicks);
-	y = this.getTick(y, this.yTicks);
-
-	return {x:x, y:y};
-}
-
-
 Slider.prototype.initConstraints = {
 	// = distance from (0,0) to the start of slider
-	left: -25, 
+	left: -TimeSlider.bgOffsetStart, 
 	
 	// = distance from (0,0) to the end of the slider
 	//    = distance from (0,0) to the start of the slider
 	//    + distance from start of slider to end of slider
-	right: 360 + 25
+	right: TimeSlider.bgOffsetEnd
 };
 
 Slider.prototype.setConstraints = function(){ alert("You forgot to implement setConstraints for a slider (" + this.num + ")"); }
@@ -290,6 +299,9 @@ Slider.prototype.slideStart = function(){
 	this.hasLock = this.ts.getLock(this.num);
 	if(this.hasLock){
 		this.ts.showLabels();
+		
+		// Clear all the constraints and impose the constraints manually
+		this.ts.clearAllConstraints();
 		this.setConstraints();
 	}
 }
@@ -322,6 +334,7 @@ function Spanner(ts, num, name, iLeft, iRight, iTickSize){
 	this.backgroundEnabled = true;
 }
 YAHOO.lang.extend(Spanner, Slider);
+Spanner.minWidth = 10;
 
 Spanner.prototype.setWidth = function(newWidth){
 	this.width = newWidth;
