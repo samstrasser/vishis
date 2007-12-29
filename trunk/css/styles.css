@@ -77,12 +77,21 @@ body.nosidebar #nav-panel { display: none; }
 	z-index: 40;
 }
 
+#slider-thumb-start{
+	cursor: e-resize;
+}
+
+#slider-thumb-end{
+	cursor: w-resize;
+}
+
 #slider-thumb-spanner {
 	position: absolute;
 	background-image: url(../img/slider.spanner.png);
 	height: 40px;
 	width:10px;
 	z-index: 30;
+	cursor: move;
 }
 
 /* Event Display */
