@@ -1,0 +1,7 @@
+#summary Sites that are searched
+
+= Introduction =
+Visualize History is not in the business of indexing and storing the world's historical information.  Rather, it uses the many existing sites and their public interfaces to find historical data.
+
+= Site List =
+ * TO DO
