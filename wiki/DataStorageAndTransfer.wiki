@@ -1,0 +1,38 @@
+#summary Data Storage and Transfer
+
+= SQL =
+*nodes*
+uid
+title
+location
+lat
+lng
+start
+end
+blurb
+type
+color
+
+*node_relation*
+fromUid
+toUid
+type
+
+*node_regions*
+nodeId
+lat
+lng
+
+= JSON =
+topic:{
+ (data fields),
+ color,
+ source,
+ children: {
+  0: {(data fields),
+      color},
+  1: {(data fields),
+      color},
+  }
+ }
+}
