@@ -1,0 +1,12 @@
+#summary Examples of good specific instances of the visualization of historical data.
+
+= Introduction =
+The problem of visualizing historical data has been solved in several very specific cases, and only with the help of those specific examples can an overarching solution be found.
+
+
+= Examples =
+ * Gapminder
+ [http://www.gapminder.org/world/ Gapminder site]
+ [http://blog.visualizehistory.com/?p=18 My post about the creator of Gapminder]
+
+ * [http://www.smashingmagazine.com/2007/08/02/data-visualization-modern-approaches/ General overview of visualization techniques on the web]
