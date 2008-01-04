@@ -30,6 +30,7 @@ lng
 }}}
 
 = JSON =
+{{{
 topic:{
  (data fields),
  color,
@@ -42,3 +43,4 @@ topic:{
   }
  }
 }
+}}}
