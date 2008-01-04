@@ -39,7 +39,7 @@ Util.include = function(file, headElt) {
 }
 
 /**
- * Returns a url with GET variables to an object literal of key => val pairs
+ * Returns an object literal of key => value pairs from a url with variables at the end
  */
 Util.getUrlVariables = function(url){
 	if(!url){
@@ -47,11 +47,11 @@ Util.getUrlVariables = function(url){
 	}
 
 	url = decodeURI(url);
-	qmark = url.indexOf('?');
-	endPart = url.substring(qmark+1);
-	parts = endPart.split('&');
+	var qmark = url.indexOf('?');
+	var endPart = url.substring(qmark+1);
+	var parts = endPart.split('&');
 
-	vars = {};
+	var vars = {};
 
 	for(var i=0; i<parts.length; i++){
 		kv = parts[i].split('=');
