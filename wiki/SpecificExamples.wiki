@@ -5,8 +5,7 @@ The problem of visualizing historical data has been solved in several very speci
 
 
 = Examples =
- * Gapminder
-  * [http://www.gapminder.org/world/ Gapminder site]
+ * [http://www.gapminder.org/world/ Gapminder site]
   * [http://blog.visualizehistory.com/?p=18 My post about the creator of Gapminder]
  * [http://www.smashingmagazine.com/2007/08/02/data-visualization-modern-approaches/ General overview of visualization techniques on the web]
  * [http://www.cfr.org/publication/by_type/interactive.html Crisis guides from the Council on Foreign Relations] (Thanks to Maggie for these)
