@@ -2,6 +2,7 @@
 
 = SQL =
 *nodes*
+{{{
 uid
 title
 location
@@ -12,16 +13,21 @@ end
 blurb
 type
 color
+}}}
 
 *node_relation*
+{{{
 fromUid
 toUid
 type
+}}}
 
 *node_regions*
+{{{
 nodeId
 lat
 lng
+}}}
 
 = JSON =
 topic:{
