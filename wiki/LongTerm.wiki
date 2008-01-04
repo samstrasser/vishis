@@ -5,3 +5,4 @@
  * Add Tags
  * Handle non-supported browsers gracefully 
  * Add Users
+ * [http://www.gearthblog.com/blog/archives/2007/06/introducing_google_e.html Google Earth Outreach]
