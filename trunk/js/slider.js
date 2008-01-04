@@ -49,7 +49,7 @@ function TimeSlider(mapElt, callback){
 		var end = this.getOtherSlider('end');
 		
 		var left = this.initConstraints.left;
-		var right = end.getValue() - this.getWidth();
+		var right = end.getValue() - this.getWidth() - Spanner.minWidth;
 		
 		this.thumb.setXConstraint(left, right);
 	};
@@ -58,7 +58,7 @@ function TimeSlider(mapElt, callback){
 	this.getSlider('end').setConstraints = function(){
 		var start = this.getOtherSlider('start');
 		
-		var left = -1 * (start.getValue() + start.getWidth());
+		var left = -1 * (start.getValue() + start.getWidth() + Spanner.minWidth);
 		var right = this.initConstraints.right - this.getWidth();
 		
 		this.thumb.setXConstraint(left, right);
@@ -74,6 +74,7 @@ function TimeSlider(mapElt, callback){
 		this.thumb.setXConstraint(left, right);
 	};
 	this.getSlider('spanner').setValueSilently(spannerInitPos);
+	this.getSlider('spanner').setWidth(endInitPos - startInitPos);
 
 }
 YAHOO.lang.extend(TimeSlider, GControl);
