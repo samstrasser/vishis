@@ -25,23 +25,39 @@ function Nav(navElt){
 	}; // todo: search box
 }
  
-function TopicList(id, type){
+function TopicList(id, title){
 	this.topics = new Array();
 
-	// Initialize the dom elt
+	// Initialize the dom elements
+	var titleElt = document.createElement('h2');
+	titleElt.appendChild(document.createTextNode(title));
+	
+	this.listElt = document.createElement('ul');
+	this.listElt.setAttribute('class', 'topic-list');
+	
 	this.elt = document.createElement('div');
 	this.elt.setAttribute('id', id);
 	this.elt.setAttribute('class', 'topic-list');
+	this.elt.appendChild(titleElt);
+	this.elt.appendChild(this.listElt);
 }
 
 TopicList.prototype.maxLength = 15;
 
-TopicList.prototype.attachTo = function(id){
+// Attach the list to a parent element in the dom
+// By id
+TopicList.prototype.attachToId = function(id){
 	this.attachToElt(document.getElementById(id));
 }
 
+// Attach the list to a parent element in the dom
+// By element
 TopicList.prototype.attachToElt = function(elt){
 	elt.appendChild(this.elt);
+}
+
+TopicList.prototype.getContainerElt = function(){
+	return this.elt;
 }
 
 TopicList.prototype.add = function(topic){
@@ -53,7 +69,7 @@ TopicList.prototype.add = function(topic){
 	this.topics[topic.id] = topic;
 
 	// Add the topic in the dom
-	this.elt.appendChild(topic.getRootElement());
+	this.listElt.appendChild(topic.getRootElement());
 }
 
 TopicList.prototype.getTopic = function(id){
@@ -72,12 +88,13 @@ TopicList.prototype.getLength = function(){
 	return this.getAllTopics.length;
 }
 
-TopicList.prototype.remove = function(topicId){
-	// todo
-	// first detach topic from the parent element
+TopicList.prototype.remove = function(topic){
+	var removed = this.listElt.removeChild(topic.getRootElement());	
 	
-	// todo
 	// then delete it from the list of topics
+	delete this.topics[topic.getId()];
+	
+	return removed;
 }
 
 // clears the list of all toipics
@@ -105,7 +122,7 @@ function Topic(node, displayType){
 		this[k] = node[k];
 	}
 
-	this.elt = document.createElement('div');	
+	this.elt = document.createElement('li');	
 	
 	if(!displayType){
 		displayType = 'current';
