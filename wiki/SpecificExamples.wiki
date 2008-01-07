@@ -11,3 +11,4 @@ The problem of visualizing historical data has been solved in several very speci
  * [http://www.cfr.org/publication/by_type/interactive.html Crisis guides from the Council on Foreign Relations] (Thanks to Maggie for these)
   * [http://www.cfr.org/publication/13129/ Darfur] 
   * [http://www.cfr.org/publication/13018/timeline.html U.S. - China relations]
+ * [http://www.americanpresidentsseries.com/index2.htm United States Presidents]
