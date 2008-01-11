@@ -164,10 +164,14 @@ Topic.prototype.getRootElement = function(){
 	return this.elt;
 }
 
+// Hides all the Topic's children on the map
 Topic.prototype.hide = function(){
+	// pass
 }
 
+// Shows all the Topic's children on the map
 Topic.prototype.show = function(){
+	// pass
 }
 
 Topic.prototype.setDisplayType = function(type){
