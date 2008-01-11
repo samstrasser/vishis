@@ -29,13 +29,12 @@ class SearchResult{
 		return count($this->topics);
 	}
 
-	protected function asJson(){		
-		return $this->json->encode($data);
-	}
-	
-	protected function asHtml(){
-		// pass
-		return "";
+	public function toJson(){
+		$results = array();
+		foreach($this->topics as $t){
+			$results[] = $t->toJson();
+		}
+		return $this->json->encode($results);
 	}
 }
 
@@ -59,6 +58,14 @@ class Node{
 			return -1;
 		}
 	}
+	
+	public function toJson(){
+		$pieces = array();
+		foreach($this->fields as $field => $val){
+			$pieces[$field] = $val;
+		}
+		return $pieces;
+	}
 }
 
 class Topic extends Node{
@@ -78,10 +85,27 @@ class Topic extends Node{
 			$this->addChild($child);
 		}
 	}
+	
+	public function toJson(){
+		// do the parent stuff,
+		$pieces = parent::toJson();
+		
+		// then save all the children
+		$pieces['children'] = array();
+		foreach($this->children as $child){
+			$pieces['children'][] = $child->toJson();
+		}
+		
+		return $pieces;
+	}
 }
 
 class Blurb{
 	private $pieces = array();
+	
+	public function toJson(){
+	
+	}
 }
 
 // Useful for converting between all the formats 
@@ -90,15 +114,16 @@ class Date{
 	private $pieces = array();
 	
 	public function __construct($dateString, $format='mysql'){
-		$this->dateString = $dateString;
+		if($format == 'mysql'){
+			// MySql dates in yyyy-mm-dd hh:mm:ss format
+			
+		}
 	}
 	
-	public function asJavascriptString(){
-	
-	}
-	
-	public function asPhpTimestamp(){
-	
+	public function toJson(){
+		// There is no JSON representation of a Date object, 
+		// so  the Date is passed as a string that can be given to the Date constructor
+		return '';
 	}
 }
 ?>

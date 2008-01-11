@@ -58,8 +58,9 @@ class VishisDatabase implements TrustedSite{
 		}
 		
 		// if there's no exact message, check for similar matches
+		// todo: %like%
 
-		// if there's still no match, return an empty result
+		// if there's still no match, return a null result
 		return $topic;
 	}
 	
@@ -74,7 +75,7 @@ class VishisDatabase implements TrustedSite{
 		
 		$r = mysql_query($q, $this->conn);
 		while($row = mysql_fetch_assoc($r)){
-			array_push($children, new Node($row));
+			$children[] = new Node($row);
 		}
 		return $children;
 	}
