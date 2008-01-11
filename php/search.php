@@ -4,6 +4,9 @@
  * Forward-facing API that searches the trusted sites for a given topic
 */
 define('USAGE', 'todo: Usage: ...');
+require_once('SearchResults.php');
+require_once('TrustedSite.php');
+require_once('VishisDatabase.php');
 
 if(!$_REQUEST['query']){
 	// todo: real language
@@ -12,20 +15,10 @@ if(!$_REQUEST['query']){
 
 $query = $_REQUEST['query'];
 
-$sites = $json->decode($_REQUEST['sites']);
+// For now, the only supported TrustedSite is the Vishis Database
+$site = new VishisDatabase();
+$result = $site->search($query);
 
-foreach($sites as $site){
-	// include the appropriate class
-	
-	// initialize this site's object
-	
-	// search this site
-	
-	// if search returned results
-		// package the results into json
-		// output the result
-		// end script
-}
-
+print($result->asJson());
 
 ?>

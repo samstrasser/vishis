@@ -2,7 +2,7 @@
 // todo: check the scope of this
 require_once('dbvars.php');
 
-class VishisDatabase extends TrustedSite{
+class VishisDatabase implements TrustedSite{
 	public function __construct(){
 		$this->conn = false;
 		$this->db = false;
@@ -15,6 +15,7 @@ class VishisDatabase extends TrustedSite{
 	}
 
 	public function search($query){
+		$result = new SearchResult();
 		// check if a topic has the exact title
 		
 		// if there's no exact message, check for similar matches
