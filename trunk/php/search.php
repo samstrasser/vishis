@@ -3,9 +3,12 @@
  * search.php
  * Forward-facing API that searches the trusted sites for a given topic
 */
+header('Content-type: text/plain');
 define('USAGE', 'todo: Usage: ...');
-require_once('SearchResults.php');
-require_once('TrustedSite.php');
+
+require_once('SearchLayer.php');
+
+// The specific sites' classes
 require_once('VishisDatabase.php');
 
 if(!$_REQUEST['query']){
@@ -19,6 +22,7 @@ $query = $_REQUEST['query'];
 $site = new VishisDatabase();
 $result = $site->search($query);
 
-print($result->asJson());
+var_dump($result);
+//print($result->asJson());
 
 ?>
