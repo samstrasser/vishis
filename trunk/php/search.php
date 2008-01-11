@@ -22,7 +22,7 @@ $query = $_REQUEST['query'];
 $site = new VishisDatabase();
 $result = $site->search($query);
 
-var_dump($result);
-//print($result->asJson());
+//var_dump($result);
+print($result->toJson());
 
 ?>
