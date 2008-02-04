@@ -1,18 +1,19 @@
 #summary The rough schedule I'll follow during the Spring Semester
 #labels Featured
 
-= Tentative Schedule =
+= Schedule for Spring Semester =
 *February* (4 weeks)
  * slider ui
  * back-to-front data
  * map without roads
  * research and design kml piece
+ * search ui in the navigation panel
 *March* (2 weeks)
  * event ui
- * research, design and implement family tree piece
- * research, design and implement timelines piece
  * add blurbs to data storage
 *April* (5 weeks)
+ * research, design and implement family tree piece
+ * research, design and implement timelines piece
  * design and implement arrows and lines
  * design and implement regions
  * make example cases, demos, and explanations
