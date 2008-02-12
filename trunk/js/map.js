@@ -129,8 +129,12 @@ function Event(node){
 	this.children = new Array();
 	this.domElt;
 	this.titleElt;
+	
+	for(var k in node){
+		this[k] = node[k];
+	}
 
-	var latlng = new GLatLng(node.lat,  node.longitude);
+	var latlng = new GLatLng(this.lat, this.lng);
 	
 	var icon = new GIcon();
 	icon.image = 'img/event.icon.png';
@@ -141,7 +145,7 @@ function Event(node){
 	var opts = { 
 	  "icon": icon,
 	  "clickable": true,
-	  "labelText": node.title,
+	  "labelText": this.title,
 	  "labelOffset": new GSize(10, -11),
 	  "labelClass": "marker"
 	};
