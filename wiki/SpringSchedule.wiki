@@ -3,12 +3,12 @@
 
 = Schedule for Spring Semester =
 *February* (4 weeks)
- * slider ui
+ * research, design and implement kml piece
  * back-to-front data
  * map without roads
- * research and design kml piece
- * search ui in the navigation panel
 *March* (2 weeks)
+ * slider ui
+ * search ui in the navigation panel
  * event ui
  * add blurbs to data storage
 *April* (5 weeks)
