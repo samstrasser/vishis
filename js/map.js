@@ -26,10 +26,15 @@ function Map(mapDiv){
 	
 	this.currTopics = new Array();
 	this.currEvents = new Array();
+	this.currTimeSpan = {
+		start: new Date(),			 // the latest supported date 		//todo: add future
+		end:   new Date('1/1/1001') // the earliest supported date	// todo: add past
+	};
 };
 YAHOO.lang.extend(Map, GMap2);
 
 Map.prototype.addTopic = function(topic){
+	console.log(topic);
 	if(this.isACurrTopic(topic)){
 		return true;
 	}
@@ -45,10 +50,19 @@ Map.prototype.addTopic = function(topic){
 		this.addOverlay(child);
 		child.hide();
 	}
+
+	// Readjust the span of the currently viewable Events
+	if(topic.start.getTime() < this.currTimeSpan.start.getTime()){
+		this.currTimeSpan.start = topic.start;
+	}
+	if(topic.end.getTime() > this.currTimeSpan.end.getTime()){
+		this.currTimeSpan.end = topic.end;
+	}
 	
 	// readjust the TimeSlider to reflect the new time span
 	// todo: un hardcode dates
-	this.ts.calculateShift(new Date('01/01/1789'), new Date());
+	console.log(this.currTimeSpan);
+	this.ts.calculateShift(this.currTimeSpan.start, this.currTimeSpan.end);
 	
 	// display this (and all other) topics
 	// call the TimeSlider to simulate a change
@@ -85,11 +99,10 @@ Map.prototype.clearTopics = function(){
 
 Map.prototype.displayEvents = function(start, end){
 	if(!start){
-		// todo: set start as the min of the children of topic
-		start = new Date('1/1/1001');
+		start = currTimeSpan.start;
 	}
 	if(!end){
-		end = new Date();
+		end = currTimeSpan.end;
 	}
 
 	var nowStart = start.getTime();
