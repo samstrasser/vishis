@@ -3,7 +3,7 @@
 
 = Schedule for Spring Semester =
 *February* (4 weeks)
- * back-to-front data i.e. implement decodeAndCallback(json, cb)
+ * ~~back-to-front data i.e. implement decodeAndCallback(json, cb)~~
  * research, design and implement kml piece
  * map without roads
 *March* (2 weeks)
