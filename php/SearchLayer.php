@@ -45,7 +45,7 @@ class Node{
 			if($key == 'start' || $key == 'end'){
 				// convert dates to a string that JavaScript will understand
 				// mm/dd/yyyy hh:mm:ss
-				$this->fields[$key] = date('m/d/Y H:i:s', strtotime($value));
+				$this->fields[$key] = HistoricalDate::sqlToJs($value);
 			}else{
 				$this->fields[$key] = $value;
 			}
@@ -114,22 +114,18 @@ class Blurb{
 
 // Useful for converting between all the formats 
 // e.g. mysql, php, javascript
-class Date{
-
-
-	private $pieces = array();
-	
-	public function __construct($dateString, $format='mysql'){
-		if($format == 'mysql'){
-			// MySql dates in yyyy-mm-dd hh:mm:ss format
-			
-		}
-	}
-	
-	public function toJson(){
-		// There is no JSON representation of a Date object, 
-		// so  the Date is passed as a string that can be given to the Date constructor
-		return '';
-	}
+class HistoricalDate{
+	public static function sqlToJs($date) {
+		// yyyy-mm-dd hh:mm:ss
+		$datetime = explode(' ', $date);
+		$datePieces = explode('-', $datetime[0]);
+		$yy = $datePieces[0];
+		$mm = $datePieces[1];
+		$dd = $datePieces[2];
+		
+		$time = $datetime[1];
+		
+		return "$mm/$dd/$yy $time";
+    }
 }
 ?>
