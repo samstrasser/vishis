@@ -321,8 +321,7 @@ Slider.prototype.slideEnd = function(){
 Slider.prototype.change = function(offset){
 	if(this.hasLock){
 		this.adjustOtherSliders();
-		// todo: uncomment
-		//this.ts.adjustLabels();
+		this.ts.adjustLabels();
 		this.ts.doCallback();
 	}
 }
@@ -359,3 +358,4 @@ Spanner.prototype.adjustOtherSliders = function(){
 // Spanner's do not have labels
 Spanner.prototype.showLabel = function(){}
 Spanner.prototype.hideLabel = function(){}
+Spanner.prototype.adjustLabel = function(){}
