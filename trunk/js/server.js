@@ -8,52 +8,56 @@
 function Server(){}
 
 // set up the constants for the whole server
-Server.baseurl = 'php/get.php';
+Server.baseUrl = '/php/';
+Server.searchUrl = Server.baseUrl + 'search.php';
 Server.method = 'GET';
 
 /*
  * The API functions
  * These functions should be called by the other scripts
  */
-Server.getPopularExamples = function(callback){
-	var url = Server.getUrl('getNodeList.py?what=popularExamples');
-	Server.getNodeList(url, callback);
+Server.search = function(query, cbFunc, cbObj){
+	Server.makeRequest(Server.getUrl(query), cbFunc, cbObj);
 }
 
-Server.getSubTopics = function(topicId){
-	var url = Server.getUrl('getNodeList.py?what=subTopics&tid='+topicId);
-	Server.getNodeList(url, callback);
-}
+Server.decodeAndCallback = function(json, cbFunc, cbObj){
 
-Server.getRelatedTopics = function(topicId){
-	var url = Server.getUrl('getNodeList.py?what=relatedTopics&tid='+topicId);
-	Server.getNodeList(url, callback);
-}
-
-Server.getNodeById = function(nodeId, callback){
-	var url = Server.getUrl('node', 'node', nodeId);
-
-	Server.get(url, callback);
-}
-
-Server.getChildren = function(nodeId, callback){
-	var url = Server.getUrl('children', 'nodelist', nodeId);
+	var obj = JSON.parse(json);
 	
-	Server.get(url, callback);
-}
+	// todo: only makes sense with one topic right now
+	for(var tk in obj){
+		// first save the children field
+		var children = obj[tk]['children'];
+		
+		// then delete the child field to avoid duplicate info
+		delete obj[tk]['children'];
+		
+		var topic = new Topic(obj[tk]);
+		
+		for(ck in children){
+			var child = new Event(children[ck]);
+			topic.addChild(child);
+		}
+		
+		cbFunc.call(cbObj, topic);
+	}
+	
+	
+	//callback(topic);
 
+}
 
 
 /* Private functions */
-Server.get = function(url, callback){
+Server.makeRequest = function(url, cbFunc, cbObj){
 	var request = Server.createRequest();
 	
 	request.onreadystatechange = function(){
 		if(request.readyState == 4){
 			if(request.status == 200){
-				var obj = eval('(' + request.responseText + ')');
-				callback(obj);
+				Server.decodeAndCallback(request.responseText, cbFunc, cbObj);
 			}
+			
 		}
 	}
 	
@@ -67,6 +71,11 @@ Server.createRequest = function(){
 	return new XMLHttpRequest();
 }
 
-Server.getUrl = function(what, type, nid){
-	return (document.location + Server.baseurl + '?what=' + what + '&type=' + type + '&nid=' + nid + '&');
+Server.getUrl = function(query){
+	var host = document.location.hostname;
+	if(host.substring(0,4) != "www."){
+		host = "www." + host;
+	}
+	var url = "http://" + host + Server.searchUrl + '?q=' + query + '&';
+	return url;
 }

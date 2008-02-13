@@ -5,14 +5,15 @@
 /**
  * @class TimeSlider
  */
-function TimeSlider(mapElt, callback){
+function TimeSlider(mapElt, cbFunc, cbObj){
 	// Construct the GControl first
 	GControl.call(this);
 
 	TimeSlider.createSliderInDom(mapElt);
 	
 	this.hasLock = false;
-	this.callback = callback;
+	this.cbFunc = cbFunc;
+	this.cbObj = cbObj;
 	this.sliders = new Array(3);
 	
 	var startInitPos = TimeSlider.bgOffsetStart;
@@ -144,7 +145,7 @@ TimeSlider.prototype.calculateShift = function(start, end){
 	var max = end.getTime();
 	
 	this.shift = start.getTime();
-	this.scale = (max - shift) / TimeSlider.bgWidth;
+	this.scale = (max - this.shift) / TimeSlider.bgWidth;
 }
 
 TimeSlider.prototype.valueToDate = function(val){
@@ -180,13 +181,14 @@ TimeSlider.prototype.adjustLabels = function(){
 }
 
 TimeSlider.prototype.doCallback = function(){
+	
 	var startValue = this.getSlider('start').getValue();
 	var startDate = this.valueToDate(startValue);
 	
 	var endValue = this.getSlider('end').getValue();
 	var endDate = this.valueToDate(endValue);
 	
-	this.callback(startDate, endDate);
+	this.cbFunc.call(this.cbObj, startDate, endDate);
 }
 
 /**
@@ -262,7 +264,7 @@ Slider.prototype.hideLabel = function(){
 	this.labelElt.style.visibility = 'hidden';
 }
 
-Slider.prototype.adjustLabelText = function(text){
+Slider.prototype.adjustLabel = function(text){
 	if(!text){
 		var val = this.getValue();
 		var d = this.ts.valueToDate(val);
@@ -319,8 +321,8 @@ Slider.prototype.slideEnd = function(){
 Slider.prototype.change = function(offset){
 	if(this.hasLock){
 		this.adjustOtherSliders();
-		
-		this.ts.adjustLabels();
+		// todo: uncomment
+		//this.ts.adjustLabels();
 		this.ts.doCallback();
 	}
 }
