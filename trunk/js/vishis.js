@@ -1,3 +1,4 @@
+
 function load(){
 	// Don't show vishis to the public
 	var urlVars = Util.getUrlVariables();
@@ -6,6 +7,8 @@ function load(){
 	}
 	if(Cookie.get('v') == 'hidden'){
 		var m = new Map();
+		var n = new Nav(m);
+		nav = n;
 	}
 }
 

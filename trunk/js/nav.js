@@ -7,9 +7,13 @@
  /**
   * @class Nav
   **/
-function Nav(navElt){
+function Nav(map, navElt){
+	// Keep a reference to the Map so we can add and remove information from it
+	this.map = map;
+	
+	
 	if(!navElt){
-		navElt = document.getElementId('nav-panel');
+		navElt = document.getElementById('nav-panel');
 	}
 	this.elt = navElt;
 	
@@ -23,6 +27,13 @@ function Nav(navElt){
 		textField: 'todo',
 		searchResultsDiv: 'todo'
 	}; // todo: search box
+}
+
+Nav.prototype.addTopic = function(topic){
+	// debug only
+	// todo: do the real thing
+	// for now, this only adds the topic to the map
+	this.map.addTopic(topic);
 }
  
 function TopicList(id, title){
@@ -120,7 +131,11 @@ function Topic(node, displayType){
 	this.children = new Array();
 	
 	for(var k in node){
-		this[k] = node[k];
+		if(k == "start" || k == "end"){
+			this[k] = new Date(node[k]);
+		}else{
+			this[k] = node[k];
+		}
 	}
 
 	this.elt = document.createElement('li');	
@@ -162,7 +177,7 @@ Topic.prototype.addChild = function(event){
 }
 
 Topic.prototype.getId = function(){
-	return this.id;
+	return this.uid;
 }
 
 Topic.prototype.getRootElement = function(){
