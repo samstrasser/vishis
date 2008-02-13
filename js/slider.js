@@ -83,6 +83,9 @@ TimeSlider.bgOffsetStart = 5;
 TimeSlider.bgOffsetEnd = 244;
 TimeSlider.bgArrowStart = 250;
 TimeSlider.bgWidth = 275;
+TimeSlider.bgClickableWidth = TimeSlider.bgOffsetEnd - TimeSlider.bgOffsetStart - 5; 
+// todo: 5 = 2 * distance to the center of each slider, which isn't in the scope yet
+
 TimeSlider.sliderId = 'timeslider';
 TimeSlider.sliderBgId = 'sliderbg';
 TimeSlider.sliderNames = {
@@ -145,7 +148,8 @@ TimeSlider.prototype.calculateShift = function(start, end){
 	var max = end.getTime();
 	
 	this.shift = start.getTime();
-	this.scale = (max - this.shift) / TimeSlider.bgWidth;
+	this.scale = (max - this.shift) / TimeSlider.bgClickableWidth;
+
 }
 
 TimeSlider.prototype.valueToDate = function(val){
