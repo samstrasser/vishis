@@ -10,9 +10,6 @@ require_once('JSON.php');
 interface TrustedSite{
 	// @return {SearchResult} result of the query
 	public function search($query);
-	
-	// Assumes the $query exists
-	// public function get($query);
 }
 
 class SearchResult{
@@ -39,12 +36,19 @@ class SearchResult{
 }
 
 class Node{
+	
 	private $fields = array();
 	private $blurb;
 	
 	public function __construct($fields){
 		foreach($fields as $key => $value){
-			$this->fields[$key] = $value;
+			if($key == 'start' || $key == 'end'){
+				// convert dates to a string that JavaScript will understand
+				// mm/dd/yyyy hh:mm:ss
+				$this->fields[$key] = date('m/d/Y H:i:s', strtotime($value));
+			}else{
+				$this->fields[$key] = $value;
+			}
 		}
 		
 		$this->blurb = new Blurb();
@@ -111,6 +115,8 @@ class Blurb{
 // Useful for converting between all the formats 
 // e.g. mysql, php, javascript
 class Date{
+
+
 	private $pieces = array();
 	
 	public function __construct($dateString, $format='mysql'){

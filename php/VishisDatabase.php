@@ -1,7 +1,6 @@
 <?
 require_once('SearchLayer.php');
 
-// todo: check the scope of this
 class VishisDatabase implements TrustedSite{
 	public function __construct(){
 		$this->conn = false;
