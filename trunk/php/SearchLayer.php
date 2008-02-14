@@ -38,20 +38,30 @@ class SearchResult{
 class Node{
 	/*
 	 ** Fields (from the sql table)
-		 uid
-		title
-		location
-		lat
-		lng
-		start
-		end 
-		type
-		color
+		~ uid
+		+ title
+		- location
+		+ lat
+		+ lng
+		+ start
+		+ end 
+		? type
+		~ color
 	**/
 	private $fields = array();
 	private $blurb;
 	
-	public function __construct($fields){
+	// AHHHHHHH
+	// todo: figure out how to have uid's, or to not have them
+	private static $nextId = 1000;
+	
+	private static function getNextId(){
+		return self::$nextId++;
+	}
+	
+	public function __construct($fields = array()){
+		$this->addField('uid', self::getNextId());
+
 		foreach($fields as $key => $value){
 			if($key == 'start' || $key == 'end'){
 				// todo: if end doesn't exist, end = today
@@ -65,6 +75,14 @@ class Node{
 		}
 		
 		$this->blurb = new Blurb();
+	}
+	
+	public function addField($key, $value){
+		if($value == ''){ return; }
+		if(array_key_exists($key, $this->fields)){
+			// todo: Warning: overwriting current value
+		}
+		$this->fields[$key] = $value;
 	}
 	
 	public function getId(){
@@ -88,7 +106,7 @@ class Node{
 class Topic extends Node{
 	private $children = array();
 	
-	public function __construct($fields){
+	public function __construct($fields = array()){
 		parent::__construct($fields);
 	}
 	
@@ -137,6 +155,58 @@ class HistoricalDate{
 		$dd = $datePieces[2];
 		
 		$time = $datetime[1];
+		
+		return "$mm/$dd/$yy $time";
+    }
+	
+	/** KML dates can be many things
+	* Specifies a single moment in time. The value is a dateTime, which can be one of the following:
+	* gYear (YYYY)
+	* gYearMonth (YYYY-MM)
+	* date (YYYY-MM-DD)
+	* dateTime (YYYY-MM-DDThh:mm:ssZ)
+	* dateTime (YYYY-MM-DDThh:mm:sszzzzzz)
+	* see: http://code.google.com/apis/kml/documentation/kml_tags_21.html#timestamp
+	*/
+	public static function kmlToJs($date) {
+		$len = strlen($date);
+		if($len == 4){ // YYYY
+			$yy = $date;
+			$mm = '06';
+			$dd = '15';
+		}elseif($len == 7){ // YYYY-MM
+			$datePieces = explode('-', $date);
+			$yy = $datePieces[0];
+			$mm = $datePieces[1];
+			$dd = '15';
+		}elseif($len == 10){ // YYYY-MM-DD
+			$datePieces = explode('-', $date);
+			$yy = $datePieces[0];
+			$mm = $datePieces[1];
+			$dd = $datePieces[2];
+		}elseif($len == 20){ // YYYY-MM-DDThh:mm:ssZ
+			// todo: support time zones
+			$datetime = explode('T', $date);
+			$datePieces = explode('-', $datetime[0]);
+			$yy = $datePieces[0];
+			$mm = $datePieces[1];
+			$dd = $datePieces[2];
+				
+			$time = substr($datetime[1], 0, 8);
+		}elseif($len == 25){ // YYYY-MM-DDThh:mm:sszzzzzz
+			// todo: support time zones
+			$datetime = explode('T', $date);
+			$datePieces = explode('-', $datetime[0]);
+			$yy = $datePieces[0];
+			$mm = $datePieces[1];
+			$dd = $datePieces[2];
+				
+			$time = substr($datetime[1], 0, 8);
+		}else{
+			//todo: Warning: weird date
+			return '';
+		}
+
 		
 		return "$mm/$dd/$yy $time";
     }
