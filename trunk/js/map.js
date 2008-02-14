@@ -34,7 +34,6 @@ function Map(mapDiv){
 YAHOO.lang.extend(Map, GMap2);
 
 Map.prototype.addTopic = function(topic){
-	console.log(topic);
 	if(this.isACurrTopic(topic)){
 		return true;
 	}
@@ -61,7 +60,6 @@ Map.prototype.addTopic = function(topic){
 	
 	// readjust the TimeSlider to reflect the new time span
 	// todo: un hardcode dates
-	console.log(this.currTimeSpan);
 	this.ts.calculateShift(this.currTimeSpan.start, this.currTimeSpan.end);
 	
 	// display this (and all other) topics
