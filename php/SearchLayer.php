@@ -36,13 +36,26 @@ class SearchResult{
 }
 
 class Node{
-	
+	/*
+	 ** Fields (from the sql table)
+		 uid
+		title
+		location
+		lat
+		lng
+		start
+		end 
+		type
+		color
+	**/
 	private $fields = array();
 	private $blurb;
 	
 	public function __construct($fields){
 		foreach($fields as $key => $value){
 			if($key == 'start' || $key == 'end'){
+				// todo: if end doesn't exist, end = today
+			
 				// convert dates to a string that JavaScript will understand
 				// mm/dd/yyyy hh:mm:ss
 				$this->fields[$key] = HistoricalDate::sqlToJs($value);
