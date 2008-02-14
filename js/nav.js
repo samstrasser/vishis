@@ -17,10 +17,10 @@ function Nav(map, navElt){
 	}
 	this.elt = navElt;
 	
-	this.currentTopics = new TopicList('currently-viewing');
+	this.currentTopics = new TopicList('currently-viewing','Debug Topic List');
 	this.currentTopics.attachToElt(this.elt);
 	
-	this.recentTopics  = new TopicList('recently-viewed');
+	this.recentTopics  = new TopicList('recently-viewed', '');
 	this.recentTopics.attachToElt(this.elt);
 	
 	this.searchBox = {
@@ -71,13 +71,13 @@ TopicList.prototype.getContainerElt = function(){
 	return this.elt;
 }
 
-TopicList.prototype.add = function(topic){
+TopicList.prototype.addTopic = function(topic){
 	if(topic.getId() in this.topics){
 		console.warn('Topic added to list but its already there');
 	}
 	
 	// Save the topic in the list
-	this.topics[topic.id] = topic;
+	this.topics[topic.getId()] = topic;
 
 	// Add the topic in the dom
 	this.listElt.appendChild(topic.getRootElement());
