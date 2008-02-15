@@ -10,6 +10,7 @@ require_once('SearchLayer.php');
 
 // The specific sites' classes
 require_once('VishisDatabase.php');
+require_once('KmlFile.php');
 
 if(!$_REQUEST['q']){
 	// todo: real language
@@ -18,11 +19,14 @@ if(!$_REQUEST['q']){
 
 $query = $_REQUEST['q'];
 
-// For now, the only supported TrustedSite is the Vishis Database
-$site = new VishisDatabase();
-$result = $site->search($query);
+// todo: have a smarter way of figuring out which type the query is
+if(substr($query, 0, 7) == 'http://'){
+	$site = new KmlFile();
+}else{
+	$site = new VishisDatabase();
+}
 
-//var_dump($result);
+$result = $site->search($query);
 print($result->toJson());
 
 ?>
