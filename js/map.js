@@ -34,6 +34,9 @@ function Map(mapDiv){
 YAHOO.lang.extend(Map, GMap2);
 
 Map.prototype.addTopic = function(topic){
+	console.log(topic);
+	
+	
 	if(this.isACurrTopic(topic)){
 		return true;
 	}
@@ -144,6 +147,9 @@ function Event(node){
 	this.domElt;
 	this.titleElt;
 	
+	// Add default start and end
+	this.start = new Date('01/01/1001');
+	this.end = new Date();
 	for(var k in node){
 		if(k == "start" || k == "end"){
 			this[k] = new Date(node[k]);
