@@ -33,10 +33,26 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		delete obj[tk]['children'];
 		
 		var topic = new Topic(obj[tk]);
-		
+		var min = new Date('12/31/2038');
+		var max = new Date('01/01/1001');
 		for(ck in children){
 			var child = new Event(children[ck]);
 			topic.addChild(child);
+			
+			// Keep track of the min and max to add to the Topic
+			if(child.start.getTime() < min.getTime()){
+				min = child.start;
+			}
+			if(child.end.getTime() > max.getTime()){
+				max = child.end;
+			}
+		}
+		
+		if(!topic.start){
+			topic.start = min;
+		}
+		if(!topic.end){
+			topic.end = max;
 		}
 		
 		cbFunc.call(cbObj, topic);

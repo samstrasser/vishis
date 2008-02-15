@@ -87,8 +87,8 @@ class KmlFile implements TrustedSite{
 			if(in_array(self::tag_point, $this->tagStack)){
 				$coordPair = trim($data);
 				$latlng = explode(',', $coordPair);
-				$this->currEvent->addField('lat', $latlng[0]);
-				$this->currEvent->addField('lng', $latlng[1]);
+				$this->currEvent->addField('lng', $latlng[0]);
+				$this->currEvent->addField('lat', $latlng[1]);
 			}
 		}else{
 			// For now, we are going to ignore all other tags
