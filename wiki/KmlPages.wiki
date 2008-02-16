@@ -1,6 +1,6 @@
 #summary One-sentence summary of this page.
 
-vislab-ccom.unh.edu/~schwehr/resume/schwehr-resume.kml
-http://code.google.com/apis/kml/documentation/us_states.kml
-www.ushmm.org/googleearth/camps.kml
-myweb.students.wwu.edu/~kennym2/EGEO_451/lab1/locations_3.kml
+ * http://vislab-ccom.unh.edu/~schwehr/resume/schwehr-resume.kml
+ * http://code.google.com/apis/kml/documentation/us_states.kml
+ * http://www.ushmm.org/googleearth/camps.kml
+ * http://myweb.students.wwu.edu/~kennym2/EGEO_451/lab1/locations_3.kml
