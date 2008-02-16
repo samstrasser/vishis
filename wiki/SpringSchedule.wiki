@@ -5,6 +5,7 @@
 *February* (4 weeks)
  * ~~back-to-front data i.e. implement decodeAndCallback(json, cb)~~
  * research, design and implement kml piece
+ * design and implement polygons
  * map without roads
 *March* (2 weeks)
  * slider ui
@@ -15,5 +16,4 @@
  * research, design and implement family tree piece
  * research, design and implement timelines piece
  * design and implement arrows and lines
- * design and implement regions
  * make example cases, demos, and explanations
