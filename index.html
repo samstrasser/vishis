@@ -47,7 +47,7 @@
 			<li>
 				<form>
 					<input type="text"/>
-					<input type="button" value="add" 
+					<input type="button" value="add url" 
 					onclick="var val=parentNode.childNodes[1].value;
 					if(val){
 						Server.search(val, nav.addTopic, nav);
@@ -56,6 +56,8 @@
 					/>
 				</form>
 			</li>
+			<hr />
+			<li><a href="javascript:void(0);" onclick="nav.map.clearTopics();return false;">Clear map</a></li>
 		</ul>
 	</div>
   </div>
