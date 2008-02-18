@@ -1,7 +1,9 @@
-#summary The objects in use by the front- and back-ends
+#labels Featured
 
+= Object Definitions =
+
+*Topic* (dom: TopicList)
 {{{
-Topic (dom: TopicList)
   title
   start
   end
@@ -12,8 +14,10 @@ Topic (dom: TopicList)
     e:
     w:
   }
+}}}
   
-Event (dom: does not appear)
+*Event* (dom: does not appear)
+{{{
   uid
   start
   end
@@ -24,8 +28,10 @@ Event (dom: does not appear)
   getOverlays()
   show()
   hide()
-
-Marker (dom: LabeledMarker)
+}}}
+  
+*Marker* (dom: LabeledMarker)
+{{{
   title (inherits)
   lat
   lng
@@ -35,8 +41,10 @@ Marker (dom: LabeledMarker)
   onOff: label with title and icon
   onOver: showBlurb(), bringTOFront()
   onClick: (showDetailedBlurb())
- 
-Polygon
+}}}
+   
+*Polygon*
+{{{
   coords [Array of (lat,lng pairs)
   color (inherits)
   borderColor (computed?)
@@ -44,6 +52,4 @@ Polygon
   
   onOff: show polygon
   onOver: showLabel()
-  
-
 }}}
