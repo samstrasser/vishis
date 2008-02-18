@@ -23,6 +23,9 @@
   String color (inherits),
   String location,
   String title,
+
+  Array Event events,
+  Marker marker,
   
   Function getOverlays(),
   Function show(),
