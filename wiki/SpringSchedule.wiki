@@ -4,13 +4,14 @@
 = Schedule for Spring Semester =
 *February* (4 weeks)
  * ~~back-to-front data i.e. implement decodeAndCallback(json, cb)~~
- * research, design and implement kml piece
- * design and implement polygons
- * map without roads
-*March* (2 weeks)
- * slider ui
- * search ui in the navigation panel
+ * ~~research, design and implement kml piece~~
+ * ~~design and~~ implement polygons
  * event ui
+ * TopicList ui
+ * slider ui
+*March* (2 weeks)
+ * search ui in the navigation panel
+ * map without roads
  * add blurbs to data storage
 *April* (5 weeks)
  * research, design and implement family tree piece
