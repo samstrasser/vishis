@@ -5,9 +5,10 @@
 *February* (4 weeks)
  * ~~back-to-front data i.e. implement decodeAndCallback(json, cb)~~
  * ~~research, design and implement kml piece~~
- * ~~design and~~ implement polygons
+ * ~~design polygons~~
+ * implement polygons
  * event ui
- * Topic List ui
+ * lopic list ui
  * slider ui
 *March* (2 weeks)
  * search ui in the navigation panel
