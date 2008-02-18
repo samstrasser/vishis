@@ -31,16 +31,20 @@ lng
 
 = JSON =
 {{{
-topic:{
+Topic topic:{
  (data fields),
- color,
- source,
- children: {
-  0: {(data fields),
-      color},
-  1: {(data fields),
-      color},
+ Array Event events: {
+  0: {
+    (data fields),
+    Marker marker: {
+        (data fields)
+    },
+    Array Polygon polygons: {
+        0: {(data fields)},
+		1: {(data fields)}
+	},
   }
+  1: {...}
  }
 }
 }}}
