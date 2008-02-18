@@ -1,8 +1,7 @@
 #labels Featured
-
 = Object Definitions =
 
-*Topic* (dom: TopicList)
+*Topic* (dom: !TopicList)
 {{{
   title
   start
@@ -30,7 +29,7 @@
   hide()
 }}}
   
-*Marker* (dom: LabeledMarker)
+*Marker* (dom: !LabeledMarker)
 {{{
   title (inherits)
   lat
