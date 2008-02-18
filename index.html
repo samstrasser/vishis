@@ -44,6 +44,18 @@
 		<ul>
 			<li><a href="javascript:void(0);" onclick="Server.search('American Presidents', nav.addTopic, nav);">American Presidents</a></li>
 			<li><a href="javascript:void(0);" onclick="Server.search('http://code.google.com/apis/kml/documentation/us_states.kml', nav.addTopic, nav);">U.S. States</a></li>
+			<li>
+				<form>
+					<input type="text"/>
+					<input type="button" value="add" 
+					onclick="var val=parentNode.childNodes[1].value;
+					if(val){
+						Server.search(val, nav.addTopic, nav);
+					}
+					return false;"
+					/>
+				</form>
+			</li>
 		</ul>
 	</div>
   </div>
