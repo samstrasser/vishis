@@ -1,0 +1,49 @@
+#summary The objects in use by the front- and back-ends
+
+{{{
+Topic (dom: TopicList)
+  title
+  start
+  end
+  color
+  bounds: {
+    n:
+    s:
+    e:
+    w:
+  }
+  
+Event (dom: does not appear)
+  uid
+  start
+  end
+  color (inherits)
+  location [text]
+  title
+  
+  getOverlays()
+  show()
+  hide()
+
+Marker (dom: LabeledMarker)
+  title (inherits)
+  lat
+  lng
+  blurb
+  icon
+  
+  onOff: label with title and icon
+  onOver: showBlurb(), bringTOFront()
+  onClick: (showDetailedBlurb())
+ 
+Polygon
+  coords [Array of (lat,lng pairs)
+  color (inherits)
+  borderColor (computed?)
+  title (inherits)
+  
+  onOff: show polygon
+  onOver: showLabel()
+  
+
+}}}
