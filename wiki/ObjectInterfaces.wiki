@@ -3,52 +3,56 @@
 
 *Topic* (dom: !TopicList)
 {{{
-  title
-  start
-  end
-  color
-  bounds: {
-    n:
-    s:
-    e:
-    w:
+  String title,
+  HistoricalString start,
+  HistoricalString end,
+  String color,
+  Array bounds: {
+    n: String,
+    s: String,
+    e: String,
+    w: String
   }
 }}}
   
 *Event* (dom: does not appear)
 {{{
-  uid
-  start
-  end
-  color (inherits)
-  location [text]
-  title
+  int uid,
+  HistoricalString start,
+  HistoricalString end,
+  String color (inherits),
+  String location,
+  String title,
   
-  getOverlays()
-  show()
-  hide()
+  Function getOverlays(),
+  Function show(),
+  Function hide()
 }}}
   
 *Marker* (dom: !LabeledMarker)
 {{{
-  title (inherits)
-  lat
-  lng
-  blurb
-  icon
+  String title (inherits),
+  String lat,
+  String lng,
+  String blurb,
+  UrlString icon
   
-  onOff: label with title and icon
-  onOver: showBlurb(), bringTOFront()
-  onClick: (showDetailedBlurb())
+  Event off: label with title and icon
+  Event over: showBlurb(), bringTOFront()
+  Event click: (showDetailedBlurb())
 }}}
    
 *Polygon*
 {{{
-  coords [Array of (lat,lng pairs)
-  color (inherits)
-  borderColor (computed?)
-  title (inherits)
+  Array coords: 
+    [
+		Array(String lat, String lng),
+		Array(String lat, String lng)
+	]
+  ColorString color (inherits),
+  ColorString borderColor (computed?),
+  String title (inherits),
   
-  onOff: show polygon
-  onOver: showLabel()
+  Event off: show polygon
+  Event over: showLabel()
 }}}
