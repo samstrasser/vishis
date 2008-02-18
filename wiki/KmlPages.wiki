@@ -1,4 +1,5 @@
-#summary One-sentence summary of this page.
+#summary Some examples of kml pages hosted elsewhere that display on the site
+#labels Featured
 
  * http://vislab-ccom.unh.edu/~schwehr/resume/schwehr-resume.kml
  * http://code.google.com/apis/kml/documentation/us_states.kml
