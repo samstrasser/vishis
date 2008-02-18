@@ -4,8 +4,8 @@
 *Topic* (dom: !TopicList)
 {{{
   String title,
-  HistoricalString start,
-  HistoricalString end,
+  DateString start,
+  DateString end,
   String color,
   Array bounds: {
     n: String,
@@ -18,8 +18,8 @@
 *Event* (dom: does not appear)
 {{{
   int uid,
-  HistoricalString start,
-  HistoricalString end,
+  DateString start,
+  DateString end,
   String color (inherits),
   String location,
   String title,
