@@ -46,9 +46,9 @@
 {{{
   Array coords: 
     [
-		Array(String lat, String lng),
-		Array(String lat, String lng)
-	]
+      Array(String lat, String lng),
+      Array(String lat, String lng)
+    ]
   ColorString color (inherits),
   ColorString borderColor (computed?),
   String title (inherits),
