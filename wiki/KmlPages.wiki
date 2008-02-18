@@ -5,3 +5,8 @@
  * http://code.google.com/apis/kml/documentation/us_states.kml
  * http://www.ushmm.org/googleearth/camps.kml
  * http://myweb.students.wwu.edu/~kennym2/EGEO_451/lab1/locations_3.kml
+
+= To look at =
+I need to check these out yet.  They don't even display properly in Google Earth
+ * http://bbs.keyhole.com/ubb/placemarks/31049-AncientRomania1.kml
+ * 
