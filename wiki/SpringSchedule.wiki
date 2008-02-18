@@ -8,7 +8,7 @@
  * ~~design polygons~~
  * implement polygons
  * event ui
- * lopic list ui
+ * topic list ui
  * slider ui
 *March* (2 weeks)
  * search ui in the navigation panel
