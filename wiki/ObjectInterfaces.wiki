@@ -24,7 +24,7 @@
   String location,
   String title,
 
-  Array Event events,
+  Array Polygons polygons,
   Marker marker,
   
   Function getOverlays(),
