@@ -43,14 +43,17 @@ Map.prototype.addTopic = function(topic){
 	
 	this.currTopics[topic.getId()] = topic;
 	
-	for(var k in topic.children){
-		var child = topic.children[k];
+	var events = topic.getEvents();
+	for(var ek in events){
+		var overlays = events[ek].getOverlays();
 		
-		// this is ok b/c child.getId() is globally unique
-		this.currEvents[child.getId()] = child;
-
-		this.addOverlay(child);
-		child.hide();
+		for(var ok in overlays){
+			var overlay = overlays[ok];
+			
+			// Add all the overlays to the map right at the beginning
+			this.addOverlay(overlay);
+			overlay.hide();		
+		}
 	}
 
 	// Readjust the span of the currently viewable Events
@@ -87,15 +90,16 @@ Map.prototype.removeTopic = function(topic){
 }
 
 Map.prototype.clearTopics = function(){
-	for(var id in this.currEvents){
-		this.currEvents[id].hide();
-		delete this.currEvents[id];
+	this.clearOverlays();
+	
+	for(var tid in this.currTopics){
+		delete this.currTopics[tid];
 	}
-
 	delete this.currTopics;
 	
 	this.currTopics = new Array();
-	this.currEvents = new Array();
+	
+	// todo: disable TimeSlider
 }
 
 Map.prototype.displayEvents = function(start, end){
@@ -109,18 +113,20 @@ Map.prototype.displayEvents = function(start, end){
 	var nowStart = start.getTime();
 	var nowEnd = end.getTime();
 
-	for(var id in this.currEvents){
-		var e = this.currEvents[id];
+	for(var tid in this.currTopics){
+		var events = this.currTopics[tid].getEvents();
+		for(var ek in events){
+			var e = events[ek];
 
-		var eventStart = e.start.getTime();
-		var eventEnd = e.end.getTime();
-		
-		if(eventStart <= nowEnd && eventEnd >= nowStart){
-			e.show();
-		}else{
-			e.hide();
+			var eventStart = e.start.getTime();
+			var eventEnd = e.end.getTime();
+			
+			if(eventStart <= nowEnd && eventEnd >= nowStart){
+				e.show();
+			}else{
+				e.hide();
+			}
 		}
-		
 	}
 }
 
@@ -128,7 +134,7 @@ Map.prototype.isACurrTopic = function(topic){
 	return topic.getId() in this.currTopics;
 }
 
-Map.prototype.adjustToFitPoints = function(s, w, n, e){
+Map.prototype.adjustToFitPoints = function(n, s, e, w){
 	// Bound map by the range of the events
 	// todo: make sure to give them padding on the edges
 	var sw = new GLatLng(s, w),
@@ -139,23 +145,59 @@ Map.prototype.adjustToFitPoints = function(s, w, n, e){
 	this.setCenter(bounds.getCenter(), zoom);
 }
 
-/**
- * @class Event
- */
 function Event(node){
-	this.children = new Array();
-	this.domElt;
-	this.titleElt;
-	
 	// Add default start and end
-	this.start = new Date('01/01/1001');
-	this.end = new Date();
+	this.start = new Date('01/01/1001'); // todo: HDate.MIN
+	this.end = new Date();				// todo: HDate.MAX
+	
 	for(var k in node){
 		if(k == "start" || k == "end"){
 			this[k] = new Date(node[k]);
 		}else{
 			this[k] = node[k];
 		}
+	}
+	
+	this.polygons = new Array();
+	this.marker = false;
+}
+
+Event.prototype.addPolygon = function(polygon){
+	this.polygons.push(polygon);
+}
+
+Event.prototype.addMarker = function(marker){
+	this.marker = marker;
+}
+
+Event.prototype.getOverlays = function(){
+	return this.polygons.concat(this.marker);
+}
+
+Event.prototype.show = function(){
+	var overlays = this.getOverlays();
+	for(var ok in overlays){
+		overlays[ok].show();
+	}
+}
+
+Event.prototype.hide = function(){
+	var overlays = this.getOverlays();
+	for(var ok in overlays){
+		overlays[ok].hide();
+	}
+}
+
+
+/**
+ * @class 
+ */
+function Marker(node){
+	this.domElt;
+	this.titleElt;
+	
+	for(var k in node){
+		this[k] = node[k];
 	}
 
 	var latlng = new GLatLng(this.lat, this.lng);
@@ -181,26 +223,51 @@ function Event(node){
 	//GEvent.addListener(domElt, "mouseout", hideBlurb());
 
 };
-YAHOO.lang.extend(Event, LabeledMarker);
+YAHOO.lang.extend(Marker, LabeledMarker);
 
-Event.prototype.getId = function(){
-	return this.uid;
-}
-
-Event.prototype.hideBlurb = function(){
+Marker.prototype.hideBlurb = function(){
 	//pass
 }
 
-Event.prototype.showBlurb = function(){
+Marker.prototype.showBlurb = function(){
 	//pass
+}
+
+Marker.prototype.bringToFront = function(){
+	// pass
 }
 
 /**
   * Sets the label text
  */
- Event.prototype.setLabelText = function(text){
+ Marker.prototype.setLabelText = function(text){
 	this.labelText_ = text;
 	this.div_.innerHTML = this.labelText_;
 	
 	this.redraw(true);
  }
+ 
+ function Polygon(node){
+ 	for(var k in node){
+		this[k] = node[k];
+	}
+	
+	this.latlngs = new Array();
+	var coords = this.coordinates;
+	for(var ck in coords){
+		var lat = coords[ck][0];
+		var lat = coords[ck][1];
+		this.latlngs.push(new GLatLng(lat, lng));
+	}
+	
+	GPolygon.call(this, 
+				this.latlngs, 	// Points
+				"#883333",		// Stroke Color
+				1,				// Stroke Weight
+				.8,				// Stroke Opacity
+				"#EF0000",		// Fill Color
+				.3,				// Fill Opacity
+				{clickable:true}//Opts
+			);
+ }
+ YAHOO.lang.extend(Polygon, GPolygon);

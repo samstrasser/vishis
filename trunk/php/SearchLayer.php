@@ -29,72 +29,65 @@ class SearchResult{
 	public function toJson(){
 		$results = array();
 		foreach($this->topics as $t){
-			$results[] = $t->toJson();
+			$results[] = $t->toJsonObj();
 		}
 		return $this->json->encode($results);
 	}
 }
 
 class Node{
-	/*
-	 ** Fields (from the sql table)
-		~ uid
-		+ title
-		- location
-		+ lat
-		+ lng
-		+ start
-		+ end 
-		? type
-		~ color
-	**/
-	private $fields = array();
-	private $blurb;
-	
-	// AHHHHHHH
-	// todo: figure out how to have uid's, or to not have them
-	private static $nextId = 1000;
-	
-	private static function getNextId(){
-		return self::$nextId++;
-	}
-	
-	public function __construct($fields = array()){
-		$this->addField('uid', self::getNextId());
 
-		foreach($fields as $key => $value){
-			if($key == 'start' || $key == 'end'){
-				// todo: if end doesn't exist, end = today
-			
-				// convert dates to a string that JavaScript will understand
-				// mm/dd/yyyy hh:mm:ss
-				$this->fields[$key] = HistoricalDate::sqlToJs($value);
-			}else{
-				$this->fields[$key] = $value;
-			}
-		}
-		
-		$this->blurb = new Blurb();
-	}
-	
-	public function addField($key, $value){
-		if($value == ''){ return; }
-		if(array_key_exists($key, $this->fields)){
-			// todo: Warning: overwriting current value
-		}
-		$this->fields[$key] = $value;
+	public function __construct($fields = array()){
+		$this->addFields($fields);
 	}
 	
 	public function getId(){
-		if(array_key_exists('uid', $this->fields)){
-			return $this->fields['uid'];
+		return $this->getField('uid');
+	}
+	
+	public function appendToField($key, $value){
+		$old = $this->deleteField($key);
+		if($old === false){
+			// val didn't use to exist, so add it
+			$this->addField($key, array($value));
+		}elseif(!is_array($old)){
+			// if its' not an array, make it one
+			$this->addField($key, array($old, $value));
 		}else{
-			// todo: error
-			return -1;
+			$this->addField($key, array_push($old, $value));
 		}
 	}
 	
-	public function toJson(){
+	public function addFields($keyvals){
+		foreach($keyvals as $key => $val){
+			$this->addField($key, $val);
+		}
+	}
+	
+	public function addField($key, $value){
+		$this->fields[$key] = $value;
+	}
+	
+	public function getField($key){
+		if(array_key_exists($key, $this->fields)){
+			return $this->fields[$key];
+		}else{
+			return false;
+		}
+	}
+	
+	public function deleteField($key){
+		$old = $this->getField($key);
+		
+		if(isset($this->fields[$key])){
+			unset($this->fields[$key]);
+		}
+		
+		return $old;
+	}
+	
+	// Convert the function to PHP objects that will be passable to the JSON-ifier
+	public function toJsonObj(){
 		$pieces = array();
 		foreach($this->fields as $field => $val){
 			$pieces[$field] = $val;
@@ -104,42 +97,89 @@ class Node{
 }
 
 class Topic extends Node{
-	private $children = array();
+	private $events = array();
+	private $nextEventId = 0;
 	
-	public function __construct($fields = array()){
-		parent::__construct($fields);
+	public function addEvent(Event $e){
+		// todo: figure out indexing
+		$this->events[] = $e;
 	}
 	
-	public function addChild(Node $node){
-		$this->children[$node->getId()] = $node;
-	
-	}
-	
-	public function addChildren($children){
-		foreach($children as $child){
-			$this->addChild($child);
+	public function addEvents($events){
+		foreach($events as $e){
+			$this->addEvent($e);
 		}
 	}
 	
-	public function toJson(){
+	public function toJsonObj(){
 		// do the parent stuff,
-		$pieces = parent::toJson();
+		$pieces = parent::toJsonObj();
 		
-		// then save all the children
-		$pieces['children'] = array();
-		foreach($this->children as $child){
-			$pieces['children'][] = $child->toJson();
+		// then save all the events
+		$pieces['events'] = array();
+		foreach($this->events as $e){
+			// todo: calculate bounds
+			
+			// todo: calculate start, end times
+
+			// "Inherit" downward
+			$e->addField('color', $this->getField('color'));
+		
+			$pieces['events'][] = $e->toJsonObj();
 		}
 		
 		return $pieces;
 	}
+	
+	private function getNextEventId(){
+		return $this->nextEventId++;
+	}
 }
 
-class Blurb{
-	private $pieces = array();
+class Event extends Node {
+	public function addMarker(Marker $marker){
+		$this->addField('marker', $marker);
+	}
 	
-	public function toJson(){
+	public function addPolygon(Polygon $polygon){
+		$this->appendToField('polygons', $polygon);
+	}
 	
+	public function toJsonObj(){
+		// Delete the Objects so they don't get encoded twice
+		$marker = $this->deleteField('marker');
+		$polygons = $this->deleteField('polygons');
+	
+		// do the parent stuff,
+		$pieces = parent::toJsonObj();
+		
+		// 'Inherit" down
+		$marker->addField('title', $this->getField('title'));
+		$pieces['marker'] = $marker->toJsonObj();
+		
+		if($polygons === false){
+			$polygons = array();
+		}
+		
+		$pieces['polygons'] = array();
+		foreach($polygons as $polygon){
+			// "inherit" downward
+			$polygon->addField('title', $this->getField('title'));
+			$polygon->addField('color', $this->getField('color'));
+			
+			$pieces['polygons'][] = $polygon->toJsonObj();
+		}
+		
+		return $pieces;
+	}
+
+}
+
+class Marker extends Node {}
+
+class Polygon extends Node {
+	public function addCoordinate($coordPair){
+		$this->appendToField('coords', $coordPair);
 	}
 }
 

@@ -128,7 +128,7 @@ TopicList.prototype.clear = function(transferTo){
  **/
 function Topic(node, displayType){
 	this.id = 0;
-	this.children = new Array();
+	this.events = new Array();
 	
 	for(var k in node){
 		if(k == "start" || k == "end"){
@@ -172,8 +172,12 @@ function Topic(node, displayType){
 	this.elt.appendChild(remove);
 }
 
-Topic.prototype.addChild = function(event){
-	this.children[event.getId()] = event;
+Topic.prototype.getEvents = function(){
+	return this.events;
+}
+
+Topic.prototype.addEvent = function(event){
+	this.events.push(event);
 }
 
 Topic.prototype.getId = function(){
