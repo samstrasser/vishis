@@ -20,31 +20,51 @@ Server.search = function(query, cbFunc, cbObj){
 	Server.makeRequest(Server.getUrl(query), cbFunc, cbObj);
 }
 
+// cbObj.cbFunc should expect exactly one Topic object as an argument
+// and may be called several times
 Server.decodeAndCallback = function(json, cbFunc, cbObj){
 
 	var obj = JSON.parse(json);
+	console.log(obj);
 	
-	// todo: only makes sense with one topic right now
 	for(var tk in obj){
-		// first save the children field
-		var children = obj[tk]['children'];
+		// first save the Events
+		var events = obj[tk]['events'];
 		
 		// then delete the child field to avoid duplicate info
-		delete obj[tk]['children'];
+		delete obj[tk]['events'];
 		
 		var topic = new Topic(obj[tk]);
-		var min = new Date('12/31/2038');
-		var max = new Date('01/01/1001');
-		for(ck in children){
-			var child = new Event(children[ck]);
-			topic.addChild(child);
+		var min = new Date('12/31/2038'); // todo HDate.max;
+		var max = new Date('01/01/1001'); // todo: HDate.min
+
+		for(ek in events){
+			var eventObj = events[ek];
+			
+			var markerObj = eventObj['marker'];
+			delete eventObj['marker'];
+			
+			var polygons = eventObj['polygons'];
+			delete eventObj['events'];
+
+			var event = new Event(eventObj);
+			
+			for(pk in polygons){
+				var polygon = new Polygon(polygons[pk]);
+				event.addPolygon(polygon);
+			}
+			
+			var marker = new Marker(markerObj);
+			event.addMarker(marker);
+			
+			topic.addEvent(event);
 			
 			// Keep track of the min and max to add to the Topic
-			if(child.start.getTime() < min.getTime()){
-				min = child.start;
+			if(event.start.getTime() < min.getTime()){
+				min = event.start;
 			}
-			if(child.end.getTime() > max.getTime()){
-				max = child.end;
+			if(event.end.getTime() > max.getTime()){
+				max = event.end;
 			}
 		}
 		
@@ -55,12 +75,9 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 			topic.end = max;
 		}
 		
+		console.log(topic);
 		cbFunc.call(cbObj, topic);
 	}
-	
-	
-	//callback(topic);
-
 }
 
 
