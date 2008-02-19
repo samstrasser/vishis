@@ -8,6 +8,7 @@ class KmlFile implements TrustedSite{
 	const tag_start 	= 'BEGIN';
 	const tag_end 		= 'END';
 	const tag_point		= 'POINT';
+	const tag_polygon	= 'POLYGON';
 	const tag_coords 	= 'COORDINATES';
 
 	public function __construct(){
@@ -89,6 +90,15 @@ class KmlFile implements TrustedSite{
 				$latlng = explode(',', $coordPair);
 				$this->currEvent->addField('lng', $latlng[0]);
 				$this->currEvent->addField('lat', $latlng[1]);
+			}elseif(in_array(self::tag_polygon, $this->tagStack)){
+				$coords = explode("\n", trim($data));
+				foreach($coords as $coord){
+					$coordPair = trim($coord);
+					$latlng = explode(',', $coordPair);
+					$this->currEvent->addField('lng', $latlng[0]);
+					$this->currEvent->addField('lat', $latlng[1]);
+				}
+			
 			}
 		}else{
 			// For now, we are going to ignore all other tags

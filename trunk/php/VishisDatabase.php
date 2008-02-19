@@ -26,33 +26,27 @@ class VishisDatabase implements TrustedSite{
 		$topic = $this->getTopic($query);
 		if(!$topic){ return $result; }
 				
-		// once there is a match, get all of the children
-		$children = $this->getChildren($topic);
-		$topic->addChildren($children);
-		
-		$children = array(); // so we don't enter the loop, for now
-		
-		
-		foreach($children as $uid => $child){
-			// get all the blurb pieces
-			$blurbPieces = $this->getBlurb($uid);
-			
-			// add the blurb pieces to the child
-			
-			// add the child to the topic
-		}			
+		// once there is a match, get all of the Events
+		$events = $this->getEvents($topic);
+		$topic->addEvents($events);
 		
 		$result->addTopic($topic);
 		return $result;
 	}
 
 	private function getTopic($title){
+		$dateFields = array('start', 'end');
 		$topic = null;
 		
 		// check if a topic has the exact title
 		$q = "select * from nodes where title='$title' limit 1";
 		$r = mysql_query($q, $this->conn);
 		while($row = mysql_fetch_assoc($r)){
+			foreach($row as $key => $val){
+				if(in_array($key, $dateFields)){
+					$row[$key] = HistoricalDate::sqlToJs($val);
+				}
+			}
 			$topic = new Topic($row);
 		}
 		
@@ -60,13 +54,19 @@ class VishisDatabase implements TrustedSite{
 		// todo: %like%
 
 		// if there's still no match, return a null result
+		
 		return $topic;
 	}
 	
-	private function getChildren($topic){
-		$children = array();
+	private function getEvents($topic){
+		$eventFields = array('title', 'location', 'start', 'end');
+		$markerFields = array('lat', 'lng');
+		$dateFields = array('start', 'end');
+	
+		$events = array();
+		$marker = false;
 		
-		$uid = $topic->getId();
+		$uid = $topic->getField('uid');
 		
 		$q = "select * from nodes, node_relations ";
 		$q.= "where nodes.uid = node_relations.to_uid ";
@@ -74,19 +74,29 @@ class VishisDatabase implements TrustedSite{
 		
 		$r = mysql_query($q, $this->conn);
 		while($row = mysql_fetch_assoc($r)){
-			$children[] = new Node($row);
+			$e = new Event();
+			
+			// We know there will be a marker since polygons are not supported
+			$m = new Marker();
+			
+			foreach($row as $key => $val){
+				if(in_array($key, $dateFields)){
+					$val = HistoricalDate::sqlToJs($val);
+				}
+			
+				if(in_array($key, $eventFields)){
+					$e->addField($key, $val);
+				}
+				if(in_array($key, $markerFields)){
+					$m->addField($key, $val);
+				}
+			}
+			
+			$e->addMarker($m);
+			$events[] = $e;
 		}
-		return $children;
+		return $events;
 	}
-	
-	/**
-	* @param {int} the uid of the node whose blurb to get
-	* @return {Array} the node's blurb, in pieces
-	*/
-	private function getBlurb($nodeId){
-		
-	}
-
 }
 
 ?>
