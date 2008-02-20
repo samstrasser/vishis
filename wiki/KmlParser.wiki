@@ -5,7 +5,7 @@
 
 This page will get more concrete once I find some good examples of how people use KML and I implement those
 
-= Kml -> [http://code.google.com/p/vishis/wiki/ObjectInterfaces VisHis Objects] =
+= Kml -> [ObjectInterfaces VisHis Objects] =
 {{{
 <kml xmlns="http://earth.google.com/kml/2.2">
   <Document>                                      Topic
