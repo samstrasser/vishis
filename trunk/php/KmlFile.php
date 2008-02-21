@@ -10,6 +10,13 @@ class KmlFile implements TrustedSite{
 	const tag_point		= 'POINT';
 	const tag_polygon	= 'POLYGON';
 	const tag_coords 	= 'COORDINATES';
+	
+	const nodetype_topic 	= 'topic';
+	const nodetype_event 	= 'event';
+	const nodetype_marker 	= 'marker';
+	const nodetype_polygon 	= 'polygon';
+	
+	private $curr = array();
 
 	public function __construct(){
 		// I don't think there is anything that needs to go here
@@ -22,9 +29,9 @@ class KmlFile implements TrustedSite{
 		    die("could not open XML input");
 		}
 
-		$this->depth = array();
+		/* $this->depth = array();*/
 
-		$this->parse($fp);
+		$this->parseFile($fp);
 		return $this->result;
 	}
 
@@ -40,9 +47,13 @@ class KmlFile implements TrustedSite{
 		array_push($this->tagStack, $name);
 		
 		if($name == self::tag_topic){
-			$this->currTopic = new Topic();
+			$this->curr[self::nodetype_topic] = new Topic();
 		}elseif($name == self::tag_event){
-			$this->currEvent = new Node();			
+			$this->curr[self::nodetype_event] = new Event();			
+		// Create a Marker every time you create an event // }elseif($name == self::tag_marker){
+			$this->curr[self::nodetype_marker] = new Marker();
+		}elseif($name == self::tag_polygon){
+			$this->curr[self::nodetype_polygon] = new Polygon();
 		}else{
 			// Remember which tag this is, so when we get data, we can interpret it properly
 			$this->currTag = $name;
@@ -58,55 +69,77 @@ class KmlFile implements TrustedSite{
 		// $last == $name // sanity check
 		
 		if($name == self::tag_topic){
-			$this->result->addTopic($this->currTopic);
+			$this->result->addTopic($this->curr[self::nodetype_topic]);
 		}elseif($name == self::tag_event){
-			$this->currTopic->addChild($this->currEvent);
-			//$this->currEvent = false;
+			$this->curr[self::nodetype_event]->addMarker($this->curr[self::nodetype_marker]);
+			$this->curr[self::nodetype_topic]->addEvent($this->curr[self::nodetype_event]);
+		}elseif($name == self::tag_polygon){
+			$this->curr[self::nodetype_event]->addPolygon($this->curr[self::nodetype_polygon]);
 		}else{
 			// For now, we are going to ignore all other tags
 		}
 	}
 	
 	private function elementData($parser, $data){
-		if($this->currTag == self::tag_title){
-			$title = trim($data);
-			
-			// Is this the Event's title?
+		$data = trim($data);
+		
+		// Take care of special tags
+		if($this->currTag == self::tag_title){	
+			$field = 'title';
 			if(in_array(self::tag_event, $this->tagStack)){
-				$this->currEvent->addField('title', $title);
+				$nodeType = self::nodetype_event;
 			}else{
-				$this->currTopic->addField('title', $title);
+				$nodeType = self::nodetype_topic;
+			}
+		}elseif($this->currTag == self::tag_coords){
+			$field = 'coords';
+			$data = $this->parseCoordinateList($data);
+			if(in_array(self::tag_point, $this->tagStack)){
+				$nodeType = self::nodetype_marker;
+				$data = $data[0];
+			}elseif(in_array(self::tag_polygon, $this->tagStack)){
+				$nodeType = self::nodetype_polygon;
 			}
 		}elseif($this->currTag == self::tag_start){
-			$dateString = trim($data);
-			$this->currEvent->addField('start', HistoricalDate::kmlToJs($dateString));
+			$nodeType = self::nodetype_event;
+			$field = 'start';
+			$data = HistoricalDate::kmlToJs($data);
 		}elseif($this->currTag == self::tag_end){
-			$dateString = trim($data);
-			$this->currEvent->addField('end', HistoricalDate::kmlToJs($dateString));
-		}elseif($this->currTag == self::tag_coords){
-			// make sure this is a point ( since we aren't supporting polygons yet)
-			if(in_array(self::tag_point, $this->tagStack)){
-				$coordPair = trim($data);
-				$latlng = explode(',', $coordPair);
-				$this->currEvent->addField('lng', $latlng[0]);
-				$this->currEvent->addField('lat', $latlng[1]);
-			}elseif(in_array(self::tag_polygon, $this->tagStack)){
-				$coords = explode("\n", trim($data));
-				foreach($coords as $coord){
-					$coordPair = trim($coord);
-					$latlng = explode(',', $coordPair);
-					$this->currEvent->addField('lng', $latlng[0]);
-					$this->currEvent->addField('lat', $latlng[1]);
-				}
-			
-			}
+			$nodeType = self::nodetype_event;
+			$field = 'start';
+			$data = HistoricalDate::kmlToJs($data);
 		}else{
 			// For now, we are going to ignore all other tags
 		}
+		
+		if($nodeType && $field && $data){	
+			$this->curr[$nodeType]->addField($field, $data);
+		}
 	}
 	
-	private function parse($fp){
+	private function parseCoordinateList($data){
+		$list = array();
+		$coords = explode("\n", trim($data));
+		
+		foreach($coords as $coord){
+			$coordPair = trim($coord);
+			if($coordPair){
+				$latlng = explode(',', $coordPair);
+				array_push($list, $latlng);
+			}
+		}
+		return $list;
+	}
+	
+	private function parseFile($fp){
 		$this->tagStack = array();
+		
+		$this->curr = array(
+			nodetype_topic	 => false,
+			nodetype_event	 => false,
+			nodetype_marker	 => false,
+			nodetype_polygon => false
+		);
 		
 		$parser = xml_parser_create();
 		xml_set_element_handler($parser, 
