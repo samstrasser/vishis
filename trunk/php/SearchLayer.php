@@ -36,6 +36,7 @@ class SearchResult{
 }
 
 class Node{
+	private $fields = array();
 
 	public function __construct($fields = array()){
 		$this->addFields($fields);
@@ -54,7 +55,8 @@ class Node{
 			// if its' not an array, make it one
 			$this->addField($key, array($old, $value));
 		}else{
-			$this->addField($key, array_push($old, $value));
+			array_push($old, $value);
+			$this->addField($key, $old);
 		}
 	}
 	
@@ -164,8 +166,7 @@ class Event extends Node {
 		$pieces['polygons'] = array();
 		foreach($polygons as $polygon){
 			// "inherit" downward
-			$polygon->addField('title', $this->getField('title'));
-			$polygon->addField('color', $this->getField('color'));
+			//$polygon->addField('color', $this->getField('color'));
 			
 			$pieces['polygons'][] = $polygon->toJsonObj();
 		}
@@ -177,11 +178,7 @@ class Event extends Node {
 
 class Marker extends Node {}
 
-class Polygon extends Node {
-	public function addCoordinate($coordPair){
-		$this->appendToField('coords', $coordPair);
-	}
-}
+class Polygon extends Node {}
 
 // Useful for converting between all the formats 
 // e.g. mysql, php, javascript
