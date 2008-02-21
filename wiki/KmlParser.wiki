@@ -33,8 +33,8 @@ This page will get more concrete once I find some good examples of how people us
 
     <Placemark id="pm251">                        Event
       <name><![CDATA[title]]></name>              Event.title
-      ~~<Snippet maxLines="0">empty</Snippet>~~
-      <description><![CDATA[HTML]]></description> ???
+      <Snippet maxLines="0">empty</Snippet>       ---
+      <description><![CDATA[HTML]]></description> Marker.blurb
       <TimeSpan>
         <begin>DATE</begin>                       Event.start
             <end>DATE</end>                       Event.end
