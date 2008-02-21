@@ -10,26 +10,6 @@ This page will get more concrete once I find some good examples of how people us
 <kml xmlns="http://earth.google.com/kml/2.2">
   <Document>                                      Topic
     <name><![CDATA[US States]]></name>            Topic.title
-      <IconStyle>
-        <scale>0.4</scale>
-        <Icon>
-          <href>http://maps.google.com/mapfiles/kml/shapes/star.png</href>
-        </Icon>
-      </IconStyle>
-      <LabelStyle>
-        <color>9900ffff</color>
-        <scale>1</scale>
-      </LabelStyle>
-      <LineStyle>
-        <color>990000ff</color>
-        <width>2</width>
-      </LineStyle>
-      <PolyStyle>
-        <color>997f7fff</color>
-        <fill>1</fill>
-        <outline>1</outline>
-      </PolyStyle>
-    </Style>
 
     <Placemark id="pm251">                        Event
       <name><![CDATA[title]]></name>              Event.title
@@ -67,4 +47,3 @@ This page will get more concrete once I find some good examples of how people us
 For now, I will just write reminders of things that come up along the way.
  * Placemark.address => Event.location?
  * Placemark.!TimePrimitive and not just .!TimeSpan
- * Placemark.description => (I have no idea)
