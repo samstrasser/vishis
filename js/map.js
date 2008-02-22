@@ -33,9 +33,6 @@ function Map(mapDiv){
 YAHOO.lang.extend(Map, GMap2);
 
 Map.prototype.addTopic = function(topic){
-	console.log(topic);
-	
-	
 	if(this.isACurrTopic(topic)){
 		return true;
 	}
@@ -50,8 +47,13 @@ Map.prototype.addTopic = function(topic){
 			var overlay = overlays[ok];
 			
 			// Add all the overlays to the map right at the beginning
-			this.addOverlay(overlay);
-			overlay.hide();		
+			try{
+				this.addOverlay(overlay);
+				overlay.hide();
+			}catch(e){
+				console.log(overlay);
+				throw(e);
+			}
 		}
 	}
 
@@ -170,7 +172,11 @@ Event.prototype.addMarker = function(marker){
 }
 
 Event.prototype.getOverlays = function(){
-	return this.polygons.concat(this.marker);
+	if(this.polygons.length > 0){
+		return this.polygons;
+	}else{
+		return new Array(this.marker);
+	}
 }
 
 Event.prototype.show = function(){
@@ -195,11 +201,16 @@ function Marker(node){
 	this.domElt;
 	this.titleElt;
 	
+	var lat = parseFloat(node.coords[1]);
+	var lng = parseFloat(node.coords[0]);
+	delete node.coords;
+	var latlng = new GLatLng(lat, lng);
+	
 	for(var k in node){
 		this[k] = node[k];
 	}
 
-	var latlng = new GLatLng(this.lat, this.lng);
+	
 	
 	var icon = new GIcon();
 	icon.image = 'img/event.icon.png';
