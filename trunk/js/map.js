@@ -249,10 +249,9 @@ Marker.prototype.bringToFront = function(){
  function Polygon(node){
 	var latlngs = new Array();
 	for(var ck in node.coords){
-		var lat = parseInt(node.coords[ck][1], 10);
-		var lng = parseInt(node.coords[ck][0], 10);
+		var lat = parseFloat(node.coords[ck][1]);
+		var lng = parseFloat(node.coords[ck][0]);
 		
-		// hack: why would lat or lng ever be one of these huge numbers??
 		if(!isNaN(lat) && lat > -90   && lat < 90 &&
 		   !isNaN(lng) && lng > -180  && lng < 180){
 			var latlng = new GLatLng(lat, lng)
