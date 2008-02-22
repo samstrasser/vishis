@@ -26,9 +26,7 @@ Server.search = function(query, cbFunc, cbObj){
 // cbObj.cbFunc should expect exactly one Topic object as an argument
 // and may be called several times
 Server.decodeAndCallback = function(json, cbFunc, cbObj){
-
 	var obj = JSON.parse(json);
-	console.log(obj);
 	
 	for(var tk in obj){
 		// first save the Events
@@ -79,7 +77,6 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		}
 		topic.id = Server.nextTopicId++;
 		
-		console.log(topic);
 		cbFunc.call(cbObj, topic);
 	}
 }
