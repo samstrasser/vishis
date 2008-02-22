@@ -127,7 +127,6 @@ TopicList.prototype.clear = function(transferTo){
  * @class Topic
  **/
 function Topic(node, displayType){
-	this.id = 0;
 	this.events = new Array();
 	
 	for(var k in node){
@@ -181,7 +180,7 @@ Topic.prototype.addEvent = function(event){
 }
 
 Topic.prototype.getId = function(){
-	return this.uid;
+	return this.id;
 }
 
 Topic.prototype.getRootElement = function(){

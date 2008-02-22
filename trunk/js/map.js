@@ -25,7 +25,6 @@ function Map(mapDiv){
 	this.setCenter(new GLatLng(36.879621,-98.525391), 4); // U.S. map centered out
 	
 	this.currTopics = new Array();
-	this.currEvents = new Array();
 	this.currTimeSpan = {
 		start: new Date(),			 // the latest supported date 		//todo: add future
 		end:   new Date('1/1/1001') // the earliest supported date	// todo: add past
@@ -248,20 +247,26 @@ Marker.prototype.bringToFront = function(){
  }
  
  function Polygon(node){
+	var latlngs = new Array();
+	for(var ck in node.coords){
+		var lat = parseInt(node.coords[ck][1], 10);
+		var lng = parseInt(node.coords[ck][0], 10);
+		
+		// hack: why would lat or lng ever be one of these huge numbers??
+		if(!isNaN(lat) && lat > -90   && lat < 90 &&
+		   !isNaN(lng) && lng > -180  && lng < 180){
+			var latlng = new GLatLng(lat, lng)
+			latlngs.push(latlng);
+		}
+	}
+	delete node.coords;
+	
  	for(var k in node){
 		this[k] = node[k];
 	}
 	
-	this.latlngs = new Array();
-	var coords = this.coordinates;
-	for(var ck in coords){
-		var lat = coords[ck][0];
-		var lat = coords[ck][1];
-		this.latlngs.push(new GLatLng(lat, lng));
-	}
-	
 	GPolygon.call(this, 
-				this.latlngs, 	// Points
+				latlngs, 		// Points
 				"#883333",		// Stroke Color
 				1,				// Stroke Weight
 				.8,				// Stroke Opacity
