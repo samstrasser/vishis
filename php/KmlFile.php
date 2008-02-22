@@ -25,13 +25,9 @@ class KmlFile implements TrustedSite{
 	public function search($url){
 		$this->result = new SearchResult();
 
-		if (!($fp = fopen($url, "r"))) {
-		    die("could not open XML input");
-		}
-
 		/* $this->depth = array();*/
 
-		$this->parseFile($fp);
+		$this->parseFile($url);
 		return $this->result;
 	}
 
@@ -131,7 +127,7 @@ class KmlFile implements TrustedSite{
 		return $list;
 	}
 	
-	private function parseFile($fp){
+	private function parseFilePointer($fp){
 		$this->tagStack = array();
 		
 		$this->curr = array(
@@ -160,5 +156,31 @@ class KmlFile implements TrustedSite{
 		}
 		xml_parser_free($parser);
 	}
+	
+	private function parseFile($uri){
+		$this->tagStack = array();
+		
+		$this->curr = array(
+			nodetype_topic	 => false,
+			nodetype_event	 => false,
+			nodetype_marker	 => false,
+			nodetype_polygon => false
+		);
+		
+		$parser = xml_parser_create();
+		xml_set_element_handler($parser, 
+								array($this, "startElement"), 
+								array($this, "endElement")
+								);
+		xml_set_character_data_handler($parser, 
+								array($this, "elementData")
+								);
+
+		if (!xml_parse($parser, file_get_contents($uri), true)){ 
+			// todo: die gracefully
+		}
+		xml_parser_free($parser);
+	}
+
 }
 ?>
