@@ -91,6 +91,7 @@ class VishisDatabase implements TrustedSite{
 					$m->addField($key, $val);
 				}
 			}
+			$m->addField('coords', array($m->getField('lng'), $m->getField('lat')));
 			
 			$e->addMarker($m);
 			$events[] = $e;
