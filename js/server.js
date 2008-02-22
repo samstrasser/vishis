@@ -12,6 +12,9 @@ Server.baseUrl = '/php/';
 Server.searchUrl = Server.baseUrl + 'search.php';
 Server.method = 'GET';
 
+// Static variables to help assign ids
+Server.nextTopicId = 0;
+
 /*
  * The API functions
  * These functions should be called by the other scripts
@@ -74,6 +77,7 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		if(!topic.end){
 			topic.end = max;
 		}
+		topic.id = Server.nextTopicId++;
 		
 		console.log(topic);
 		cbFunc.call(cbObj, topic);
