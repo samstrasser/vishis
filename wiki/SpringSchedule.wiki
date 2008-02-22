@@ -6,8 +6,8 @@
  * ~~back-to-front data i.e. implement decodeAndCallback(json, cb)~~
  * ~~research, design and implement kml piece~~
  * ~~design polygons~~
- * implement polygons
- * event ui
+ * ~~implement polygons~~
+ * event ui: mouse actions
  * topic list ui
  * slider ui
 *March* (2 weeks)
