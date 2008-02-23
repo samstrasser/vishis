@@ -210,41 +210,58 @@ function Marker(node){
 		this[k] = node[k];
 	}
 
-	
-	
 	var icon = new GIcon();
 	icon.image = 'img/event.icon.png';
 	icon.iconSize = new GSize(10, 10);
 	icon.iconAnchor = new GPoint(5, 5);
 	icon.infoWindowAnchor = new GPoint(5, 5);
 
+	if(!this.blurb){
+		this.blurb = 'Fake description'
+	}
+	var labelHtml = '<span class="title">' + this.title + '</span>';
+	labelHtml += '<div class="desc">' + this.blurb + '</div>';
+	
 	var opts = { 
 	  "icon": icon,
 	  "clickable": true,
-	  "labelText": this.title,
+	  "labelText": labelHtml,
 	  "labelOffset": new GSize(10, -11),
 	  "labelClass": "marker"
 	};
 	
 	LabeledMarker.call(this, latlng, opts);
 	
-	// todo: add mouseover, mouseout actions
-	//GEvent.addListener(titleElt, "mouseover", showBlurb());
-	//GEvent.addListener(domElt, "mouseout", hideBlurb());
+	// Note: we can register the events on the LabeledMarker b/c it passes through events on the div_ element
+	// i.e. this is both the dom element and the javascript object instance
+	GEvent.bind(this, "mouseover", this, this.showBlurb);
+	GEvent.bind(this, "mouseover", this, this.bringToFront);
+	
+	GEvent.bind(this, "mouseout", this, this.hideBlurb);
+	GEvent.bind(this, "mouseout", this, this.restoreZIndex);
 
 };
 YAHOO.lang.extend(Marker, LabeledMarker);
 
 Marker.prototype.hideBlurb = function(){
-	//pass
+	this.desc_.style.display = 'none';
 }
 
 Marker.prototype.showBlurb = function(){
-	//pass
+	this.desc_.style.display = 'block';
 }
 
 Marker.prototype.bringToFront = function(){
-	// pass
+	// todo: bring the icon forward
+
+	this.oldZIndex=this.div_.style.zIndex;
+	this.div_.style.zIndex="1000";
+}
+
+Marker.prototype.restoreZIndex = function(){
+	// todo: send the icon back
+	
+	this.div_.style.zIndex=this.oldZIndex;
 }
 
 /**
