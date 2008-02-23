@@ -79,6 +79,9 @@ LabeledMarker.prototype.initialize = function(map) {
   this.div_.title = this.title_;
   
   map.getPane(G_MAP_MARKER_PANE).appendChild(this.div_);
+  
+  this.desc_ = this.div_.getElementsByTagName('div')[0];
+  this.hideBlurb();
 
   if (this.clickable_) {
     /**
