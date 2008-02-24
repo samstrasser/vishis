@@ -51,11 +51,11 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 			var event = new Event(eventObj);
 			
 			for(pk in polygons){
-				var polygon = new Polygon(polygons[pk]);
+				var polygon = new Polygon(polygons[pk], event);
 				event.addPolygon(polygon);
 			}
 			
-			var marker = new Marker(markerObj);
+			var marker = new Marker(markerObj, event);
 			event.addMarker(marker);
 			
 			topic.addEvent(event);
