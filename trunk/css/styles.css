@@ -102,19 +102,33 @@ div.marker{
 	border: 1px solid #aaa;
 }
 
-p.blurb{
-	width:200px;
-	height:150px;
-	overflow:hidden;
-	white-space:normal;
-	font-size:10pt;
+div.marker > span.title {
+	
+}
+div.marker > div.desc {}
+div.marker h3 {
+	margin:0px;
+	font-size:12pt;
 }
 
-div.date-range{
+div.marker h3.location {}
+
+div.marker h3.range{}
+
+div.marker div.date-range{
 	font-size:10pt;
 	font-weight:bold;
 }
 
+div.marker p {
+	font-size:10pt;
+	display:none;
+
+	width:200px;
+	height:150px;
+	overflow:hidden;
+	white-space:normal;	
+}
 
 #slider-label-start, #slider-label-end{
 	color:white;

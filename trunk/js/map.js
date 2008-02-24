@@ -197,9 +197,8 @@ Event.prototype.hide = function(){
 /**
  * @class 
  */
-function Marker(node){
-	this.domElt;
-	this.titleElt;
+function Marker(node, event){
+	this.e = event; // keep track of the parent
 	
 	var lat = parseFloat(node.coords[1]);
 	var lng = parseFloat(node.coords[0]);
@@ -216,11 +215,12 @@ function Marker(node){
 	icon.iconAnchor = new GPoint(5, 5);
 	icon.infoWindowAnchor = new GPoint(5, 5);
 
-	if(!this.blurb){
-		this.blurb = 'Fake description'
-	}
-	var labelHtml = '<span class="title">' + this.title + '</span>';
-	labelHtml += '<div class="desc">' + this.blurb + '</div>';
+	var labelHtml = '<span class="title">' + this.e.title + '</span>';
+	labelHtml += '<div class="desc">';
+	labelHtml += '<h3 class="location">' + this.e.location + '</h3>';
+	labelHtml += '<h3 class="date-range">' + Util.formatDate(this.e.start) + '-' + Util.formatDate(this.e.end) + '</h3>';
+	labelHtml += '<p class="blurb">' + ' ' + '</p>';
+	labelHtml += '</div>';
 	
 	var opts = { 
 	  "icon": icon,
@@ -253,6 +253,8 @@ Marker.prototype.showBlurb = function(){
 
 Marker.prototype.bringToFront = function(){
 	// todo: bring the icon forward
+	console.log(this);
+	console.log(this.getIcon());
 
 	this.oldZIndex=this.div_.style.zIndex;
 	this.div_.style.zIndex="1000";
@@ -274,7 +276,9 @@ Marker.prototype.restoreZIndex = function(){
 	this.redraw(true);
  }
  
- function Polygon(node){
+ function Polygon(node, event){
+	this.e = event;
+ 
 	var latlngs = new Array();
 	for(var ck in node.coords){
 		var lat = parseFloat(node.coords[ck][1]);
