@@ -7,6 +7,7 @@ class KmlFile implements TrustedSite{
 	const tag_title 	= 'NAME';
 	const tag_start 	= 'BEGIN';
 	const tag_end 		= 'END';
+	const tag_blurb		= 'DESCRIPTION';
 	const tag_point		= 'POINT';
 	const tag_polygon	= 'POLYGON';
 	const tag_coords 	= 'COORDINATES';
@@ -104,6 +105,9 @@ class KmlFile implements TrustedSite{
 			$nodeType = self::nodetype_event;
 			$field = 'start';
 			$data = HistoricalDate::kmlToJs($data);
+		}elseif($this->currTag == self::tag_blurb){
+			$nodeType = self::nodetype_event;
+			$field = 'blurb';
 		}else{
 			// For now, we are going to ignore all other tags
 		}

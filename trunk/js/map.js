@@ -338,7 +338,7 @@ Polygon.prototype.showDetails = function(){
 		html,			// html
 		
 		// options object:
-		{ maxWidth: 200 }	// in pixels
+		{ maxWidth: 250 }	// in pixels
 	);
 }
 
