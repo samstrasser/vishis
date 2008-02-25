@@ -106,7 +106,7 @@ div.marker > span.title {
 	
 }
 div.marker > div.desc {}
-div.marker h3 {
+div.marker h3, div.polygon h3 {
 	margin:0px;
 	font-size:12pt;
 }
@@ -115,17 +115,16 @@ div.marker h3.location {}
 
 div.marker h3.range{}
 
-div.marker div.date-range{
+div.marker div.date-range, div.polygon div.date-range {
 	font-size:10pt;
 	font-weight:bold;
 }
 
-div.marker p {
+div.marker p, div.polygon p {
 	font-size:10pt;
-	display:none;
 
 	width:200px;
-	height:150px;
+	max-height:150px;
 	overflow:hidden;
 	white-space:normal;	
 }
