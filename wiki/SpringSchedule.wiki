@@ -7,9 +7,10 @@
  * ~~research, design and implement kml piece~~
  * ~~design polygons~~
  * ~~implement polygons~~
- * event ui: mouse actions
+ * ~~event ui: mouse actions~~
  * topic list ui
  * slider ui
+ * event ui: blurbs and titles
 *March* (2 weeks)
  * search ui in the navigation panel
  * map without roads
