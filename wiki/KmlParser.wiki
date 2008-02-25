@@ -1,7 +1,7 @@
 #summary Describes the exact subset of kml that vishis uses
 #labels Featured
 
-[http://code.google.com/apis/kml/ KML] is a pretty large markup language and much of it does not apply to Visualize History.  So the VisHis site will parse KML files, but will ignore things irrelevant to its display of history.
+[http://code.google.com/apis/kml/ KML] is a pretty large markup language and much of it does not apply to Visualize History.  So the vishis site will parse KML files, but will ignore things irrelevant to its display of history.
 
 This page will get more concrete once I find some good examples of how people use KML and I implement those
 
@@ -29,7 +29,7 @@ This page will get more concrete once I find some good examples of how people us
           <Polygon>                               Polygon
               <LinearRing>
                 <coordinates>                     Polygon.coords
--159.335174733889,21.9483433404175                as long as LinearRing is the tag stack
+-159.335174733889,21.9483433404175                as long as LinearRing is in the tag stack
 -159.327130348878,22.0446395507162 
 -159.295025589769,22.1248124949548 
 -159.335174733889,21.9483433404175 
