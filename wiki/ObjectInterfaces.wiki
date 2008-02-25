@@ -23,6 +23,7 @@
   String color (inherits),
   String location,
   String title,
+  String blurbHtml,
 
   Array Polygons polygons,
   Marker marker,
@@ -34,7 +35,6 @@
   
 *Marker* (dom: !LabeledMarker)
 {{{
-  String title (inherits),
   String lat,
   String lng,
   String blurb,
@@ -54,7 +54,6 @@
     ]
   ColorString color (inherits),
   ColorString borderColor (computed?),
-  String title (inherits),
   
   Event off: show polygon
   Event over: showLabel()
