@@ -41,7 +41,10 @@ Map.prototype.addTopic = function(topic){
 	
 	var events = topic.getEvents();
 	for(var ek in events){
-		var overlays = events[ek].getOverlays();
+		// Add a reference to the map so the events can call Map methods
+		events[ek].addMap(this);
+		
+		var overlays = events[ek].getAllOverlays();
 		
 		for(var ok in overlays){
 			var overlay = overlays[ok];
@@ -159,6 +162,18 @@ function Event(node){
 		}
 	}
 	
+	// Create the blurb
+	this.blurbHtml  = '<span class="title">' + this.title + '</span>';
+	this.blurbHtml += '<div class="desc">';
+	if(this.location){
+		this.blurbHtml += '<h3 class="location">' + this.location + '</h3>';
+	}
+	this.blurbHtml += '<h3 class="date-range">' + Util.formatDate(this.start) + '-' + Util.formatDate(this.end) + '</h3>';
+	if(this.blurb){
+		this.blurbHtml += '<p class="blurb">' + this.blurb + '</p>';
+	}
+	this.blurbHtml += '</div>';
+	
 	this.polygons = new Array();
 	this.marker = false;
 }
@@ -171,12 +186,24 @@ Event.prototype.addMarker = function(marker){
 	this.marker = marker;
 }
 
+Event.prototype.getMarker = function(){
+	return this.marker;
+}
+
+Event.prototype.addMap = function(map){
+	this.map = map;
+}
+
 Event.prototype.getOverlays = function(){
 	if(this.polygons.length > 0){
 		return this.polygons;
 	}else{
 		return new Array(this.marker);
 	}
+}
+
+Event.prototype.getAllOverlays = function(){
+	return this.polygons.concat(this.marker);
 }
 
 Event.prototype.show = function(){
@@ -215,17 +242,10 @@ function Marker(node, event){
 	icon.iconAnchor = new GPoint(5, 5);
 	icon.infoWindowAnchor = new GPoint(5, 5);
 
-	var labelHtml = '<span class="title">' + this.e.title + '</span>';
-	labelHtml += '<div class="desc">';
-	labelHtml += '<h3 class="location">' + this.e.location + '</h3>';
-	labelHtml += '<h3 class="date-range">' + Util.formatDate(this.e.start) + '-' + Util.formatDate(this.e.end) + '</h3>';
-	labelHtml += '<p class="blurb">' + ' ' + '</p>';
-	labelHtml += '</div>';
-	
 	var opts = { 
 	  "icon": icon,
 	  "clickable": true,
-	  "labelText": labelHtml,
+	  "labelText": this.e.blurbHtml,
 	  "labelOffset": new GSize(10, -11),
 	  "labelClass": "marker"
 	};
@@ -269,14 +289,14 @@ Marker.prototype.restoreZIndex = function(){
 /**
   * Sets the label text
  */
- Marker.prototype.setLabelText = function(text){
+Marker.prototype.setLabelText = function(text){
 	this.labelText_ = text;
 	this.div_.innerHTML = this.labelText_;
 	
 	this.redraw(true);
  }
  
- function Polygon(node, event){
+function Polygon(node, event){
 	this.e = event;
  
 	var latlngs = new Array();
@@ -286,8 +306,8 @@ Marker.prototype.restoreZIndex = function(){
 		
 		if(!isNaN(lat) && lat > -90   && lat < 90 &&
 		   !isNaN(lng) && lng > -180  && lng < 180){
-			var latlng = new GLatLng(lat, lng)
-			latlngs.push(latlng);
+			this.latlng = new GLatLng(lat, lng)
+			latlngs.push(this.latlng);
 		}
 	}
 	delete node.coords;
@@ -305,5 +325,47 @@ Marker.prototype.restoreZIndex = function(){
 				.3,				// Fill Opacity
 				{clickable:true}//Opts
 			);
- }
- YAHOO.lang.extend(Polygon, GPolygon);
+	
+	//GEvent.bind(this, "click", this, this.toggleMarker);
+	GEvent.bind(this, "click", this, this.showDetails);
+}
+YAHOO.lang.extend(Polygon, GPolygon);
+
+Polygon.prototype.showDetails = function(){
+	var html = '<div class="polygon">' + this.e.blurbHtml + '</div>';
+	this.e.map.openInfoWindowHtml(
+		this.latlng,	// point
+		html,			// html
+		
+		// options object:
+		{ maxWidth: 200 }	// in pixels
+	);
+}
+
+Polygon.prototype.getMarker = function(){
+	if(!this.marker){
+		this.marker = this.e.getMarker(); // cache the marker for speed
+	}	
+	return this.marker;
+}
+
+Polygon.prototype.toggleMarker = function(){
+	var m = this.getMarker();
+	if(m.isHidden()){
+		this.showMarker();
+	}else{
+		this.hideMarker();
+	}
+}
+
+Polygon.prototype.showMarker = function(){
+	var m = this.getMarker();
+	m.show();
+	m.showBlurb();
+}
+
+Polygon.prototype.hideMarker = function(){
+	var m = this.getMarker();
+	m.hideBlurb();
+	m.hide();
+}
