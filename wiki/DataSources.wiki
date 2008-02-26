@@ -1,6 +1,10 @@
 #summary A list of the places I will get info from
 #labels Featured
 
+
+= Introduction =
+Visualize History is not in the business of indexing and storing the world's historical information.  Rather, it uses the many existing sites and their public interfaces to find historical data.
+
 = Sources =
  * UVA
   * [http://valley.vcdh.virginia.edu/reference/timelines/timelines.html The Valley of the Shadow]
@@ -17,3 +21,16 @@
   * Population by race (1790 - 1990)
   * Urban vs. Rural population (1930 - 2000)
   * Population of the 100 largest cities
+
+= Potential Sites =
+These are sites that I've noticed but haven't checked out yet
+ * [http://memory.loc.gov/ammem/index.html American Memory from the Library of Congress]
+ * [http://www.sp.uconn.edu/~djleu/fourth.html Teaching with the Internet]
+ * Google News Archive timelines
+  * [http://googlesystem.blogspot.com/2007/12/google-news-archives-updated-timelines.html Blog posting]
+  * [http://www.google.com/views?q=bach+view%3Atimeline example: Bach]
+ * [http://gos2.geodata.gov/wps/portal/gos Geospatial One Stop]
+ * Census Data
+  * [http://www.esri.com/data/download/census2000_tigerline/ 2000 Census]
+ * [http://seamless.usgs.gov/website/seamless/ US Geological Survey]
+ * [http://libinfo.uark.edu/gis/us.asp University of Arkansas Geospatial Resources]
