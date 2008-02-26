@@ -1,5 +1,5 @@
 #summary The rough schedule I'll follow during the Spring Semester
-#labels Featured
+#labels Featured,Type-Administrative
 
 = Schedule for Spring Semester =
 *February* (4 weeks)
