@@ -21,6 +21,8 @@ Visualize History is not in the business of indexing and storing the world's his
   * Population by race (1790 - 1990)
   * Urban vs. Rural population (1930 - 2000)
   * Population of the 100 largest cities
+ * Universities of California
+  * [http://www.calisphere.universityofcalifornia.edu/themed_collections/index.html Themed collections]
 
 = Potential Sites =
 These are sites that I've noticed but haven't checked out yet
