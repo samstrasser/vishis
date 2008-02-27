@@ -6,23 +6,34 @@
 Visualize History is not in the business of indexing and storing the world's historical information.  Rather, it uses the many existing sites and their public interfaces to find historical data.
 
 = Sources =
- * UVA
-  * [http://valley.vcdh.virginia.edu/reference/timelines/timelines.html The Valley of the Shadow]
- * The History Place
-  * [http://www.historyplace.com/civilwar/index.html Civil War Timeline]
- * MIT: Simile Project
-  * Timeline
-   * [http://simile.mit.edu/timeline/examples/religions/jewish-history.html Jewish History]
-   * [http://simile.mit.edu/timeline/examples/religions/christianity.html Christian History]
-  * Exhibit
-   * [http://simile.mit.edu/exhibit/examples/presidents/ American Presidents]
- * [http://www.census.gov/population/www/censusdata/hiscendata.html U.S. Census Historical Data]
-  * Foreign-born population (1850 - 1990)
-  * Population by race (1790 - 1990)
-  * Urban vs. Rural population (1930 - 2000)
-  * Population of the 100 largest cities
- * Universities of California
+ * [http://valley.vcdh.virginia.edu/reference/timelines/timelines.html The Valley of the Shadow]]
+  * A detailed look at two neighboring towns, one in the North and one in the South
+  * Source: University of Virginia
+ * [http://www.historyplace.com/civilwar/index.html Civil War Timeline]
+  * A fairly high level timeline of the war
+  * Source: The History Place .com
+
+ * (Maybes)
+  * [http://simile.mit.edu/timeline/examples/religions/jewish-history.html Jewish History]
+   * Jewish history
+   * Source: MIT: Simile Project: Timeline
+  * [http://simile.mit.edu/timeline/examples/religions/christianity.html Christian History]
+   * Christian history
+   * Source: MIT: Simile Project: Timeline
+  * [http://simile.mit.edu/exhibit/examples/presidents/ American Presidents]
+   * A very detailed look at U.S. Presidents
+   * Source: Exhibit
+  * [http://www.census.gov/population/www/censusdata/hiscendata.html U.S. Census Historical Data]
+   * Foreign-born population (1850 - 1990)
+   * Population by race (1790 - 1990)
+   * Urban vs. Rural population (1930 - 2000)
+   * Population of the 100 largest cities
+
+   * Source: U.S. Census
+  
   * [http://www.calisphere.universityofcalifornia.edu/themed_collections/index.html Themed collections]
+   * A collection of primary sources during the periods 1848-1865 and 1870-1900
+   * Source: The Universities of California
 
 = Potential Sites =
 These are sites that I've noticed but haven't checked out yet
