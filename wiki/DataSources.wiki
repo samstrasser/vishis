@@ -12,17 +12,17 @@ Visualize History is not in the business of indexing and storing the world's his
  * [http://www.historyplace.com/civilwar/index.html Civil War Timeline]
   * A fairly high level timeline of the war
   * Source: The History Place .com
+ * [http://simile.mit.edu/exhibit/examples/presidents/ American Presidents]
+   * A very detailed look at U.S. Presidents
+   * Source: Exhibit
 
- * (Maybes)
+* Maybes *
   * [http://simile.mit.edu/timeline/examples/religions/jewish-history.html Jewish History]
    * Jewish history
    * Source: MIT: Simile Project: Timeline
   * [http://simile.mit.edu/timeline/examples/religions/christianity.html Christian History]
    * Christian history
    * Source: MIT: Simile Project: Timeline
-  * [http://simile.mit.edu/exhibit/examples/presidents/ American Presidents]
-   * A very detailed look at U.S. Presidents
-   * Source: Exhibit
   * [http://www.census.gov/population/www/censusdata/hiscendata.html U.S. Census Historical Data]
    * Foreign-born population (1850 - 1990)
    * Population by race (1790 - 1990)
