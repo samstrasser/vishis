@@ -28,9 +28,6 @@ Visualize History is not in the business of indexing and storing the world's his
    * Population by race (1790 - 1990)
    * Urban vs. Rural population (1930 - 2000)
    * Population of the 100 largest cities
-
-   * Source: U.S. Census
-  
   * [http://www.calisphere.universityofcalifornia.edu/themed_collections/index.html Themed collections]
    * A collection of primary sources during the periods 1848-1865 and 1870-1900
    * Source: The Universities of California
