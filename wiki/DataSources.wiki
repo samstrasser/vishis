@@ -27,6 +27,8 @@ Visualize History is not in the business of indexing and storing the world's his
 = Potential Sites =
 These are sites that I've noticed but haven't checked out yet
  * [http://memory.loc.gov/ammem/index.html American Memory from the Library of Congress]
+  * http://memory.loc.gov/ammem/browse/ListSome.php?timePeriod=1850-1899
+   * 
  * [http://www.sp.uconn.edu/~djleu/fourth.html Teaching with the Internet]
  * Google News Archive timelines
   * [http://googlesystem.blogspot.com/2007/12/google-news-archives-updated-timelines.html Blog posting]
