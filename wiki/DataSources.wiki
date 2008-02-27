@@ -6,7 +6,7 @@
 Visualize History is not in the business of indexing and storing the world's historical information.  Rather, it uses the many existing sites and their public interfaces to find historical data.
 
 = Sources =
- * [http://valley.vcdh.virginia.edu/reference/timelines/timelines.html The Valley of the Shadow]]
+ * [http://valley.vcdh.virginia.edu/reference/timelines/timelines.html The Valley of the Shadow]
   * A detailed look at two neighboring towns, one in the North and one in the South
   * Source: University of Virginia
  * [http://www.historyplace.com/civilwar/index.html Civil War Timeline]
