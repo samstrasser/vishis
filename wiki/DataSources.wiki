@@ -29,10 +29,10 @@ These are sites that I've noticed but haven't checked out yet
  * [http://memory.loc.gov/ammem/index.html American Memory from the Library of Congress]
   * http://memory.loc.gov/ammem/browse/ListSome.php?timePeriod=1850-1899
    * 
- * [http://www.sp.uconn.edu/~djleu/fourth.html Teaching with the Internet]
  * Google News Archive timelines
   * [http://googlesystem.blogspot.com/2007/12/google-news-archives-updated-timelines.html Blog posting]
   * [http://www.google.com/views?q=bach+view%3Atimeline example: Bach]
+ * ~~[http://www.sp.uconn.edu/~djleu/fourth.html Teaching with the Internet]~~
  * ~~[http://gos2.geodata.gov/wps/portal/gos Geospatial One Stop]~~
  * ~~[http://seamless.usgs.gov/website/seamless/ US Geological Survey]~~
  * ~~[http://libinfo.uark.edu/gis/us.asp University of Arkansas Geospatial Resources]~~
