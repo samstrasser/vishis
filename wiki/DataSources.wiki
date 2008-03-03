@@ -17,12 +17,6 @@ Visualize History is not in the business of indexing and storing the world's his
    * Source: MIT: Simile Project: Exhibit
 
 = Maybes =
-  * [http://simile.mit.edu/timeline/examples/religions/jewish-history.html Jewish History]
-   * Jewish history
-   * Source: MIT: Simile Project: Timeline
-  * [http://simile.mit.edu/timeline/examples/religions/christianity.html Christian History]
-   * Christian history
-   * Source: MIT: Simile Project: Timeline
   * [http://www.census.gov/population/www/censusdata/hiscendata.html U.S. Census Historical Data]
    * Foreign-born population (1850 - 1990)
    * Population by race (1790 - 1990)
@@ -34,6 +28,13 @@ Visualize History is not in the business of indexing and storing the world's his
    * Source: The Universities of California
  * [http://memory.loc.gov/ammem/index.html American Memory from the Library of Congress]
   * http://memory.loc.gov/ammem/browse/ListSome.php?timePeriod=1850-1899
+ * ~~[http://simile.mit.edu/timeline/examples/religions/jewish-history.html Jewish History]~~
+   * ~~Jewish history~~
+   * ~~Source: MIT: Simile Project: Timeline~~
+ * ~~[http://simile.mit.edu/timeline/examples/religions/christianity.html Christian History]~~
+   * ~~Christian history~~
+   * ~~Source: MIT: Simile Project: Timeline~~
+
  * ~~Google News Archive timelines~~
   * ~~[http://googlesystem.blogspot.com/2007/12/google-news-archives-updated-timelines.html Blog posting]~~
   * ~~[http://www.google.com/views?q=bach+view%3Atimeline example: Bach]~~
