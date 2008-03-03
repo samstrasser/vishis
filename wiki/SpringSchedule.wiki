@@ -2,21 +2,25 @@
 #labels Featured,Type-Administrative
 
 = Schedule for Spring Semester =
-*February* (4 weeks)
+*~~February~~* (4 weeks)
  * ~~back-to-front data i.e. implement decodeAndCallback(json, cb)~~
  * ~~research, design and implement kml piece~~
  * ~~design polygons~~
  * ~~implement polygons~~
  * ~~event ui: mouse actions~~
+*March* (2 weeks)
+ * add data from DataSources
+ * add blurbs to data storage schema
  * topic list ui
  * slider ui
  * event ui: blurbs and titles
-*March* (2 weeks)
  * search ui in the navigation panel
  * map without roads
- * add blurbs to data storage
 *April* (5 weeks)
+ * make example cases, demos, and explanations
+
+= Future =
+If there is time left, I will do these.
  * research, design and implement family tree piece
  * research, design and implement timelines piece
  * design and implement arrows and lines
- * make example cases, demos, and explanations
