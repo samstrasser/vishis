@@ -11,12 +11,12 @@
 *March* (2 weeks)
  * add data from DataSources
  * add blurbs to data storage schema
- * topic list ui
- * slider ui
  * event ui: blurbs and titles
- * search ui in the navigation panel
  * map without roads
 *April* (5 weeks)
+ * topic list ui
+ * slider ui
+ * search ui in the navigation panel
  * make example cases, demos, and explanations
 
 = Future =
