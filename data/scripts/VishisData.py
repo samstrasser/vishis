@@ -26,10 +26,10 @@ class Node:
 
         vals = []
         for k in keys:
-            if d[k].startswith('@'):# it's a variable
-                vals.append(d[k])
-            elif d[k] == None:
+            if d[k] == None:
                 vals.append('NULL')
+            elif d[k].startswith('@'):# it's a variable
+                vals.append(d[k])
             else:
                 vals.append("'" + MySQLdb.escape_string(d[k]) + "'")
         vals = ','.join(vals)
@@ -56,7 +56,7 @@ class Dataset(Node):
     def toSql(self):
         sql = ''
 
-        sql += self.getInsertQuery('citations', {'d':None, 'url':self.cite.getUrl()})
+        sql += self.getInsertQuery('citations', {'cid':None, 'url':self.cite.getUrl()})
         sql += self.getLastIdQuery('cid')
                                            
         for t in self.topics:
@@ -157,7 +157,7 @@ class Polygon(Node):
         return sql
 
 
-class Citation
+class Citation:
     def __init__(self):
         self.url = 'http://www.visualizehistory.com/data'
 
@@ -169,6 +169,10 @@ class Citation
                                    
 if __name__ == '__main__':
     ds = Dataset()
+
+    c = Citation()
+    c.setUrl('http://not.a.real.site.com')
+    ds.setCitation(c)
 
     t = Topic()
     t.addField('title', "Topic's Title")
