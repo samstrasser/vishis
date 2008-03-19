@@ -89,6 +89,7 @@ class Event(Node):
         self.dbFields = ['start', 'end', 'location', 'title']
         self.polygons = []
         self.marker = None
+        self.blurb = None
 
     def addPolygon(self, p):
         self.polygons.append(p)
@@ -100,6 +101,9 @@ class Event(Node):
     def setMarker(self, m):
         self.marker = m
 
+    def setBlurbHtml(self, html):
+        self.blurb = html
+
     def toSql(self):
         d = {}
         for field in self.dbFields:
@@ -108,7 +112,8 @@ class Event(Node):
         sql = self.getInsertQuery('nodes', d)
         sql += self.getLastIdQuery('eid')
 
-        # todo: blurb
+        if self.blurb:
+            sql += self.getInsertQuery('node_blurbs', {'nid':'@eid','blurb_html': self.blurb})
 
         if self.marker:
             sql += self.marker.toSql()
@@ -181,6 +186,7 @@ if __name__ == '__main__':
     e1 = Event()
     e1.addField('title', 'Event One')
     e1.addField('location', 'Location of Event One')
+    e1.setBlurbHtml('<h1>Event ONE!!!</h1>')
     t.addEvent(e1)
 
     m1 = Marker()
@@ -191,6 +197,7 @@ if __name__ == '__main__':
     e2 = Event()
     e2.addField('title', 'Event Two')
     e2.addField('location', 'Location of Event Two')
+    e2.setBlurbHtml('<h2><i>event two</i></h2>')
     t.addEvent(e2)
     
             
