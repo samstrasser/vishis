@@ -3,30 +3,47 @@
 = SQL =
 *nodes*
 {{{
-uid
+nid
 title
 location
-lat
-lng
-start
-end
-blurb
-type
+start, end
 color
 }}}
 
-*node_relation*
+*node_markers*
 {{{
-fromUid
-toUid
-type
+nid
+lat,lng
 }}}
 
-*node_regions*
+*node_polygons
 {{{
-nodeId
-lat
-lng
+nid
+pid
+}}}
+
+*polygons_coords*
+{{{
+pid
+lat,lng
+}}}
+
+*node_blurbs*
+{{{
+nid
+blurbHtml
+}}}
+
+*node_relations*
+{{{
+fromNid
+toNid
+}}}
+
+*node_citations*
+{{{
+nid
+url
 }}}
 
 = JSON =
