@@ -42,21 +42,23 @@ class Node:
 class Dataset(Node):
     def __init__(self):
         self.topics = []
+        self.cite = Citation()
     
     def addTopic(self, t):
         self.topics.append(t)
 
     def setCitation(self, c):
-        self.citation = c
+        self.cite = c
 
     def asSql(self):
         print self.toSql()
         
     def toSql(self):
-        # insert into citations CITATION
-        # @cid = last_insert_id()
-        
         sql = ''
+
+        sql += self.getInsertQuery('citations', {'d':None, 'url':self.cite.getUrl()})
+        sql += self.getLastIdQuery('cid')
+                                           
         for t in self.topics:
             sql += t.toSql() + '\n\n'
         return sql
@@ -73,7 +75,9 @@ class Topic(Node):
         sql = self.getInsertQuery('nodes', d)
         sql += self.getLastIdQuery('tid')
 
-        # insert into node_citations @cid, @tid
+        # set the citation for this topic
+        d = {'nid':'@tid', 'cid':'@cid'}
+        sql += self.getInsertQuery('node_citations', d)
 
         for e in self.events:
             sql += e.toSql()
@@ -152,6 +156,17 @@ class Polygon(Node):
 
         return sql
 
+
+class Citation
+    def __init__(self):
+        self.url = 'http://www.visualizehistory.com/data'
+
+    def setUrl(self, url):
+        self.url = url
+        
+    def getUrl(self):
+        return self.url
+                                   
 if __name__ == '__main__':
     ds = Dataset()
 
