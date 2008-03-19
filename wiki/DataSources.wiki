@@ -11,6 +11,7 @@ Visualize History is not in the business of indexing and storing the world's his
   * Source: University of Virginia
  * [http://www.historyplace.com/civilwar/index.html Civil War Timeline]
   * A fairly high level timeline of the war
+  * todo: add the [http://www.historyplace.com/civilwar/cwar-pix/civmap.gif Allegiance Map]
   * Source: The History Place .com
  * [http://simile.mit.edu/exhibit/examples/presidents/ American Presidents]
    * A very detailed look at U.S. Presidents
