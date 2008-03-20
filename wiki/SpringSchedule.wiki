@@ -10,7 +10,7 @@
  * ~~event ui: mouse actions~~
 *March* (2 weeks)
  * add data from DataSources
- * add blurbs to data storage schema
+ * ~~add blurbs to data storage schema~~
  * event ui: blurbs and titles
  * map without roads
 *April* (5 weeks)
