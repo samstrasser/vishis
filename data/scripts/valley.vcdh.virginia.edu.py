@@ -35,7 +35,6 @@ t.addField('title', 'The Valley of the Shadow')
 ds.addTopic(t)
 
 for year in range(1859, 1868):
-    year = 1859
     url = baseUrl + 'timeline%d.html'%year
 
     s = readUrl(url)
@@ -51,7 +50,14 @@ for year in range(1859, 1868):
         space = dateString.rfind(' ')
         if space > -1:
             dateString = dateString[space:]
-        start = parseDate(dateString)
+        try:
+            start = parseDate(dateString)
+        except:
+            if dateString.startswith('Mid'):
+                start = parseDate(dateString[4:])
+            elif dateString == '06-31-1860':
+                start = parseDate('06-30-1860')
+
         end   = start.combine(start, datetime.time(23,59,59))
 
         for col in range(1, 6):
