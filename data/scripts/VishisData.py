@@ -1,4 +1,5 @@
 import MySQLdb
+import datetime
 
 class Node:
     def getField(self, key):
@@ -28,6 +29,9 @@ class Node:
         for k in keys:
             if d[k] == None:
                 vals.append('NULL')
+            elif d[k].__class__ == datetime.datetime:
+                # it's a date
+                vals.append("'" + d[k].isoformat() + "'")
             elif d[k].startswith('@'):# it's a variable
                 vals.append(d[k])
             else:

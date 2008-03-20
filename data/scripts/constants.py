@@ -9,5 +9,5 @@ def readUrl(url):
 
 import libxml2dom
 
-def parseString(s):
+def parseHtml(s):
     return libxml2dom.parseString(s, html=1)
