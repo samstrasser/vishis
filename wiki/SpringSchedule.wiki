@@ -9,7 +9,7 @@
  * ~~implement polygons~~
  * ~~event ui: mouse actions~~
 *March* (2 weeks)
- * add data from DataSources
+ * ~~add data from DataSources~~
  * ~~add blurbs to data storage schema~~
  * event ui: blurbs and titles
  * map without roads
