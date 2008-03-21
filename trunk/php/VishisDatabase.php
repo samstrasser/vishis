@@ -64,22 +64,18 @@ class VishisDatabase implements TrustedSite{
 		$dateFields = array('start', 'end');
 	
 		$events = array();
-		$marker = false;
 		
-		$uid = $topic->getField('uid');
+		$nid = $topic->getField('nid');
 		
 		$q = "select * from nodes, node_relations ";
-		$q.= "where nodes.uid = node_relations.to_uid ";
-		$q.= "and node_relations.from_uid = '$uid' ";
+		$q.= "where nodes.nid = node_relations.to_nid ";
+		$q.= "and node_relations.from_nid = '$nid' ";
 		
-		$r = mysql_query($q, $this->conn);
-		while($row = mysql_fetch_assoc($r)){
+		$eventsRes = mysql_query($q, $this->conn);
+		while($node = mysql_fetch_assoc($eventsRes)){
 			$e = new Event();
 			
-			// We know there will be a marker since polygons are not supported
-			$m = new Marker();
-			
-			foreach($row as $key => $val){
+			foreach($node as $key => $val){
 				if(in_array($key, $dateFields)){
 					$val = HistoricalDate::sqlToJs($val);
 				}
@@ -87,13 +83,36 @@ class VishisDatabase implements TrustedSite{
 				if(in_array($key, $eventFields)){
 					$e->addField($key, $val);
 				}
-				if(in_array($key, $markerFields)){
-					$m->addField($key, $val);
-				}
 			}
-			$m->addField('coords', array($m->getField('lng'), $m->getField('lat')));
 			
-			$e->addMarker($m);
+			// Try to find a blurb for this Event
+			$eid = $node['nid'];
+			$q = "select blurb_html from node_blurbs where nid='$eid' limit 1;";
+			$r = mysql_query($q, $this->conn);
+			if(mysql_num_rows($r) == 1){ // found a blurb for this Event
+				$blurbRow = mysql_fetch_assoc($r);
+				
+				$blurbHtml = $blurbRow['blurb_html'];
+				$e->addField('blurbHtml', $blurbHtml);
+			}
+			
+			// Try to find a Marker for this Event
+			$q = "select lat, lng from node_markers where nid='$nid' limit 1;";
+			$r = mysql_query($q, $this->conn);
+			if(mysql_num_rows($r) == 1){ // found a Marker for this Event
+				$mRow = mysql_fetch_assoc($r);
+				
+				$m = new Marker();
+				$latlng = array($mRow['lng'], $mRow['lat']);
+				$m->addField('coords', $latlng);
+			
+				$e->addMarker($m);
+			}
+			
+			// Try to find Polygon(s) for this marker
+			if(false){ // todo
+			
+			}
 			$events[] = $e;
 		}
 		return $events;
