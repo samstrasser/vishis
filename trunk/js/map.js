@@ -162,17 +162,20 @@ function Event(node){
 		}
 	}
 	
-	// Create the blurb
-	this.blurbHtml  = '<span class="title">' + this.title + '</span>';
-	this.blurbHtml += '<div class="desc">';
-	if(this.location){
-		this.blurbHtml += '<h3 class="location">' + this.location + '</h3>';
+	if(!this.blurbHtml){
+		// Create the blurb
+		if(this.location){
+			this.blurbHtml += '<h3 class="location">' + this.location + '</h3>';
+		}
+		this.blurbHtml += '<h3 class="date-range">' + Util.formatDate(this.start) + '-' + Util.formatDate(this.end) + '</h3>';
+		if(this.blurb){
+			this.blurbHtml += '<p class="blurb">' + this.blurb + '</p>';
+		}
+
 	}
-	this.blurbHtml += '<h3 class="date-range">' + Util.formatDate(this.start) + '-' + Util.formatDate(this.end) + '</h3>';
-	if(this.blurb){
-		this.blurbHtml += '<p class="blurb">' + this.blurb + '</p>';
-	}
-	this.blurbHtml += '</div>';
+	
+	// No matter what, the blurb gets a title and the right class
+	this.blurbHtml = '<div class="desc">' + '<span class="title">' + this.title + '</span>' + this.blurbHtml + '</div>';	
 	
 	this.polygons = new Array();
 	this.marker = false;

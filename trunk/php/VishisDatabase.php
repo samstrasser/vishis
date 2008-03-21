@@ -41,13 +41,35 @@ class VishisDatabase implements TrustedSite{
 		// check if a topic has the exact title
 		$q = "select * from nodes where title='$title' limit 1";
 		$r = mysql_query($q, $this->conn);
-		while($row = mysql_fetch_assoc($r)){
+		if(mysql_num_rows($r) == 1){
+			// found the topic
+			$row = mysql_fetch_assoc($r);
 			foreach($row as $key => $val){
 				if(in_array($key, $dateFields)){
 					$row[$key] = HistoricalDate::sqlToJs($val);
 				}
 			}
 			$topic = new Topic($row);
+			
+			// get the start and end of the topic in SQL, which will be much easier
+			$nid = $topic->getField('nid');
+			$q = "select start from nodes, node_relations ";
+			$q.= "where nodes.nid = node_relations.to_nid ";
+			$q.= "and node_relations.from_nid = '$nid' ";
+			$q.= "order by start asc limit 1";
+			$r = mysql_query($q);
+			$row = mysql_fetch_assoc($r);
+			$topic->addField('start', HistoricalDate::sqlToJs($row['start']));
+
+			$nid = $topic->getField('nid');
+			$q = "select end from nodes, node_relations ";
+			$q.= "where nodes.nid = node_relations.to_nid ";
+			$q.= "and node_relations.from_nid = '$nid' ";
+			$q.= "order by end desc limit 1";
+			$r = mysql_query($q);
+			$row = mysql_fetch_assoc($r);
+			$topic->addField('end', HistoricalDate::sqlToJs($row['end']));
+			
 		}
 		
 		// if there's no exact message, check for similar matches
@@ -97,7 +119,9 @@ class VishisDatabase implements TrustedSite{
 			}
 			
 			// Try to find a Marker for this Event
-			$q = "select lat, lng from node_markers where nid='$nid' limit 1;";
+			$loc = $e->getField("location");
+			// assert($loc !== false);
+			$q = "select lat, lng from locations where location='$loc' limit 1;";
 			$r = mysql_query($q, $this->conn);
 			if(mysql_num_rows($r) == 1){ // found a Marker for this Event
 				$mRow = mysql_fetch_assoc($r);
