@@ -156,7 +156,13 @@ class Event extends Node {
 		$pieces = parent::toJsonObj();
 		
 		// 'Inherit" down
-		$marker->addField('title', $this->getField('title'));
+		// There is always a marker, so if one is not present, add an empty one
+		if(!$marker){
+			$marker = new Marker();
+		}		
+		// todo_deprecated
+		// $marker->addField('title', $this->getField('title'));
+		
 		$pieces['marker'] = $marker->toJsonObj();
 		
 		if($polygons === false){
