@@ -39,7 +39,7 @@ class VishisDatabase implements TrustedSite{
 		$topic = null;
 		
 		// check if a topic has the exact title
-		$q = "select * from nodes where title='$title' limit 1";
+		$q = "select * from nodes where title='".mysql_real_escape_string($title)."' limit 1";
 		$r = mysql_query($q, $this->conn);
 		if(mysql_num_rows($r) == 1){
 			// found the topic
@@ -120,10 +120,11 @@ class VishisDatabase implements TrustedSite{
 			
 			// Try to find a Marker for this Event
 			$loc = $e->getField("location");
+			$loc = mysql_real_escape_string($loc);
 			// assert($loc !== false);
 			$q = "select lat, lng from locations where location='$loc' limit 1;";
 			$r = mysql_query($q, $this->conn);
-			if(mysql_num_rows($r) == 1){ // found a Marker for this Event
+			if(mysql_num_rows($r) >= 1){ // found a Marker for this Event
 				$mRow = mysql_fetch_assoc($r);
 				
 				$m = new Marker();
@@ -131,6 +132,9 @@ class VishisDatabase implements TrustedSite{
 				$m->addField('coords', $latlng);
 			
 				$e->addMarker($m);
+			}else{
+				// warn: no marker found
+				// see vishis.com/admin/checkMarkers.php to see which one(s)
 			}
 			
 			// Try to find Polygon(s) for this marker
