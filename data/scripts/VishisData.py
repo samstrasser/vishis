@@ -125,7 +125,7 @@ class Event(Node):
         for p in self.polygons:
             sql += p.toSql()
 
-        d = {'fromNid':'@tid', 'toNid':'@eid'}
+        d = {'from_nid':'@tid', 'to_nid':'@eid'}
         sql += self.getInsertQuery('node_relations', d)
         return sql
 
