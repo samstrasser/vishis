@@ -159,6 +159,10 @@ class Event extends Node {
 		// There is always a marker, so if one is not present, add an empty one
 		if(!$marker){
 			$marker = new Marker();
+			
+			// Add a dummy LatLng to make it obvious
+			$dummy = array('-89.736328', '25.720735');
+			$marker->addField('coords', $dummy);
 		}		
 		// todo_deprecated
 		// $marker->addField('title', $this->getField('title'));
