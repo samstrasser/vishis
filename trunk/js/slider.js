@@ -114,6 +114,16 @@ TimeSlider.prototype.initialize = function(map){
 	return container;
 }
 
+TimeSlider.prototype.hide = function(){
+	var sl = document.getElementById(TimeSlider.sliderId);
+	sl.style.display = "none";
+}
+
+TimeSlider.prototype.show = function(map){
+	var sl = document.getElementById(TimeSlider.sliderId);
+	sl.style.display = "block";
+}
+
 TimeSlider.prototype.getDefaultPosition = function(){
 	return new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10, 15));
 }
