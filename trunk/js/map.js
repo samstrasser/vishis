@@ -39,6 +39,31 @@ Map.prototype.addTopic = function(topic){
 	
 	this.currTopics[topic.getId()] = topic;
 	
+	// Try to adjust map to fit bounds
+	console.log(topic);
+	if(topic.bounds){
+		var sw = new GLatLng(topic.bounds.s, topic.bounds.w);
+		var ne = new GLatLng(topic.bounds.n, topic.bounds.e);
+		
+		console.log(sw, ne);
+		/* 
+		todo: if this is the first topic 
+		if(){
+			// then set the bounds manually
+		}else{
+			// otherwise extend the current bounds by the new topic's bounds
+		}
+		*/
+		
+		var bounds = this.getBounds();
+		bounds.extend(sw);
+		bounds.extend(ne);
+		console.log(sw, ne, bounds, this.getBounds());
+		this.adjustToFitBounds(bounds);
+	}
+	
+	// get the min, max of this and all other events
+	
 	var events = topic.getEvents();
 	for(var ek in events){
 		// Add a reference to the map so the events can call Map methods
@@ -145,6 +170,11 @@ Map.prototype.adjustToFitPoints = function(n, s, e, w){
 		ne = new GLatLng(n, e);
 	var bounds = new GLatLngBounds(sw,  ne);
 	
+	var zoom = this.getBoundsZoomLevel(bounds)
+	this.setCenter(bounds.getCenter(), zoom);
+}
+
+Map.prototype.adjustToFitBounds = function(bounds){
 	var zoom = this.getBoundsZoomLevel(bounds)
 	this.setCenter(bounds.getCenter(), zoom);
 }

@@ -119,16 +119,26 @@ class Topic extends Node{
 		
 		// then save all the events
 		$pieces['events'] = array();
+		$bounds = array('s' => 90,
+						'w' => 180,
+						'n' => -90,
+						'e' => -180);
 		foreach($this->events as $e){
-			// todo: calculate bounds
+			// calculate bounds of topic
+			$m = $e->getField('marker');
+			list($lng, $lat) = $m->getField('coords');
+			//print($lng.",".$lat."<br/>\n");
+			if($lng > $bounds['e']){ $bounds['e'] = $lng; }
+			if($lng < $bounds['w']){ $bounds['w'] = $lng; }
+			if($lat > $bounds['n']){ $bounds['n'] = $lat; }
+			if($lat < $bounds['s']){ $bounds['s'] = $lat; }
 			
-			// todo: calculate start, end times
-
 			// "Inherit" downward
 			$e->addField('color', $this->getField('color'));
 		
 			$pieces['events'][] = $e->toJsonObj();
 		}
+		$pieces['bounds'] = $bounds;
 		
 		return $pieces;
 	}
