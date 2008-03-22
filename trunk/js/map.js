@@ -15,12 +15,10 @@ function Map(mapDiv){
 		mapDiv = document.getElementById("map");
 	}
 	this.constructor.superclass.constructor.call(this, mapDiv);
+	this.mapDiv = mapDiv;
 
 	this.addControl(new GLargeMapControl());
 	this.addControl(new GScaleControl());
-
-	this.ts = new TimeSlider(mapDiv, this.displayEvents, this);
-	this.addControl(this.ts);
 
 	this.setCenter(new GLatLng(36.879621,-98.525391), 4); // U.S. map centered out
 	
@@ -35,6 +33,12 @@ YAHOO.lang.extend(Map, GMap2);
 Map.prototype.addTopic = function(topic){
 	if(this.isACurrTopic(topic)){
 		return true;
+	}
+	
+	// If it's the first topic, add the TimeSlider
+	if(this.currTopics.length <= 0){
+		this.ts = new TimeSlider(this.mapDiv, this.displayEvents, this);
+		this.addControl(this.ts);
 	}
 	
 	this.currTopics[topic.getId()] = topic;
