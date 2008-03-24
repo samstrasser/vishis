@@ -95,14 +95,44 @@ Server.makeRequest = function(url, cbFunc, cbObj){
 		}
 	}
 	
-	request.open(Server.method, url);
+	request.open(Server.method, url, true);
 
 	request.send(null);
 }
 
 Server.createRequest = function(){
-	// todo: support IE
-	return new XMLHttpRequest();
+	var _msxml_progid = [
+		'Microsoft.XMLHTTP',
+		'MSXML2.XMLHTTP.3.0',
+		'MSXML2.XMLHTTP'
+		];
+	
+	var obj,http;
+	try
+	{
+		// Instantiates XMLHttpRequest in non-IE browsers and assigns to http.
+		http = new XMLHttpRequest();
+		//  Object literal with http and tId properties
+		obj = http;
+	}
+	catch(e)
+	{
+		for(var i=0; i<this._msxml_progid.length; ++i){
+			try
+			{
+				// Instantiates XMLHttpRequest for IE and assign to http
+				http = new ActiveXObject(this._msxml_progid[i]);
+				//  Object literal with conn and tId properties
+				obj = http;
+				break;
+			}
+			catch(e){}
+		}
+	}
+	finally
+	{
+		return obj;
+	}
 }
 
 Server.getUrl = function(query){
