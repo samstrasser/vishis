@@ -100,12 +100,24 @@ div.marker{
 	background-color:White;
 	padding:1px;
 	border: 1px solid #aaa;
+	width:200px;
+	overflow: hidden;
+	text-overflow:ellipsis;
+
 }
 
 div.marker > span.title {
-	
+	font-size:11pt;
+	padding:1px;
 }
-div.marker > div.desc {}
+div.marker > div.desc {
+	border-top:1px solid black;
+	font-size:11pt;
+	padding:1px;
+	width:300px;
+	white-space:normal;
+}
+
 div.marker h3, div.polygon h3 {
 	margin:0px;
 	font-size:12pt;
