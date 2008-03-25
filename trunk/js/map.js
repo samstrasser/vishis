@@ -19,6 +19,8 @@ function Map(mapDiv){
 
 	this.addControl(new GLargeMapControl());
 	this.addControl(new GScaleControl());
+	
+	this.tsAdded = false;
 
 	this.setCenter(new GLatLng(36.879621,-98.525391), 4); // U.S. map centered out
 	
@@ -36,7 +38,8 @@ Map.prototype.addTopic = function(topic){
 	}
 	
 	// If it's the first topic, add the TimeSlider
-	if(this.currTopics.length <= 0){
+	if(!this.tsAdded){
+		this.tsAdded = true;
 		this.ts = new TimeSlider(this.mapDiv, this.displayEvents, this);
 		this.addControl(this.ts);
 	}
@@ -209,7 +212,7 @@ function Event(node){
 	}
 	
 	// No matter what, the blurb gets a title and the right class
-	this.blurbHtml = '<div class="desc">' + '<span class="title">' + this.title + '</span>' + this.blurbHtml + '</div>';	
+	this.blurbHtml = '<span class="title">' + this.title + '</span>' + '<div class="desc">' + this.blurbHtml + '</div>';
 	
 	this.polygons = new Array();
 	this.marker = false;
@@ -301,10 +304,12 @@ function Marker(node, event){
 YAHOO.lang.extend(Marker, LabeledMarker);
 
 Marker.prototype.hideBlurb = function(){
+	this.div_.style.width = '200px';
 	this.desc_.style.display = 'none';
 }
 
 Marker.prototype.showBlurb = function(){
+	this.div_.style.width = '300px';
 	this.desc_.style.display = 'block';
 }
 
