@@ -170,9 +170,7 @@ function Topic(node, displayType){
 	remove.innerHTML = 'X';
 	this.elt.appendChild(remove);
 }
-Topic.nextSet = 0;
-Topic.getNextColorSet = function(){
-	var sets = [
+Topic.colorSets = [
 		{
 			primary:  	"#FFFF00FF",
 			corner:		"#FF8A00FF",
@@ -204,7 +202,10 @@ Topic.getNextColorSet = function(){
 			stroke:		"#FF0000FF",
 		},
 	];
-	return sets[Topic.nextSet++];
+Topic.nextColorSet = 0;
+Topic.getNextColorSet = function(){
+
+	return Topic.colorSets[Topic.nextColorSet++];
 }
 
 

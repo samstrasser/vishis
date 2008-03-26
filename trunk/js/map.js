@@ -330,19 +330,23 @@ Marker.prototype.showBlurb = function(){
 	this.desc_.style.display = 'block';
 }
 
+Marker.prototype.getIconElt = function(){
+	return this.div_.previousSibling.previousSibling;
+}
+
 Marker.prototype.bringToFront = function(){
 	// todo: bring the icon forward
-	console.log(this);
-	console.log(this.getIcon());
-
 	this.oldZIndex=this.div_.style.zIndex;
 	this.div_.style.zIndex="1000";
+	
+	this.getIconElt().style.zIndex="1000";
 }
 
 Marker.prototype.restoreZIndex = function(){
 	// todo: send the icon back
 	
 	this.div_.style.zIndex=this.oldZIndex;
+	this.getIconElt().style.zIndex = this.oldZIndex;
 }
 
 /**
