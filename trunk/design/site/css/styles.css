@@ -7,7 +7,9 @@ html, body {
 	height: 100%;
 }
 
-body { margin: 10px; }
+body {
+	margin: 10px;
+}
 
 #content {
 	margin-top: 10px;
@@ -22,6 +24,8 @@ body { margin: 10px; }
 	width: 100%;
 	height: 100%;
 	border: 1px solid #aaa;
+	
+	background-image: url(../img/map.png);
 }
 
 #viewing-panel {
@@ -36,6 +40,7 @@ body { margin: 10px; }
 	width: 220px;
 	height: 100%;
 	overflow: auto;
+	background: url(../img/images/bg-pieces_03.png) no-repeat top right;
 }
 
 body.sidebar-right #viewing-panel { margin-right: 230px; }
@@ -45,13 +50,13 @@ body.nosidebar #viewing-panel { margin: 0; }
 body.nosidebar #nav-panel { display: none; }
 
 #header {
-	background: white;
 	padding:0px;
 	margin:0px;
 	border: 1px solid black;
 	position: relative;
 	height:10%;
 	text-align:center;
+	background: url(../img/images/bg-pieces_01.png) no-repeat top left;
 }
 
 #footer{
@@ -70,7 +75,11 @@ body.nosidebar #nav-panel { display: none; }
 	margin-top:1%;
 	height:100%;
 	vertical-align:middle;
-	font: bold 30px Helvetica, sans-serif;
+	font: bold 30px "Comic Sans MS",Harrington, "Eras Medium ITC", serif;
+}
+
+#header h1 .dotcom{
+	font-size:16px;
 }
 
 
