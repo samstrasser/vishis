@@ -77,13 +77,9 @@ body.nosidebar #nav-panel { display: none; }
 	z-index: 40;
 }
 
-#slider-thumb-start{
-	cursor: e-resize;
-}
+#slider-thumb-start{}
 
-#slider-thumb-end{
-	cursor: w-resize;
-}
+#slider-thumb-end{}
 
 #slider-thumb-spanner {
 	position: absolute;

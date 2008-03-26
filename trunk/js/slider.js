@@ -43,6 +43,7 @@ function TimeSlider(mapElt, cbFunc, cbObj){
         this.sliders[num].subscribe("slideEnd", function() {
 			this.slideEnd();
 		});
+		
 	}
 	
 	// Override setConstraints for each of the sliders
@@ -251,6 +252,9 @@ function Slider(ts, num, name, iLeft, iRight, iTickSize){
 	this.ts = ts;
 	this.width = Slider.width;
 	
+	GEvent.bindDom(this.thumbElt, "mouseover", this, this.mouseOver);
+	GEvent.bindDom(this.thumbElt, "mouseout", this, this.mouseOut);
+	
 	this.hasLock = false;
 }
 YAHOO.lang.extend(Slider, YAHOO.widget.Slider);
@@ -273,6 +277,18 @@ Slider.prototype.adjustOtherSliders = function(){
 	var spanner = this.getOtherSlider('spanner');
 	spanner.setWidth(spanWidth);
 	spanner.setValueSilently(spanCenter-(spanWidth/2));
+}
+
+Slider.prototype.changeCursor = function(){
+	this.thumbElt.style.cursor = "w-resize";
+}
+
+Slider.prototype.restoreCursor = function(){
+	this.thumbElt.style.cursor = "auto";
+}
+
+Slider.prototype.lockCursor = function(){
+
 }
 
 Slider.prototype.showLabel = function(){
@@ -345,15 +361,24 @@ Slider.prototype.change = function(offset){
 	}
 }
 
+Slider.prototype.mouseOver = function(){
+	this.hasLock = this.ts.getLock(this.num);
+	if(this.hasLock){
+		// success => no one had it, no one is dragging, so change the cursor
+		this.changeCursor();
+	}
+	var hadLock = this.ts.releaseLock(this.num);
+}
+
+Slider.prototype.mouseOut = function(){
+	this.restoreCursor();
+}
+
 /**
  * @class Spanner
  */
 function Spanner(ts, num, name, iLeft, iRight, iTickSize){
 	Slider.call(this, ts, num, name, iLeft, iRight, iTickSize);
-	
-	// set mouse over, mosueout actions
-	GEvent.bindDom(this.thumbElt, "mouseover", this, this.mouseOver);
-	GEvent.bindDom(this.thumbElt, "mouseout", this, this.mouseOut);
 	
 	// The Spanner is the only one that should react to bg clicks
 	this.backgroundEnabled = true;
