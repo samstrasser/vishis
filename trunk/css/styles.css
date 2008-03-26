@@ -87,11 +87,11 @@ body.nosidebar #nav-panel { display: none; }
 
 #slider-thumb-spanner {
 	position: absolute;
-	background-image: url(../img/slider.spanner.png);
+	background-image: url(../img/slider.spanner.off.png);
 	height: 40px;
 	width:10px;
 	z-index: 30;
-	cursor: move;
+	/* cursor: move;*/
 }
 
 /* Event Display */
