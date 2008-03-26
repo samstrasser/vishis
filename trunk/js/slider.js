@@ -215,7 +215,7 @@ TimeSlider.prototype.doCallback = function(){
 	var endDate;
 	if(this.getSlider('spanner').isMin()){
 		// at min, only use one value
-		endDate = new Date(startDate.getTime());
+		endDate = new Date(startDate.getTime()+(24*60*60*1000));
 		endDate.setHours(11, 59, 59);
 	}else{
 		var endValue = this.getSlider('end').getValue();
