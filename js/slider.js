@@ -190,8 +190,13 @@ TimeSlider.prototype.hideLabels = function(){
 }
 
 TimeSlider.prototype.showLabels = function(){
-	for(var k in this.sliders){
-		this.sliders[k].showLabel();
+	if(this.getSlider('spanner').isMin()){
+		// the spanner is as small as it can be, so there should only be one label
+		this.getSlider('start').showLabel();
+	}else{
+		for(var k in this.sliders){
+			this.sliders[k].showLabel();
+		}
 	}
 }
 
@@ -205,12 +210,21 @@ TimeSlider.prototype.doCallback = function(){
 	
 	var startValue = this.getSlider('start').getValue();
 	var startDate = this.valueToDate(startValue);
+	startDate.setHours(0, 0, 0);
 	
-	var endValue = this.getSlider('end').getValue();
-	var endDate = this.valueToDate(endValue);
+	var endDate;
+	if(this.getSlider('spanner').isMin()){
+		// at min, only use one value
+		endDate = new Date(startDate.getTime());
+		endDate.setHours(11, 59, 59);
+	}else{
+		var endValue = this.getSlider('end').getValue();
+		endDate = this.valueToDate(endValue);
+	}
 	
 	this.cbFunc.call(this.cbObj, startDate, endDate);
 }
+
 
 /**
  * @class Slider
@@ -380,11 +394,13 @@ Slider.prototype.mouseOut = function(){
 function Spanner(ts, num, name, iLeft, iRight, iTickSize){
 	Slider.call(this, ts, num, name, iLeft, iRight, iTickSize);
 	
+	this.setWidth(Spanner.minWidth);
+	
 	// The Spanner is the only one that should react to bg clicks
 	this.backgroundEnabled = true;
 }
 YAHOO.lang.extend(Spanner, Slider);
-Spanner.minWidth = 5;
+Spanner.minWidth = 4;
 
 Spanner.prototype.setWidth = function(newWidth){
 	this.width = newWidth;
@@ -430,6 +446,13 @@ Spanner.prototype.mouseOut = function(){
 
 Spanner.prototype.restoreThumb = function(){
 	this.setState('restore', true);
+}
+
+Spanner.prototype.isMin = function(){
+	// TODO_HACK: fix this 1+business 
+	var isMin = (this.getWidth() <= Spanner.minWidth + 1);
+	console.log(isMin, this.getWidth(), Spanner.minWidth);
+	return isMin;
 }
 
 // Spanner's do not have labels
