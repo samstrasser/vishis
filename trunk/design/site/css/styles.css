@@ -46,13 +46,18 @@ body.nosidebar #nav-panel { display: none; }
 
 #header {
 	background: white;
-	padding: 4px;
+	padding:0px;
+	margin:0px;
 	border: 1px solid black;
 	position: relative;
 	height:10%;
-	
-	vertical-align:middle;
 	text-align:center;
+}
+
+#footer{
+	margin-top:5px;
+	text-align:center;
+	height:5%;
 }
 
 /* holly hack for IE to get position:bottom right
@@ -62,7 +67,9 @@ body.nosidebar #nav-panel { display: none; }
 /* */
 
 #header h1 {
-	margin: 0;
+	margin-top:1%;
+	height:100%;
+	vertical-align:middle;
 	font: bold 30px Helvetica, sans-serif;
 }
 
