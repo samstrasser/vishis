@@ -1,0 +1,158 @@
+/* Main styles */
+html { overflow: hidden; }
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body { margin: 10px; }
+
+#content {
+	margin-top: 10px;
+	position: relative;
+	height:80%;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: 1px solid #aaa;
+}
+
+#viewing-panel {
+	position: relative;
+	height: 100%;
+}
+
+#nav-panel {
+	position: absolute;
+	border: 1px solid #aaa;
+	top: 0;
+	width: 220px;
+	height: 100%;
+	overflow: auto;
+}
+
+body.sidebar-right #viewing-panel { margin-right: 230px; }
+body.sidebar-right #nav-panel { right: 0; }
+
+body.nosidebar #viewing-panel { margin: 0; }
+body.nosidebar #nav-panel { display: none; }
+
+#header {
+	background: white;
+	padding: 4px;
+	border: 1px solid black;
+	position: relative;
+	height:32px;
+}
+
+/* holly hack for IE to get position:bottom right
+   see: http://www.positioniseverything.net/abs_relbugs.html
+ \*/
+* html #header { height: 1px; }
+/* */
+
+#header h1 {
+	margin: 0;
+	font: bold 30px Helvetica, sans-serif;
+}
+
+
+/* Time Slider */
+#sliderbg {
+	position: relative;
+	background: url(../img/slider.bg.png) 0 0 no-repeat;
+	height: 45px;
+	width: 275px; 
+}
+
+#slider-thumb-start, #slider-thumb-end {
+	position: absolute;
+	z-index: 40;
+}
+
+#slider-thumb-start{}
+
+#slider-thumb-end{}
+
+#slider-thumb-spanner {
+	position: absolute;
+	background-image: url(../img/slider.spanner.off.png);
+	height: 40px;
+	width:10px;
+	z-index: 30;
+	/* cursor: move;*/
+}
+
+/* Event Display */
+div.marker{
+	white-space:nowrap;
+	background-color:White;
+	padding:1px;
+	border: 1px solid #aaa;
+	width:200px;
+	overflow: hidden;
+	text-overflow:ellipsis;
+
+}
+
+div.marker > span.title {
+	font-size:11pt;
+	padding:1px;
+}
+div.marker > div.desc {
+	border-top:1px solid black;
+	font-size:11pt;
+	padding:1px;
+	width:300px;
+	white-space:normal;
+}
+
+div.marker h3, div.polygon h3 {
+	margin:0px;
+	font-size:12pt;
+}
+
+div.marker h3.location {}
+
+div.marker h3.range{}
+
+div.marker div.date-range, div.polygon div.date-range {
+	font-size:10pt;
+	font-weight:bold;
+}
+
+div.marker p, div.polygon p {
+	font-size:10pt;
+
+	width:200px;
+	max-height:150px;
+	overflow:hidden;
+	white-space:normal;	
+}
+
+#slider-label-start, #slider-label-end{
+	color:white;
+	background-color:#aaa;
+	padding:1px;
+	position:absolute;
+	top:-1.5em;
+	white-space:nowrap;
+	font-family:sans-serif;
+	font-size:10pt;
+	border:1px solid Black;
+}
+
+#slider-label-start{
+	right:0;
+}
+
+#slider-label-end{
+	left:0;
+}
