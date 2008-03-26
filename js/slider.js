@@ -76,6 +76,12 @@ function TimeSlider(mapElt, cbFunc, cbObj){
 	};
 	this.getSlider('spanner').setValueSilently(spannerInitPos);
 	this.getSlider('spanner').setWidth(endInitPos - startInitPos);
+	this.getSlider('spanner').subscribe("slideEnd", function() {
+			this.restoreThumb();
+		});
+	this.getSlider('spanner').subscribe("slideStart", function() {
+		this.setState('active');
+	});
 
 }
 YAHOO.lang.extend(TimeSlider, GControl);
@@ -225,12 +231,11 @@ function Slider(ts, num, name, iLeft, iRight, iTickSize){
 		this.labelElt = label;
 		
 		var img = document.createElement('img');
-		img.setAttribute('src', 'img/slider.thumb.'+name+'.png');
+		img.setAttribute('src', 'img/slider.thumb.'+name+'.off.png');
 
 		thumb.appendChild(label);
 		thumb.appendChild(img);
-	}
-	
+	}	
 	bgElt.appendChild(thumb);
 
 	YAHOO.widget.Slider.call(this, bgEltId, bgEltId, 
@@ -249,7 +254,7 @@ function Slider(ts, num, name, iLeft, iRight, iTickSize){
 	this.hasLock = false;
 }
 YAHOO.lang.extend(Slider, YAHOO.widget.Slider);
-Slider.width = 5;
+Slider.width = 1;
 
 Slider.prototype.getOtherSlider = function(name){	
 	return this.ts.getSlider(name);
@@ -346,11 +351,15 @@ Slider.prototype.change = function(offset){
 function Spanner(ts, num, name, iLeft, iRight, iTickSize){
 	Slider.call(this, ts, num, name, iLeft, iRight, iTickSize);
 	
+	// set mouse over, mosueout actions
+	GEvent.bindDom(this.thumbElt, "mouseover", this, this.mouseOver);
+	GEvent.bindDom(this.thumbElt, "mouseout", this, this.mouseOut);
+	
 	// The Spanner is the only one that should react to bg clicks
 	this.backgroundEnabled = true;
 }
 YAHOO.lang.extend(Spanner, Slider);
-Spanner.minWidth = 10;
+Spanner.minWidth = 5;
 
 Spanner.prototype.setWidth = function(newWidth){
 	this.width = newWidth;
@@ -368,6 +377,35 @@ Spanner.prototype.adjustOtherSliders = function(){
 	this.getOtherSlider('start').setValueSilently(startValue);
 	this.getOtherSlider('end').setValueSilently(endValue);
 };
+
+Spanner.prototype.setState = function(state, override){
+	if(state == 'restore'){
+		state = this._restoreThumbState;
+	}
+	
+	if(state != 'active'){
+		this._restoreThumbState = state;
+	}
+	
+	if(this._state != 'active' || override){
+		// only change the thumb if it's not active
+		this.thumbElt.style.backgroundImage = "url(../img/slider.spanner."+state+".png)";
+		this._state = state;
+	}
+}
+
+Spanner.prototype.mouseOver = function(){
+	this.setState('over');
+	
+}
+
+Spanner.prototype.mouseOut = function(){
+	this.setState('off');
+}
+
+Spanner.prototype.restoreThumb = function(){
+	this.setState('restore', true);
+}
 
 // Spanner's do not have labels
 Spanner.prototype.showLabel = function(){}
