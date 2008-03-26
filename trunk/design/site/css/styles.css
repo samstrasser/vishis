@@ -49,7 +49,10 @@ body.nosidebar #nav-panel { display: none; }
 	padding: 4px;
 	border: 1px solid black;
 	position: relative;
-	height:32px;
+	height:10%;
+	
+	vertical-align:middle;
+	text-align:center;
 }
 
 /* holly hack for IE to get position:bottom right
