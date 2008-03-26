@@ -118,7 +118,10 @@ div.marker{
 	width:200px;
 	overflow: hidden;
 	text-overflow:ellipsis;
-
+	
+	/* move it up so the center is at the correct lattitude */
+	position:relative;
+	margin-top:-8px;
 }
 
 div.marker > span.title {
