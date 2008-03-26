@@ -36,6 +36,8 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		delete obj[tk]['events'];
 		
 		var topic = new Topic(obj[tk]);
+		topic.colorSet = Topic.getNextColorSet();
+		
 		var min = new Date('12/31/2038'); // todo HDate.max;
 		var max = new Date('01/01/1001'); // todo: HDate.min
 
@@ -48,7 +50,7 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 			var polygons = eventObj['polygons'];
 			delete eventObj['events'];
 
-			var event = new Event(eventObj);
+			var event = new Event(eventObj, topic);
 			
 			for(pk in polygons){
 				var polygon = new Polygon(polygons[pk], event);
@@ -80,7 +82,6 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		cbFunc.call(cbObj, topic);
 	}
 }
-
 
 /* Private functions */
 Server.makeRequest = function(url, cbFunc, cbObj){
