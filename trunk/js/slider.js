@@ -451,7 +451,6 @@ Spanner.prototype.restoreThumb = function(){
 Spanner.prototype.isMin = function(){
 	// TODO_HACK: fix this 1+business 
 	var isMin = (this.getWidth() <= Spanner.minWidth + 1);
-	console.log(isMin, this.getWidth(), Spanner.minWidth);
 	return isMin;
 }
 

@@ -186,7 +186,9 @@ Map.prototype.adjustToFitBounds = function(bounds){
 	this.setCenter(bounds.getCenter(), zoom);
 }
 
-function Event(node){
+function Event(node, topic){
+	this.t = topic;
+	
 	// Add default start and end
 	this.start = new Date('01/01/1001'); // todo: HDate.MIN
 	this.end = new Date();				// todo: HDate.MAX
@@ -276,11 +278,26 @@ function Marker(node, event){
 		this[k] = node[k];
 	}
 
-	var icon = new GIcon();
-	icon.image = 'img/event.icon.png';
-	icon.iconSize = new GSize(10, 10);
-	icon.iconAnchor = new GPoint(5, 5);
-	icon.infoWindowAnchor = new GPoint(5, 5);
+	var icon;
+
+	console.log(this);
+	if(this.e.t.colorSet != undefined){
+		var set = this.e.t.colorSet;
+		var iconOpts = {
+			width: 16,
+			height: 16,
+			primaryColor: set.primary,
+			cornerColor: set.corner,
+			strokeColor: set.stroke
+		};
+		icon = IconFactory.createMarkerIcon(iconOpts);
+	}else{
+		icon = new GIcon();
+		icon.image = 'img/event.icon.png';
+		icon.iconSize = new GSize(10, 10);
+		icon.iconAnchor = new GPoint(5, 5);
+		icon.infoWindowAnchor = new GPoint(5, 5);
+	}
 
 	var opts = { 
 	  "icon": icon,
