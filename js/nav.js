@@ -170,6 +170,43 @@ function Topic(node, displayType){
 	remove.innerHTML = 'X';
 	this.elt.appendChild(remove);
 }
+Topic.nextSet = 0;
+Topic.getNextColorSet = function(){
+	var sets = [
+		{
+			primary:  	"#FFFF00FF",
+			corner:		"#FF8A00FF",
+			stroke:		"#FF0000FF",
+		},
+		{
+			primary:  	"#1000E9FF",
+			corner:		"#3E66C7FF",
+			stroke:		"#FF0000FF",
+		},
+		{
+			primary:  	"#E98600FF",
+			corner:		"#F1FF00FF",
+			stroke:		"#FF0000FF",
+		},
+		{
+			primary:  	"#07550FFF",
+			corner:		"#00E975FF",
+			stroke:		"#FF0000FF",
+		},
+		{
+			primary:  	"#FF0000FF",
+			corner:		"#511010FF",
+			stroke:		"#FF0000FF",
+		},
+		{
+			primary:  	"#F1FF00FF",
+			corner:		"#FFFFFCFF",
+			stroke:		"#FF0000FF",
+		},
+	];
+	return sets[Topic.nextSet++];
+}
+
 
 Topic.prototype.getEvents = function(){
 	return this.events;
