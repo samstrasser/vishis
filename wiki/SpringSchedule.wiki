@@ -13,7 +13,7 @@
  * ~~add blurbs to data storage schema~~
  * ~~event ui: blurbs and titles~~
  * topic list ui
- * slider ui
+ * ~~slider ui~~
 *April* (5 weeks)
  * temporal <--> geographical link
  * search ui in the navigation panel
