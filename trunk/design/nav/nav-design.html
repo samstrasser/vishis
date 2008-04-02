@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>VisualizeHistory.com</title>
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.1/build/fonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.1/build/button/assets/skins/sam/button.css" />
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/element/element-beta-min.js"></script>
+
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/button/button-min.js"></script>
+	
+	<script type="text/javascript" src="NavCheckbox.js"></script>
+	
+	<script>
+	
+	var t;
+	
+	function Map(){
+		this.me = 'Me me me';
+		this.toggleTopicVisibility = function(arg){
+			console.log('Toggling topic visibility');
+		};
+	}
+	
+	function Topic(map){
+		this.isDescVisible = true;
+		this.map = map;
+		
+		//NavCheckbox(id, classBase, listenerObj1, listenerObj2, isChecked){
+
+		var listener1 = {
+				fn:    map.toggleTopicVisibility, 
+				obj:   this,
+				scope: this.map
+		};
+		this.showHideEvents = new NavCheckbox('cb1', 'show-hide-events', true, listener1);
+
+		var listener1 = {
+				fn:    this.toggleDescVisibility, 
+				obj:   this,
+				scope: this
+		};
+		this.showHideDesc = new NavCheckbox('cb2', 'show-hide-desc', true, listener1, null, null, this);
+		
+		var listener2 = {
+				fn:    this.showHideDesc.toggleBg, 
+				obj:   this,
+				scope: this.showHideDesc
+		};
+		this.titleLink = new NavCheckbox('cb3', 'title-link', true, listener1, listener2, "U.S. Presidents");
+
+		var addRemoveListener = {
+				fn:    this.showHideDesc.toggleBg, 
+				obj:   this,
+				scope: this.showHideDesc
+		};
+		this.addRemove = new NavCheckbox('cb5', 'add-remove', true, null, null, " ");
+		/*
+		this.addRemove.removeListener('checkedChange', this.addRemove.toggleBg);
+		this.addRemove.addListener('checkedChange', 
+			(function(event){
+				if(event.newValue){
+					this.set("label","Remove");
+				}else{
+					this.set("label","Add");
+				}
+			}),
+			this,
+			this.addRemove
+		);
+		*/
+		
+	}
+	
+	Topic.prototype.toggleDescVisibility = function(event){
+		//. todo: make this not use document.getElt( by id)
+		var display;
+		if(this.isDescVisible){
+			display = "block";
+		}else{
+			display = "none";
+		}
+		document.getElementById("desc").style.display = display;
+		
+		this.isDescVisible = !this.isDescVisible;
+	}
+	
+	function load(){
+		var m = new Map();
+		t = new Topic(m);
+	}
+	
+	</script>
+</head>
+<body class="sidebar-right" onload="load()">
+  <div id="header">
+	<h1>Visualize History <span class="dotcom">.com</span></h1>
+  </div>
+  <div id="content">
+	<div id="viewing-panel">
+		<div id="map"></div>
+	</div>
+	<div id="nav-panel">
+		<h3>Popular Examples</h3>
+		<ol id="ol">
+			<li id="li">
+		
+			</li>			
+			<li id="li2">
+			<p id="desc">The description</p>
+			</li>
+		</ol>
+	</div>
+  </div>
+  <div id="footer">
+	<em>footer</em> | <em>footer</em> | <em>footer</em>
+  </div>
+  </body>
+</html>
