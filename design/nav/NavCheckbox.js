@@ -7,7 +7,7 @@ function NavCheckbox(id, classBase, isChecked, listenerObj1, listenerObj2, label
 				name: "todo: name", 
 				value: isChecked || "true", 
 				container: "li", 
-				checked: true,
+				checked: isChecked,
 			};
 	YAHOO.widget.Button.call(this, buttonArgObj);
 
