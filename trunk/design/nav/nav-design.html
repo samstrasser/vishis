@@ -30,6 +30,10 @@
 		this.map = map;
 		
 		//NavCheckbox(id, classBase, listenerObj1, listenerObj2, isChecked){
+		this.ls = document.getElementById('ul');
+		this.li = document.createElement('li');
+		this.li.setAttribute('id', 'li');
+		this.ls.appendChild(this.li);
 
 		var listener1 = {
 				fn:    map.toggleTopicVisibility, 
@@ -50,28 +54,34 @@
 				obj:   this,
 				scope: this.showHideDesc
 		};
-		this.titleLink = new NavCheckbox('cb3', 'title-link', true, listener1, listener2, "U.S. Presidents");
-
-		var addRemoveListener = {
-				fn:    this.showHideDesc.toggleBg, 
-				obj:   this,
-				scope: this.showHideDesc
-		};
-		this.addRemove = new NavCheckbox('cb5', 'add-remove', true, null, null, " ");
-		/*
-		this.addRemove.removeListener('checkedChange', this.addRemove.toggleBg);
-		this.addRemove.addListener('checkedChange', 
-			(function(event){
-				if(event.newValue){
-					this.set("label","Remove");
-				}else{
-					this.set("label","Add");
-				}
-			}),
-			this,
-			this.addRemove
-		);
-		*/
+		this.titleLink = new NavCheckbox('cb3', 'title-link', true, listener1, listener2, "+ U.S. Presidents");
+		
+		this.addButton = new YAHOO.widget.Button(
+					{
+					type: "checkbox", 
+					label: "add", 
+					title: "title",
+					id: "cb5", 
+					name: "todo: name", 
+					container: "li", 
+					}
+				);
+		YAHOO.util.Dom.addClass(this.addButton._button,'push-button');
+		this.addButton.addClass('add');
+		// todo: add onclick handler
+		
+		this.removeButton = new YAHOO.widget.Button(
+					{
+					type: "checkbox", 
+					label: "remove", 
+					title: "title",
+					id: "cb6", 
+					name: "todo: name", 
+					container: "li", 
+					}
+				);
+		YAHOO.util.Dom.addClass(this.removeButton._button,'push-button');
+		this.removeButton.addClass('remove');
 		
 	}
 	
@@ -105,14 +115,10 @@
 	</div>
 	<div id="nav-panel">
 		<h3>Popular Examples</h3>
-		<ol id="ol">
-			<li id="li">
-		
-			</li>			
-			<li id="li2">
-			<p id="desc">The description</p>
-			</li>
+		<ol id="ul">
+			
 		</ol>
+		<p id="desc">The description</p>
 	</div>
   </div>
   <div id="footer">
