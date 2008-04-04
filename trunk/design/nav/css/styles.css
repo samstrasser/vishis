@@ -6,10 +6,28 @@ span.yui-button span.first-child{}
 span.yui-button span.first-child button{}
 */
 
+.yui-button-{
+	background-color:Orange;
+
+	border: 1px solid black;
+}
+
+.yui-button .first-child button{
+	padding:1px;
+}
+
+.yui-button-hover .first-child button{
+	padding:0px;
+}
+
+.yui-button-active .first-child button{
+	padding:1px;
+}
 
 .show-hide-events{
-	width:24px;
-	height:24px;
+	width:16px;
+	height:16px;
+	margin-bottom:2px;
 }
 
 .show-hide-events-checked{
@@ -23,6 +41,7 @@ span.yui-button span.first-child button{}
 .show-hide-desc{
 	width:16px;
 	height:16px;
+	margin-bottom:2px; /* == the padding for the title */
 }
 
 .show-hide-desc-checked{
@@ -33,20 +52,23 @@ span.yui-button span.first-child button{}
 	background-image:url(../img/minus.gif);
 }
 
-.add-remove{
-	width:60px;
-	height:20px;
+.title-link{}
+
+.yui-button .push-button{
+	border:thin solid #ccc;
+	background:url(http://yui.yahooapis.com/2.5.1/build/assets/skins/sam/sprite.png) repeat-x 0 0;
 }
 
-.add-remove-checked{
-	background-image:url(../img/remove.png);
+.yui-button-hover .push-button{
+	background-position:0 -1300px;
 }
 
-.add-remove-unchecked{
-	background-image:url(../img/add.png);
+.yui-button-active .push-button{
+	background-position:0 -1700px;
 }
 
-
+.add{}
+.remove{}
 
 
 
@@ -89,7 +111,7 @@ body {
 	position: absolute;
 	border: 1px solid #aaa;
 	top: 0;
-	width: 420px;
+	width: 220px;
 	height: 100%;
 	overflow: auto;
 	background: url(../img/images/bg-pieces_03.png) no-repeat top right;
