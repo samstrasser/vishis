@@ -54,7 +54,9 @@
 				obj:   this,
 				scope: this.showHideDesc
 		};
-		this.titleLink = new NavCheckbox('cb3', 'title-link', true, listener1, listener2, "+ U.S. Presidents");
+		this.title = "U.S. Presidents";
+		this.titleLink = new NavCheckbox('cb3', 'title-link', true, listener1, listener2, "+ " + this.title);
+		
 		
 		this.addButton = new YAHOO.widget.Button(
 					{
@@ -87,13 +89,19 @@
 	
 	Topic.prototype.toggleDescVisibility = function(event){
 		//. todo: make this not use document.getElt( by id)
+		
 		var display;
+		var pre;
 		if(this.isDescVisible){
 			display = "block";
+			pre = "- ";
+			
 		}else{
 			display = "none";
+			pre = "+ ";
 		}
 		document.getElementById("desc").style.display = display;
+		this.titleLink.set('label', pre + this.title);
 		
 		this.isDescVisible = !this.isDescVisible;
 	}

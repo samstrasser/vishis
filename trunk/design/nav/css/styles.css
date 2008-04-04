@@ -12,18 +12,6 @@ span.yui-button span.first-child button{}
 	border: 1px solid black;
 }
 
-.yui-button .first-child button{
-	padding:1px;
-}
-
-.yui-button-hover .first-child button{
-	padding:0px;
-}
-
-.yui-button-active .first-child button{
-	padding:1px;
-}
-
 .show-hide-events{
 	width:16px;
 	height:16px;
@@ -39,7 +27,7 @@ span.yui-button span.first-child button{}
 }
 
 .show-hide-desc{
-	width:16px;
+	width:0px;
 	height:16px;
 	margin-bottom:2px; /* == the padding for the title */
 }
@@ -65,6 +53,18 @@ span.yui-button span.first-child button{}
 
 .yui-button-active .push-button{
 	background-position:0 -1700px;
+}
+
+.yui-button .first-child button.push-button{
+	padding:1px;
+}
+
+.yui-button-hover .first-child button.push-button{
+	padding:0px;
+}
+
+.yui-button-active .first-child button.push-button{
+	padding:1px;
 }
 
 .add{}
