@@ -19,7 +19,7 @@ class SearchResult{
 	}
 	
 	public function addTopic($t){
-		$this->topics[$t->getId()] = $t;
+		$this->topics[] = $t;
 	}
 	
 	public function numResults(){
@@ -43,7 +43,7 @@ class Node{
 	}
 	
 	public function getId(){
-		return $this->getField('uid');
+		return $this->getField('id');
 	}
 	
 	public function appendToField($key, $value){

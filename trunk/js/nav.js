@@ -17,22 +17,23 @@ function Nav(map, navElt){
 	}
 	this.elt = navElt;
 	
-	this.currentTopics = new TopicList('currently-viewing','Debug Topic List');
-	this.currentTopics.attachToElt(this.elt);
+	this.currentTopics = new TopicList('currently-viewing','Currently Viewing');
+	this.elt.appendChild(this.currentTopics.getRootElement());
 	
-	this.recentTopics  = new TopicList('recently-viewed', '');
-	this.recentTopics.attachToElt(this.elt);
+	this.recentTopics  = new TopicList('recently-viewed', 'Recently Viewed');
+	//this.elt.appendChild(this.recentTopics.getRootElement());
 	
-	this.searchBox = {
-		textField: 'todo',
-		searchResultsDiv: 'todo'
-	}; // todo: search box
+	this.popularTopics  = new TopicList('popularly-viewed', 'Popular Topics');
+	this.elt.appendChild(this.popularTopics.getRootElement());
+	
+	// todo: "Add Your Own"
+
 }
 
 Nav.prototype.addTopic = function(topic){
-	// debug only
-	// todo: do the real thing
-	// for now, this only adds the topic to the map
+	// add the topic to the currently viewing list
+	this.currentTopics.addTopic(topic);
+	
 	this.map.addTopic(topic);
 }
  
@@ -55,19 +56,7 @@ function TopicList(id, title){
 
 TopicList.prototype.maxLength = 15;
 
-// Attach the list to a parent element in the dom
-// By id
-TopicList.prototype.attachToId = function(id){
-	this.attachToElt(document.getElementById(id));
-}
-
-// Attach the list to a parent element in the dom
-// By element
-TopicList.prototype.attachToElt = function(elt){
-	elt.appendChild(this.elt);
-}
-
-TopicList.prototype.getContainerElt = function(){
+TopicList.prototype.getRootElement = function(){
 	return this.elt;
 }
 
@@ -77,7 +66,8 @@ TopicList.prototype.addTopic = function(topic){
 	}
 	
 	// Save the topic in the list
-	this.topics[topic.getId()] = topic;
+	console.log(topic.getId());
+	this.topics.push(topic);
 
 	// Add the topic in the dom
 	this.listElt.appendChild(topic.getRootElement());
@@ -99,7 +89,7 @@ TopicList.prototype.getLength = function(){
 	return this.getAllTopics.length;
 }
 
-TopicList.prototype.remove = function(topic){
+TopicList.prototype.removeTopic = function(topic){
 	var removed = this.listElt.removeChild(topic.getRootElement());	
 	
 	// then delete it from the list of topics
@@ -113,10 +103,10 @@ TopicList.prototype.remove = function(topic){
 TopicList.prototype.clear = function(transferTo){
 	var allTopics = this.getAllTopics();
 	for(var topicId in allTopics){
-		var removed = this.remove(allTopics[topicId]);
+		var removed = this.removeTopic(allTopics[topicId]);
 		if(transferTo){
 			// add topic to the new list
-			transferTo.add(removed);
+			transferTo.addTopic(removed);
 		}
 		
 	}
@@ -137,39 +127,131 @@ function Topic(node, displayType){
 		}
 	}
 
-	this.elt = document.createElement('li');	
+	this.elt = document.createElement('li');
 	
-	if(!displayType){
-		displayType = 'current';
-	}
-	this.setDisplayType(displayType);
+	var tid = this.getId();
+	this.isDescVisible = true;
 	
-	var cbox = document.createElement('input');
-	cbox.setAttribute('type','checkbox');
-	cbox.setAttribute('checkbox','checkbox');
-	this.elt.appendChild(cbox);
+	// Todo: add the map
+	var map = function(){}
+	map.toggleTopicVisibility = function(){console.log('You are still faking the map');}
+
+	this.showHideEvents = new YAHOO.widget.Button({
+			type: "checkbox", 
+			label: " ", 
+			id: "topic"+tid+"-showhideevents", 
+			name: "todo-name", 
+			value: true, 
+			container: this.elt, 
+			checked: true,		
+	});
 	
-	var add = document.createElement('span');
-	add.setAttribute('class', 'add');
-	add.innerHTML = '+';
-	this.elt.appendChild(add);
+	this.showHideEvents.css = 'show-hide-events';
+	this.showHideEvents.addClass(this.showHideEvents.css);
+	this.showHideEvents.addClass(this.showHideEvents.css + '-checked');
+	this.showHideEvents.addListener("checkedChange", 
+			map.toggleTopicVisibility,
+			this,
+			map
+			);
+	this.showHideEvents.addListener("checkedChange", 
+		(function(event){
+			if(event.newValue){
+				this.showHideEvents.replaceClass(this.showHideEvents.css + '-unchecked', this.showHideEvents.css + '-checked');
+			}else{
+				this.showHideEvents.replaceClass(this.showHideEvents.css + '-checked', this.showHideEvents.css + '-unchecked');
+			}
+		}),
+		this,
+		this
+		);	
 	
-	var title = document.createElement('span');
-	title.setAttribute('class', 'title');
-	title.innerHTML = 'todo: this.title';
-	this.elt.appendChild(title);
+	this.titleLink = document.createElement('a');
+	this.titleLink.setAttribute('href', 'javascript:void(0);');
 	
-	var color = document.createElement('div');
-	color.setAttribute('class', 'swatch');
-	color.innerHTML = ' ';
-	color.style.backgroundColor = '#aaaaaa'; // todo: this.color
-	this.elt.appendChild(color);
+	var titleLinkSpan = document.createElement('span');
+
+	this.plusNode = document.createElement('span');
+	this.plusNode.appendChild(document.createTextNode('+'));
+
+	this.minusNode = document.createElement('span');
+	this.minusNode.appendChild(document.createTextNode('-'));
+	this.minusNode.style.display = 'none';
 	
-	var remove = document.createElement('span');
-	remove.setAttribute('class', 'remove');
-	remove.innerHTML = 'X';
-	this.elt.appendChild(remove);
+	titleLinkSpan.appendChild(this.plusNode);
+	titleLinkSpan.appendChild(this.minusNode);
+	
+	this.titleLink.appendChild(titleLinkSpan);
+	this.titleLink.appendChild(document.createTextNode(this.title));
+	
+	YAHOO.util.Dom.addClass(this.titleLink, 'title-link');
+	YAHOO.util.Event.addListener(this.titleLink, "click", 
+				(function(arg){
+					this.toggleDescVisibility();
+				}),
+				null,
+				this
+				);
+	this.elt.appendChild(this.titleLink);
+	
+	this.addButton = new YAHOO.widget.Button(
+				{
+				type: "checkbox", 
+				label: "add", 
+				title: "title",
+				id: "topic"+tid+"-addbutton", 
+				name: "todo: name", 
+				container: this.elt, 
+				}
+			);
+	YAHOO.util.Dom.addClass(this.addButton._button,'push-button');
+	this.addButton.addClass('add');
+	// todo: add onclick handler
+	
+	this.removeButton = new YAHOO.widget.Button(
+				{
+				type: "checkbox", 
+				label: "remove", 
+				title: "title",
+				id: "topic"+tid+"-removebutton", 
+				name: "todo: name", 
+				container: this.elt, 
+				}
+			);
+	YAHOO.util.Dom.addClass(this.removeButton._button,'push-button');
+	this.removeButton.addClass('remove');
+	this.removeButton._button.style.display = 'none';
+	
+	// todo: this.description
+	this.description = document.createElement('p');
+	this.description.setAttribute('class', 'topic-desc');
+	this.description.innerHTML = this.desc;
+	this.description.style.display = 'none';
+	this.elt.appendChild(this.description);
+	
+	
 }
+	
+Topic.prototype.toggleDescVisibility = function(event){
+	var display;
+	var showNode;
+	var hideNode
+	if(this.isDescVisible){
+		display = "block";
+		showNode = this.minusNode;
+		hideNode = this.plusNode;
+	}else{
+		display = "none";
+		showNode = this.plusNode;
+		hideNode = this.minusNode;
+	}
+	this.description.style.display = display;
+	showNode.style.display = 'inline';
+	hideNode.style.display = 'none';
+	
+	this.isDescVisible = !this.isDescVisible;
+}
+
 Topic.colorSets = [
 		{
 			primary:  	"#FFFF00FF",
@@ -223,18 +305,4 @@ Topic.prototype.getId = function(){
 
 Topic.prototype.getRootElement = function(){
 	return this.elt;
-}
-
-// Hides all the Topic's children on the map
-Topic.prototype.hide = function(){
-	// pass
-}
-
-// Shows all the Topic's children on the map
-Topic.prototype.show = function(){
-	// pass
-}
-
-Topic.prototype.setDisplayType = function(type){
-	this.elt.setAttribute('class', type + ' topic');
 }

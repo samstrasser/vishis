@@ -4,6 +4,9 @@
 <head>
 	<title>VisualizeHistory.com</title>
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.1/build/fonts/fonts-min.css" />
+	<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/2.5.1/build/button/assets/skins/sam/button.css" />
 
 	<!-- Yahoo! User Interface core -->
 	<script src="http://yui.yahooapis.com/2.3.1/build/yahoo-dom-event/yahoo-dom-event.js" type="text/javascript"></script>
@@ -13,6 +16,8 @@
 	<script src="http://yui.yahooapis.com/2.3.1/build/animation/animation-min.js" type="text/javascript"></script>
 	<script src="http://yui.yahooapis.com/2.3.1/build/dragdrop/dragdrop-min.js" type="text/javascript"></script>
 	<script src="http://yui.yahooapis.com/2.3.1/build/slider/slider-min.js" type="text/javascript"></script>
+	
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/button/button-min.js"></script>
 	
 	<!-- Google Maps API -->
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAbNpbJQzOmQ3LpYb48UbbNxSZT5Tpn1taJFQH4Y5Wf2aA8FIGoRR00-ePrq_DDT5-FUNm7KoXKkB1lQ" type="text/javascript"></script>
@@ -29,10 +34,51 @@
 	<script src="js/server.js" type="text/javascript"></script>
 	<script src="js/JSON.js" type="text/javascript"></script>
 	<script src="js/vishis.js" type="text/javascript"></script>
+	
+	<script>
+	var topics;
+	<?	
+	require_once('php/SearchLayer.php');
+	require_once('php/VishisDatabase.php');
+
+	$queries = array(
+		'U.S. Presidents',
+		'Major Events of the Civil War',
+		'The Valley of the Shadow'
+	);
+
+	$site = new VishisDatabase();
+	$result = new SearchResult();
+	
+	$id = -1;
+	foreach($queries as $q){
+		$t = $site->getTopicShell($q);
+		if($t){
+			$t->addField('query', $q);
+			$t->addField('id', $id--);
+			$result->addTopic($t);
+		}else{
+			print("Trouble with $q\n");
+		}
+	}
+	print('topics = ');
+	print($result->toJson());
+	print(';');
+
+	?>
+	topics.push(
+		{
+		'id': <? print $id--; ?>,
+		'title': 'U.S. States',
+		'query': 'http://code.google.com/apis/kml/documentation/us_states.kml',
+		'desc': 'Each of the United States outlined and shown as they joined the Union.<cite><a href="http://code.google.com/apis/kml/documentation/us_states.kml" target="_blank" title="http://code.google.com/apis/kml/documentation/us_states.kml"></a></cite>'
+		}
+	);
+	</script>
 
 
 </head>
-<body class="sidebar-right" onload="load()" onunload="unload()">
+<body class="sidebar-right" onload="load(topics)" onunload="unload()">
   <div id="header">
 	<h1>Visualize History <span class="dotcom">.com</span></h1>
   </div>
@@ -41,27 +87,6 @@
 		<div id="map"></div>
 	</div>
 	<div id="nav-panel">
-		<h3>Popular Examples (debug)</h3>
-		<ul>
-			<li><a href="javascript:void(0);" onclick="Server.search('U.S. Presidents', nav.addTopic, nav);">U.S. Presidents</a></li>
-			<li><a href="javascript:void(0);" onclick="Server.search('Major Events of the Civil War', nav.addTopic, nav);">Major Events of the Civil War</a></li>
-			<li><a href="javascript:void(0);" onclick="Server.search('The Valley of the Shadow', nav.addTopic, nav);">The Valley of the Shadow</a></li>
-			<li><a href="javascript:void(0);" onclick="Server.search('http://code.google.com/apis/kml/documentation/us_states.kml', nav.addTopic, nav);">U.S. States</a></li>
-			<li>
-				<form>
-					<input type="text"/>
-					<input type="button" value="add url" 
-					onclick="var val=parentNode.childNodes[1].value;
-					if(val){
-						Server.search(val, nav.addTopic, nav);
-					}
-					return false;"
-					/>
-				</form>
-			</li>
-			<hr />
-			<li><a href="javascript:void(0);" onclick="nav.map.clearTopics();return false;">Clear map</a></li>
-		</ul>
 	</div>
   </div>
  
