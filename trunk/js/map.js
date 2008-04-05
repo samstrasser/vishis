@@ -14,7 +14,9 @@ function Map(mapDiv){
 	if(!mapDiv){
 		mapDiv = document.getElementById("map");
 	}
+	console.log(G_PHYSICAL_MAP);
 	this.constructor.superclass.constructor.call(this, mapDiv);
+	
 	this.mapDiv = mapDiv;
 
 	this.addControl(new GLargeMapControl());
@@ -23,6 +25,7 @@ function Map(mapDiv){
 	this.tsAdded = false;
 
 	this.setCenter(new GLatLng(36.879621,-98.525391), 4); // U.S. map centered out
+	this.setMapType(G_PHYSICAL_MAP);
 	
 	this.currTopics = new Array();
 	this.currTimeSpan = {
