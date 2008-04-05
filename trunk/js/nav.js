@@ -17,27 +17,30 @@ function Nav(map, navElt){
 	}
 	this.elt = navElt;
 	
-	this.currentTopics = new TopicList('currently-viewing','Currently Viewing');
-	this.elt.appendChild(this.currentTopics.getRootElement());
+	this.currentTopics = new TopicList('currently-viewing','Currently Viewing', this.elt);
 	
-	this.recentTopics  = new TopicList('recently-viewed', 'Recently Viewed');
-	//this.elt.appendChild(this.recentTopics.getRootElement());
+	this.recentTopics  = new TopicList('recently-viewed', 'Recently Viewed', null);
 	
-	this.popularTopics  = new TopicList('popularly-viewed', 'Popular Topics');
-	this.elt.appendChild(this.popularTopics.getRootElement());
+	this.popularTopics  = new TopicList('popularly-viewed', 'Popular Topics', this.elt);
 	
 	// todo: "Add Your Own"
 
 }
 
 Nav.prototype.addTopic = function(topic){
+	topic.setNav(this);
+
 	// add the topic to the currently viewing list
 	this.currentTopics.addTopic(topic);
 	
 	this.map.addTopic(topic);
 }
  
-function TopicList(id, title){
+function TopicList(id, title, parent){
+	if(parent == null){
+		return {message: 'no parent passed in'};
+	}
+	
 	this.topics = new Array();
 
 	// Initialize the dom elements
@@ -52,21 +55,14 @@ function TopicList(id, title){
 	this.elt.setAttribute('class', 'topic-list');
 	this.elt.appendChild(titleElt);
 	this.elt.appendChild(this.listElt);
+	
+	parent.appendChild(this.elt);
 }
 
 TopicList.prototype.maxLength = 15;
 
-TopicList.prototype.getRootElement = function(){
-	return this.elt;
-}
-
 TopicList.prototype.addTopic = function(topic){
-	if(topic.getId() in this.topics){
-		console.warn('Topic added to list but its already there');
-	}
-	
 	// Save the topic in the list
-	console.log(topic.getId());
 	this.topics.push(topic);
 
 	// Add the topic in the dom
@@ -74,11 +70,8 @@ TopicList.prototype.addTopic = function(topic){
 }
 
 TopicList.prototype.getTopic = function(id){
-	if(id in this.topics){
-		return this.topics[id];
-	}else{
-		return false;
-	}
+	console.error("TopicList.getTopic(): not yet implemented");
+	return false;
 }
 
 TopicList.prototype.getAllTopics = function(){
@@ -86,38 +79,25 @@ TopicList.prototype.getAllTopics = function(){
 }
 
 TopicList.prototype.getLength = function(){
-	return this.getAllTopics.length;
+	return this.getAllTopics().length;
 }
 
 TopicList.prototype.removeTopic = function(topic){
-	var removed = this.listElt.removeChild(topic.getRootElement());	
-	
-	// then delete it from the list of topics
-	delete this.topics[topic.getId()];
-	
-	return removed;
+	console.error("TopicList.removeTopic(): not yet implemented");
+	return false;
 }
 
-// clears the list of all toipics
-//optionally passes the topics to another list
-TopicList.prototype.clear = function(transferTo){
-	var allTopics = this.getAllTopics();
-	for(var topicId in allTopics){
-		var removed = this.removeTopic(allTopics[topicId]);
-		if(transferTo){
-			// add topic to the new list
-			transferTo.addTopic(removed);
-		}
-		
-	}
+TopicList.prototype.clear = function(){
+	console.error("TopicList.clear(): not yet implemented");
 }
 
 
 /** 
  * @class Topic
  **/
-function Topic(node, displayType){
+function Topic(node){
 	this.events = new Array();
+	this.nav = false;
 	
 	for(var k in node){
 		if(k == "start" || k == "end"){
@@ -131,10 +111,6 @@ function Topic(node, displayType){
 	
 	var tid = this.getId();
 	this.isDescVisible = true;
-	
-	// Todo: add the map
-	var map = function(){}
-	map.toggleTopicVisibility = function(){console.log('You are still faking the map');}
 
 	this.showHideEvents = new YAHOO.widget.Button({
 			type: "checkbox", 
@@ -150,9 +126,9 @@ function Topic(node, displayType){
 	this.showHideEvents.addClass(this.showHideEvents.css);
 	this.showHideEvents.addClass(this.showHideEvents.css + '-checked');
 	this.showHideEvents.addListener("checkedChange", 
-			map.toggleTopicVisibility,
+			this.setEventsVisibility,
 			this,
-			map
+			this
 			);
 	this.showHideEvents.addListener("checkedChange", 
 		(function(event){
@@ -164,7 +140,12 @@ function Topic(node, displayType){
 		}),
 		this,
 		this
-		);	
+		);
+	this.showHideEvents.addListener("available",
+		(function(e) {
+			e.target.setAttribute('style', 'display:none');
+		})
+	);
 	
 	this.titleLink = document.createElement('a');
 	this.titleLink.setAttribute('href', 'javascript:void(0);');
@@ -230,6 +211,14 @@ function Topic(node, displayType){
 	this.elt.appendChild(this.description);
 	
 	
+}
+
+Topic.prototype.setNav = function(n){
+	this.nav = n;
+}
+
+Topic.prototype.setEventsVisibility = function(event){
+	console.log('You are still faking the map, but in a better way', event.newValue);
 }
 	
 Topic.prototype.toggleDescVisibility = function(event){

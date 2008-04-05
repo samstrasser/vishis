@@ -12,11 +12,10 @@ function load(topics){
 		
 		for(var i=0; i< topics.length; i++){
 			var t = new Topic(topics[i]);
-			t.isShell = true;// mark this as only having a description
+			t.setNav(n);
+			t.isShell = true; // mark this as only having a description
 			
 			n.popularTopics.addTopic(t);
-			
-			//delete t;
 		}
 	}
 }
