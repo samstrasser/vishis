@@ -26,21 +26,14 @@ span.yui-button span.first-child button{}
 	background-image:url(../img/eye.closed.png);
 }
 
-.show-hide-desc{
-	width:0px;
-	height:16px;
-	margin-bottom:2px; /* == the padding for the title */
+.title-link{
+	text-decoration:none;
+	color:black;
+	padding:2px;
+	padding-right:.5em;
+	padding-left:.5em;
+	margin-bottom:2px;
 }
-
-.show-hide-desc-checked{
-	background-image:url(../img/plus.gif);
-}
-
-.show-hide-desc-unchecked{
-	background-image:url(../img/minus.gif);
-}
-
-.title-link{}
 
 .yui-button .push-button{
 	border:thin solid #ccc;

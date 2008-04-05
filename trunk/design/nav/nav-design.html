@@ -12,8 +12,6 @@
 
 	<script type="text/javascript" src="http://yui.yahooapis.com/2.5.1/build/button/button-min.js"></script>
 	
-	<script type="text/javascript" src="NavCheckbox.js"></script>
-	
 	<script>
 	
 	var t;
@@ -28,35 +26,72 @@
 	function Topic(map){
 		this.isDescVisible = true;
 		this.map = map;
-		
-		//NavCheckbox(id, classBase, listenerObj1, listenerObj2, isChecked){
+		this.title = "U.S. Presidents";
+
 		this.ls = document.getElementById('ul');
 		this.li = document.createElement('li');
 		this.li.setAttribute('id', 'li');
 		this.ls.appendChild(this.li);
 
-		var listener1 = {
-				fn:    map.toggleTopicVisibility, 
-				obj:   this,
-				scope: this.map
-		};
-		this.showHideEvents = new NavCheckbox('cb1', 'show-hide-events', true, listener1);
+		this.showHideEvents = new YAHOO.widget.Button({
+				type: "checkbox", 
+				label: " ", 
+				id: "todo-id", 
+				name: "todo-name", 
+				value: true, 
+				container: "li", 
+				checked: true,		
+		});
+		this.showHideEvents.css = 'show-hide-events';
+		console.log(this.showHideEvents);
+		var showHideEventsCss = 'show-hide-events';
+		this.showHideEvents.addClass(showHideEventsCss);
+		this.showHideEvents.addClass(showHideEventsCss + '-checked');
+		this.showHideEvents.addListener("checkedChange", 
+				map.toggleTopicVisibility,
+				this,
+				this.map
+				);	
+		this.showHideEvents.addListener("checkedChange", 
+			(function(event){
+				if(event.newValue){
+					this.showHideEvents.replaceClass(this.showHideEvents.css + '-unchecked', this.showHideEvents.css + '-checked');
+				}else{
+					this.showHideEvents.replaceClass(this.showHideEvents.css + '-checked', this.showHideEvents.css + '-unchecked');
+				}
+			}),
+			this,
+			this
+			);	
+		
+		this.titleLink = document.createElement('a');
+		this.titleLink.setAttribute('href', 'javascript:void(0);');
+		
+		var titleLinkSpan = document.createElement('span');
+	
+		this.plusNode = document.createElement('span');
+		this.plusNode.appendChild(document.createTextNode('+'));
 
-		var listener1 = {
-				fn:    this.toggleDescVisibility, 
-				obj:   this,
-				scope: this
-		};
-		this.showHideDesc = new NavCheckbox('cb2', 'show-hide-desc', true, listener1, null, null, this);
+		this.minusNode = document.createElement('span');
+		this.minusNode.appendChild(document.createTextNode('-'));
+		this.minusNode.style.display = 'none';
 		
-		var listener2 = {
-				fn:    this.showHideDesc.toggleBg, 
-				obj:   this,
-				scope: this.showHideDesc
-		};
-		this.title = "U.S. Presidents";
-		this.titleLink = new NavCheckbox('cb3', 'title-link', true, listener1, listener2, "+ " + this.title);
+		titleLinkSpan.appendChild(this.plusNode);
+		titleLinkSpan.appendChild(this.minusNode);
 		
+		this.titleLink.appendChild(titleLinkSpan);
+		this.titleLink.appendChild(document.createTextNode(this.title));
+		
+		YAHOO.util.Dom.addClass(this.titleLink, 'title-link');
+		YAHOO.util.Event.addListener(this.titleLink, "click", 
+					(function(arg){
+						this.toggleDescVisibility();
+					}),
+					null,
+					this
+					);
+		//this.li.appendChild(this.titleLink);
+		this.li.insertBefore(this.titleLink, null);
 		
 		this.addButton = new YAHOO.widget.Button(
 					{
@@ -84,6 +119,7 @@
 				);
 		YAHOO.util.Dom.addClass(this.removeButton._button,'push-button');
 		this.removeButton.addClass('remove');
+		this.removeButton._button.style.display = 'none';
 		
 	}
 	
@@ -91,17 +127,21 @@
 		//. todo: make this not use document.getElt( by id)
 		
 		var display;
-		var pre;
+		var showNode;
+		var hideNode
 		if(this.isDescVisible){
 			display = "block";
-			pre = "- ";
-			
+			showNode = this.minusNode;
+			hideNode = this.plusNode;
 		}else{
 			display = "none";
-			pre = "+ ";
+			showNode = this.plusNode;
+			hideNode = this.minusNode;
 		}
 		document.getElementById("desc").style.display = display;
-		this.titleLink.set('label', pre + this.title);
+		//this.titleLink.set('label', pre + this.title);
+		showNode.style.display = 'inline';
+		hideNode.style.display = 'none';
 		
 		this.isDescVisible = !this.isDescVisible;
 	}
