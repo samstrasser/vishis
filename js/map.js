@@ -14,7 +14,6 @@ function Map(mapDiv){
 	if(!mapDiv){
 		mapDiv = document.getElementById("map");
 	}
-	console.log(G_PHYSICAL_MAP);
 	this.constructor.superclass.constructor.call(this, mapDiv);
 	
 	this.mapDiv = mapDiv;

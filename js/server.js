@@ -35,6 +35,7 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		// then delete the child field to avoid duplicate info
 		delete obj[tk]['events'];
 		
+		obj[tk].id = Server.nextTopicId++;
 		var topic = new Topic(obj[tk]);
 		topic.colorSet = Topic.getNextColorSet();
 		
@@ -77,7 +78,6 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		if(!topic.end){
 			topic.end = max;
 		}
-		topic.id = Server.nextTopicId++;
 		
 		cbFunc.call(cbObj, topic);
 	}

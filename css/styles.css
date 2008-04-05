@@ -24,8 +24,6 @@ body {
 	width: 100%;
 	height: 100%;
 	border: 1px solid #aaa;
-	
-	background-image: url(../img/map.png);
 }
 
 #viewing-panel {
@@ -178,3 +176,114 @@ div.marker p, div.polygon p {
 #slider-label-end{
 	left:0;
 }
+
+/*
+span.yui-checkbox-button {}
+span.yui-checkbox-button-checked{}
+span.yui-button span.first-child{}
+span.yui-button span.first-child button{}
+*/
+
+div.topic-list h2{
+	margin:0px;
+	text-align:left;
+	color:#00aa00;
+	border-bottom:2px solid #00aa00;
+	margin-right:15px;
+	margin-left:2px;
+}
+
+ul.topic-list{
+	list-style-type:none;
+	padding:2px;
+	margin-top:0px;
+}
+
+ul.topic-list li{
+	margin-top:6px;
+}
+
+p.topic-desc{
+	background-color:white;
+	padding:1px;
+	border:1px solid black;
+	overflow: hidden;
+	margin:0px;
+	border-top:1px solid #ccc;
+}
+
+p.topic-desc cite{
+	display:block;
+}
+
+p.topic-desc cite a:link,
+p.topic-desc cite a:visited,
+p.topic-desc cite a:hover{
+	color:red;
+	text-decoration:none;
+}
+
+p.topic-desc cite a:hover{
+	text-decoration:underline;
+}
+
+.show-hide-events{
+	width:16px;
+	height:16px;
+	margin-bottom:2px;
+}
+
+.show-hide-events-checked{
+	background-image:url(../img/eye.opened.png);
+}
+
+.show-hide-events-unchecked{
+	background-image:url(../img/eye.closed.png);
+}
+
+a.title-link{
+	text-decoration:none;
+	color:black;
+	padding:2px;
+	padding-right:.5em;
+	padding-left:.5em;
+	margin-bottom:2px;
+	background-color:white;
+	border:1px solid black;
+	position:absolute;
+	overflow: hidden;
+	white-space:nowrap;
+	width:150px;
+}
+
+.yui-button .push-button{
+	border:thin solid #ccc;
+	background:url(http://yui.yahooapis.com/2.5.1/build/assets/skins/sam/sprite.png) repeat-x 0 0;
+}
+
+.yui-button-hover .push-button{
+	background-position:0 -1300px;
+}
+
+.yui-button-active .push-button{
+	background-position:0 -1700px;
+}
+
+.yui-button .first-child button.push-button{
+	padding:1px;
+}
+
+.yui-button-hover .first-child button.push-button{
+	padding:0px;
+}
+
+.yui-button-active .first-child button.push-button{
+	padding:1px;
+}
+
+.add{
+	position:relative;
+	left:180px;
+}
+
+.remove{}

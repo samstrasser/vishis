@@ -33,6 +33,10 @@ class VishisDatabase implements TrustedSite{
 		$result->addTopic($topic);
 		return $result;
 	}
+	
+	public function getTopicShell($query){
+		return $this->getTopic($query);
+	}
 
 	private function getTopic($title){
 		$dateFields = array('start', 'end');
@@ -50,9 +54,9 @@ class VishisDatabase implements TrustedSite{
 				}
 			}
 			$topic = new Topic($row);
+			$nid = $topic->getField('nid');
 			
 			// get the start and end of the topic in SQL, which will be much easier
-			$nid = $topic->getField('nid');
 			$q = "select start from nodes, node_relations ";
 			$q.= "where nodes.nid = node_relations.to_nid ";
 			$q.= "and node_relations.from_nid = '$nid' ";
@@ -61,7 +65,6 @@ class VishisDatabase implements TrustedSite{
 			$row = mysql_fetch_assoc($r);
 			$topic->addField('start', HistoricalDate::sqlToJs($row['start']));
 
-			$nid = $topic->getField('nid');
 			$q = "select end from nodes, node_relations ";
 			$q.= "where nodes.nid = node_relations.to_nid ";
 			$q.= "and node_relations.from_nid = '$nid' ";
@@ -70,6 +73,31 @@ class VishisDatabase implements TrustedSite{
 			$row = mysql_fetch_assoc($r);
 			$topic->addField('end', HistoricalDate::sqlToJs($row['end']));
 			
+			// add the blurb and the citation as the desc
+			$q = "select blurb_html from node_blurbs where nid='$nid'";
+			$r = mysql_query($q);
+			$row = mysql_fetch_assoc($r);
+			$desc = $row['blurb_html'];
+			
+			
+			$q = "select url from citations as c, node_citations as nc where c.cid=nc.cid and nc.nid='$nid'";
+			$r = mysql_query($q);
+			$row = mysql_fetch_assoc($r);
+			$url = $row['url'];
+			$pos = strpos('/', $url, 8);
+			if($pos !== false){
+				$domain = substr($url, $pos);
+			}else{
+				// this shouldn't happen
+				$domain = $url;
+			}
+			
+			$desc .= '<cite>';
+			//$desc .= '<span class="source">source: </span>';
+			$desc .= '<a href="' . $url .'" title="' . $url .'" target="_blank">'.$domain.'</a>';
+			$desc .= '</cite>';
+			
+			$topic->addField('desc', $desc);
 		}
 		
 		// if there's no exact message, check for similar matches
