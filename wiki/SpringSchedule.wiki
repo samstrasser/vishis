@@ -15,7 +15,7 @@
  * ~~slider ui~~
 *April* (5 weeks)
  * nav panel ui
- * make map show terrain mode
+ * ~~make map show terrain mode~~
  * temporal <--> geographical link
 
 = Future =
