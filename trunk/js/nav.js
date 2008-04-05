@@ -143,8 +143,10 @@ function Topic(node){
 		);
 	this.showHideEvents.addListener("available",
 		(function(e) {
-			e.target.setAttribute('style', 'display:none');
-		})
+			this.setEltVisibility(false, e.target);
+		}),
+		this,
+		this
 	);
 	
 	this.titleLink = document.createElement('a');
@@ -153,10 +155,10 @@ function Topic(node){
 	var titleLinkSpan = document.createElement('span');
 
 	this.plusNode = document.createElement('span');
-	this.plusNode.appendChild(document.createTextNode('+'));
+	this.plusNode.appendChild(document.createTextNode('+ '));
 
 	this.minusNode = document.createElement('span');
-	this.minusNode.appendChild(document.createTextNode('-'));
+	this.minusNode.appendChild(document.createTextNode('- '));
 	this.minusNode.style.display = 'none';
 	
 	titleLinkSpan.appendChild(this.plusNode);
@@ -213,14 +215,6 @@ function Topic(node){
 	
 }
 
-Topic.prototype.setNav = function(n){
-	this.nav = n;
-}
-
-Topic.prototype.setEventsVisibility = function(event){
-	console.log('You are still faking the map, but in a better way', event.newValue);
-}
-	
 Topic.prototype.toggleDescVisibility = function(event){
 	var display;
 	var showNode;
@@ -239,6 +233,48 @@ Topic.prototype.toggleDescVisibility = function(event){
 	hideNode.style.display = 'none';
 	
 	this.isDescVisible = !this.isDescVisible;
+}
+
+Topic.prototype.setNav = function(n){
+	this.nav = n;
+}
+
+Topic.prototype.setEventsVisibility = function(event){
+	console.log('You are still faking the map, but in a better way', event.newValue);
+}
+
+Topic.prototype.setShowHideDescVisibility = function(visible){
+
+}
+
+Topic.prototype.setIconPicVisibility = function(visible){
+
+}
+
+Topic.prototype.setAddButtonVisibility = function(visible){
+
+}
+
+Topic.prototype.setRemoveButtonVisibility = function(visible){
+
+}
+
+Topic.prototype.setEltVisibilityById = function(visible, id){
+	var elt = document.getElementById(id);
+	this.setEltVisibility(visible, elt);
+}
+
+Topic.prototype.setEltVisibility = function(visible, elt){
+	var disp = 'none';
+	if(visible){
+		disp = 'block';
+	}
+	
+	if(elt.style && elt.style.display){
+		elt.style.display = disp;
+	}else{
+		elt.setAttribute('style', 'display:'+disp+';');
+	}
 }
 
 Topic.colorSets = [
