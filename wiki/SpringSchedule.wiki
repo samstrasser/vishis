@@ -12,12 +12,11 @@
  * ~~add data from DataSources~~
  * ~~add blurbs to data storage schema~~
  * ~~event ui: blurbs and titles~~
- * topic list ui
  * ~~slider ui~~
 *April* (5 weeks)
+ * nav panel ui
+ * make map show terrain mode
  * temporal <--> geographical link
- * search ui in the navigation panel
- * make example cases, demos, and explanations
 
 = Future =
 If there is time left, I will do these.
@@ -25,3 +24,5 @@ If there is time left, I will do these.
  * research, design and implement family tree piece
  * research, design and implement timelines piece
  * design and implement arrows and lines
+ * search ui in the navigation panel
+ * make example cases, demos, and explanations
