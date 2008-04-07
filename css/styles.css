@@ -190,8 +190,8 @@ span.yui-button span.first-child button{}
 div.topic-list h2{
 	margin:0px;
 	text-align:left;
-	color:#00aa00;
-	border-bottom:2px solid #00aa00;
+	color:#004F00;
+	border-bottom:2px solid #004F00;
 	margin-right:15px;
 	margin-left:2px;
 }
@@ -260,6 +260,10 @@ a.title-link{
 	width:160px;
 }
 
+#currently-viewing a.title-link{
+	width:145px;
+}
+
 .yui-button .push-button{
 	border:thin solid #ccc;
 	background:url(http://yui.yahooapis.com/2.5.1/build/assets/skins/sam/sprite.png) repeat-x 0 0;
@@ -285,9 +289,33 @@ a.title-link{
 	padding:1px;
 }
 
-.add{
+li .piece{
 	position:relative;
+}
+
+.add{
 	left:180px;
 }
 
-.remove{}
+.icon{
+	left:155px;
+}
+
+
+span.remove{
+	left:160px;
+}
+
+button.remove{
+	width:16px;
+	height:16px;
+	cursor:pointer;
+}
+
+.yui-button button.remove{
+	background:url(../img/trashcan.png) no-repeat;
+}
+
+.yui-button-hover button.remove{
+	background:url(../img/trashcan.over.png) no-repeat;
+}

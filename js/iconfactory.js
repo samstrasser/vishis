@@ -32,7 +32,7 @@ IconFactory.createMarkerIcon = function(opts) {
    
   var baseUrl = "http://chart.apis.google.com/chart?cht=mm";
   
-  var iconUrl = IconFactory.getIconUrl(baseUrl, width, height, cornerColor, primaryColor, strokeColor);
+  var iconUrl = IconFactory.getIconUrlByArgs(baseUrl, width, height, cornerColor, primaryColor, strokeColor);
   
   var icon = new GIcon(G_DEFAULT_ICON);
   icon.image = iconUrl;
@@ -65,21 +65,19 @@ IconFactory.createMarkerIcon = function(opts) {
   return icon;
 }
 
-IconFactory.getIconUrlByOpts = function(opts){
-  var width = opts.width || 16;
-  var height = opts.height || 16;
-  var primaryColor = opts.primaryColor || "#ff0000";
-  var strokeColor = opts.strokeColor || "#000000";
-  var cornerColor = opts.cornerColor || "#ffffff";
-   
-  var baseUrl = "http://chart.apis.google.com/chart?cht=mm";
-  
-  var iconUrl = IconFactory.getIconUrl(baseUrl, width, height, cornerColor, primaryColor, strokeColor);
-  
-  return IconFactory.getIconUrl(baseUrl, width, height, cornerColor, primaryColor, strokeColor);
+IconFactory.getIconUrl = function(opts){
+	var width = opts.width || 16;
+	var height = opts.height || 16;
+	var primaryColor = opts.primaryColor || "#ff0000";
+	var strokeColor = opts.strokeColor || "#000000";
+	var cornerColor = opts.cornerColor || "#ffffff";
+
+	var baseUrl = "http://chart.apis.google.com/chart?cht=mm";
+
+	return IconFactory.getIconUrlByArgs(baseUrl, width, height, cornerColor, primaryColor, strokeColor);
 }
 
-IconFactory.getIconUrl = function(baseUrl, width, height, cornerColor, primaryColor, strokeColor){
+IconFactory.getIconUrlByArgs = function(baseUrl, width, height, cornerColor, primaryColor, strokeColor){
 	var iconUrl = baseUrl + "&chs=" + width + "x" + height + 
       "&chco=" + cornerColor.replace("#", "") + "," + primaryColor.replace("#", "") + "," + strokeColor.replace("#", "") + "&ext=.png";
 	return iconUrl;

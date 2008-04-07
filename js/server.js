@@ -37,7 +37,6 @@ Server.decodeAndCallback = function(json, cbFunc, cbObj){
 		
 		obj[tk].id = Server.nextTopicId++;
 		var topic = new Topic(obj[tk]);
-		topic.colorSet = Topic.getNextColorSet();
 		
 		var min = new Date('12/31/2038'); // todo HDate.max;
 		var max = new Date('01/01/1001'); // todo: HDate.min
