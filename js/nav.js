@@ -40,6 +40,19 @@ Nav.prototype.addTopic = function(topic){
 	
 	this.map.addTopic(topic);
 }
+
+Nav.prototype.removeCurrentTopic = function(topic){
+	var old = this.currentTopics.removeTopic(topic);
+	
+	this.map.removeTopic(old);
+	console.log('topic removed from map');
+	
+	this.popularTopics.addTopic(old);
+	console.log('topic added');
+	
+	old.setDisplayMode('other');
+	console.log('display mode set');
+}
  
 function TopicList(id, title, parent){
 	if(parent == null){
@@ -263,6 +276,11 @@ function Topic(node){
 	this.removeButton.addClass('piece');
 	this.removeButton.addClass('remove');
 	this.setRemoveButtonVisibility(false);
+	this.removeButton.addListener("click", 
+		this.removeFromMap,
+		this,
+		this
+	);
 	
 	this.description = document.createElement('p');
 	this.description.setAttribute('class', 'topic-desc');
@@ -274,8 +292,6 @@ function Topic(node){
 }
 
 Topic.prototype.addToMap = function(){
-	console.log('Adding topic to map', this);
-	
 	if(!this.nav){
 		console.error("No nav found when adding topic to map");
 		return false;
@@ -291,6 +307,10 @@ Topic.prototype.addToMap = function(){
 	}
 	Server.search(this.query, this.nav.addTopic, this.nav);
 	
+}
+
+Topic.prototype.removeFromMap = function(){
+	this.nav.removeCurrentTopic(this);
 }
 
 Topic.prototype.toggleDescVisibility = function(event){

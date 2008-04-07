@@ -35,10 +35,6 @@ function Map(mapDiv){
 YAHOO.lang.extend(Map, GMap2);
 
 Map.prototype.addTopic = function(topic){
-	if(this.isACurrTopic(topic)){
-		return true;
-	}
-	
 	// If it's the first topic, add the TimeSlider
 	if(!this.tsAdded){
 		this.tsAdded = true;
@@ -113,18 +109,21 @@ Map.prototype.addTopic = function(topic){
 }
 
 Map.prototype.removeTopic = function(topic){
-	if(!this.isACurrTopic(topic)){
-		return true;
-	}
-	
-	for(var k in this.currTopics){
-		if(this.currTopics[i].getId() == topic.getId()){
-			delete this.currTopics[i];
-			return true;
+	console.log(topic);
+	var tid = topic.getId();
+	console.log(tid);
+	if(tid in this.currTopics){
+		var events = topic.getEvents();
+		for(var ek in events){
+			events[ek].hide();
 		}
+		
+		delete this.currTopics[tid];
+
+		return true;
+	}else{
+		return false;
 	}
-	
-	return false;
 }
 
 Map.prototype.clearTopics = function(){
@@ -166,10 +165,6 @@ Map.prototype.displayEvents = function(start, end){
 			}
 		}
 	}
-}
-
-Map.prototype.isACurrTopic = function(topic){
-	return topic.getId() in this.currTopics;
 }
 
 Map.prototype.adjustToFitPoints = function(n, s, e, w){
