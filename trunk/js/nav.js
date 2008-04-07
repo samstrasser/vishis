@@ -29,16 +29,19 @@ function Nav(map, navElt){
 
 Nav.prototype.addTopic = function(topic){
 	topic.setNav(this);
-
+	console.log('removing...', topic, topic.getTitle());
 	// remove the topic from the old list
 	var old = this.popularTopics.removeTopicByTitle(topic.getTitle());
-	
+	console.log('adding...');
 	// then add the topic to the currently viewing list
 	this.currentTopics.addTopic(topic);
 	
+	console.log('setting mode...');
 	topic.setDisplayMode('current');
-	
+	topic.isShell = false;
+	console.log('adding to map...');
 	this.map.addTopic(topic);
+	console.log('added.');
 }
 
 Nav.prototype.removeCurrentTopic = function(topic){
@@ -102,18 +105,22 @@ TopicList.prototype.getLength = function(){
 
 TopicList.prototype.removeTopicByTitle = function(title){
 	var topics = this.getAllTopics();
+	console.log(topics, this);
 	
 	for(var tid in topics){
 		if(topics[tid].getTitle() == title){
+			console.log('--removing');
 			return this.removeTopic(topics[tid]);
 		}
 	}
+	console.log(false);
 	return false;
 }
 
 TopicList.prototype.removeTopic = function(topic){
+	console.log('***', topic.getRootElement(), topic, this.listElt, this);
 	this.listElt.removeChild(topic.getRootElement());
-	
+	console.log('~~~', topic);
 	return topic;
 }
 
@@ -143,6 +150,7 @@ function Topic(node){
 	
 	var idPrefix = 'topic-' + this.getId();
 	this.isDescVisible = true;
+	this.areEventsVisible = true;
 
 	this.showHideEvents = new YAHOO.widget.Button({
 			type: "checkbox", 
@@ -296,17 +304,22 @@ Topic.prototype.addToMap = function(){
 		console.error("No nav found when adding topic to map");
 		return false;
 	}
-	if(!this.query){
-		if(!this.title){
-			console.error('No query or title found for event', this);
-		}else{
-			console.warn('No query found.  Using title: ', this.title);
-			this.query = this.title;
-		}
-			
-	}
-	Server.search(this.query, this.nav.addTopic, this.nav);
 	
+	if(this.isShell){
+		if(!this.query){
+			if(!this.title){
+				console.error('No query or title found for event', this);
+			}else{
+				console.warn('No query found.  Using title: ', this.title);
+				this.query = this.title;
+			}
+				
+		}
+		Server.search(this.query, this.nav.addTopic, this.nav);
+	}else{
+		console.log('adding topic again');
+		this.nav.addTopic(this);
+	}
 }
 
 Topic.prototype.removeFromMap = function(){
@@ -359,7 +372,8 @@ Topic.prototype.setNav = function(n){
 }
 
 Topic.prototype.setEventsVisibility = function(event){
-	console.log('You are still faking the map, but in a better way', event.newValue);
+	this.areEventsVisible = event.newValue;
+	this.nav.map.ts.doCallback();
 }
 
 Topic.prototype.setShowHideEventsVisibility = function(visible){

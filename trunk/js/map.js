@@ -158,7 +158,7 @@ Map.prototype.displayEvents = function(start, end){
 			var eventStart = e.start.getTime();
 			var eventEnd = e.end.getTime();
 			
-			if(eventStart <= nowEnd && eventEnd >= nowStart){
+			if(this.currTopics[tid].areEventsVisible && eventStart <= nowEnd && eventEnd >= nowStart){
 				e.show();
 			}else{
 				e.hide();
