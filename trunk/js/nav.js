@@ -30,8 +30,13 @@ function Nav(map, navElt){
 Nav.prototype.addTopic = function(topic){
 	topic.setNav(this);
 
-	// add the topic to the currently viewing list
+	// remove the topic from the old list
+	var old = this.popularTopics.removeTopicByTitle(topic.getTitle());
+	
+	// then add the topic to the currently viewing list
 	this.currentTopics.addTopic(topic);
+	
+	topic.setDisplayMode('current');
 	
 	this.map.addTopic(topic);
 }
@@ -82,9 +87,21 @@ TopicList.prototype.getLength = function(){
 	return this.getAllTopics().length;
 }
 
-TopicList.prototype.removeTopic = function(topic){
-	console.error("TopicList.removeTopic(): not yet implemented");
+TopicList.prototype.removeTopicByTitle = function(title){
+	var topics = this.getAllTopics();
+	
+	for(var tid in topics){
+		if(topics[tid].getTitle() == title){
+			return this.removeTopic(topics[tid]);
+		}
+	}
 	return false;
+}
+
+TopicList.prototype.removeTopic = function(topic){
+	this.listElt.removeChild(topic.getRootElement());
+	
+	return topic;
 }
 
 TopicList.prototype.clear = function(){
@@ -99,6 +116,8 @@ function Topic(node){
 	this.events = new Array();
 	this.nav = false;
 	
+	this.colorSet = Topic.getNextColorSet();
+	console.log(this.colorSet, this);
 	for(var k in node){
 		if(k == "start" || k == "end"){
 			this[k] = new Date(node[k]);
@@ -109,13 +128,13 @@ function Topic(node){
 
 	this.elt = document.createElement('li');
 	
-	var tid = this.getId();
+	var idPrefix = 'topic-' + this.getId();
 	this.isDescVisible = true;
 
 	this.showHideEvents = new YAHOO.widget.Button({
 			type: "checkbox", 
 			label: " ", 
-			id: "topic"+tid+"-showhideevents", 
+			id: idPrefix+"-showhideevents", 
 			name: "todo-name", 
 			value: true, 
 			container: this.elt, 
@@ -125,6 +144,7 @@ function Topic(node){
 	this.showHideEvents.css = 'show-hide-events';
 	this.showHideEvents.addClass(this.showHideEvents.css);
 	this.showHideEvents.addClass(this.showHideEvents.css + '-checked');
+	this.showHideEvents.addClass('piece');
 	this.showHideEvents.addListener("checkedChange", 
 			this.setEventsVisibility,
 			this,
@@ -141,9 +161,11 @@ function Topic(node){
 		this,
 		this
 		);
+	
 	this.showHideEvents.addListener("available",
 		(function(e) {
-			this.setEltVisibility(false, e.target);
+			var vis = (this.mode == 'current');
+			this.setShowHideEventsVisibility(vis);
 		}),
 		this,
 		this
@@ -177,41 +199,97 @@ function Topic(node){
 				);
 	this.elt.appendChild(this.titleLink);
 	
+	this.iconPic = document.createElement('img');
+	this.iconPic.setAttribute('id', idPrefix+'-icon');
+	this.iconPic.setAttribute('src', 
+		IconFactory.getIconUrl({
+			width: 16,
+			height: 16,
+			primaryColor: this.colorSet.primary,
+			cornerColor:  this.colorSet.corner,
+			strokeColor:  this.colorSet.stroke
+		})
+	);
+	this.iconPic.setAttribute('class', 'icon piece');
+	this.elt.appendChild(this.iconPic);
+	this.setIconPicVisibility(false);
+	
 	this.addButton = new YAHOO.widget.Button(
 				{
 				type: "checkbox", 
 				label: "add", 
 				title: "title",
-				id: "topic"+tid+"-addbutton", 
+				id: idPrefix+"-addbutton", 
 				name: "todo: name", 
 				container: this.elt, 
 				}
 			);
 	YAHOO.util.Dom.addClass(this.addButton._button,'push-button');
 	this.addButton.addClass('add');
-	// todo: add onclick handler
+	this.addButton.addClass('piece');
+	this.addButton.addListener("click", 
+		(function(){
+			this.addButton.set('disabled',true);
+			this.setLoadingIconVisibility(true);
+			this.setAddButtonVisibility(false);
+		}),
+		this,
+		this
+	);
+	this.addButton.addListener("click", 
+		this.addToMap,
+		this,
+		this
+	);
+	
+	this.loadingIcon = document.createElement('img');
+	this.loadingIcon.setAttribute('id', idPrefix+'-loading');
+	this.loadingIcon.setAttribute('src', 'img/loading.gif');
+	this.loadingIcon.setAttribute('class', 'add piece');
+	this.elt.appendChild(this.loadingIcon);
+	this.setLoadingIconVisibility(false);
 	
 	this.removeButton = new YAHOO.widget.Button(
 				{
 				type: "checkbox", 
-				label: "remove", 
+				label: " ", 
 				title: "title",
-				id: "topic"+tid+"-removebutton", 
+				id: idPrefix+"-removebutton", 
 				name: "todo: name", 
 				container: this.elt, 
 				}
 			);
-	YAHOO.util.Dom.addClass(this.removeButton._button,'push-button');
+	YAHOO.util.Dom.addClass(this.removeButton._button,'remove');
+	this.removeButton.addClass('piece');
 	this.removeButton.addClass('remove');
-	this.removeButton._button.style.display = 'none';
+	this.setRemoveButtonVisibility(false);
 	
-	// todo: this.description
 	this.description = document.createElement('p');
 	this.description.setAttribute('class', 'topic-desc');
 	this.description.innerHTML = this.desc;
 	this.description.style.display = 'none';
 	this.elt.appendChild(this.description);
 	
+	
+}
+
+Topic.prototype.addToMap = function(){
+	console.log('Adding topic to map', this);
+	
+	if(!this.nav){
+		console.error("No nav found when adding topic to map");
+		return false;
+	}
+	if(!this.query){
+		if(!this.title){
+			console.error('No query or title found for event', this);
+		}else{
+			console.warn('No query found.  Using title: ', this.title);
+			this.query = this.title;
+		}
+			
+	}
+	Server.search(this.query, this.nav.addTopic, this.nav);
 	
 }
 
@@ -235,6 +313,27 @@ Topic.prototype.toggleDescVisibility = function(event){
 	this.isDescVisible = !this.isDescVisible;
 }
 
+Topic.prototype.setDisplayMode = function(mode){
+	this.mode = mode;
+	
+	if(mode == 'current'){
+		// Current mode: [ eye   title   icon   remove ]
+		this.setShowHideEventsVisibility(true);
+		this.setIconPicVisibility(true);
+		this.setLoadingIconVisibility(false);
+		this.setAddButtonVisibility(false);
+		this.setRemoveButtonVisibility(true);
+	}else if(mode == 'other'){
+		this.setShowHideEventsVisibility(false);
+		this.setIconPicVisibility(false);
+		this.setLoadingIconVisibility(false);
+		this.setAddButtonVisibility(true);
+		this.setRemoveButtonVisibility(false);
+	}else{
+		console.log("Error: unknown mode");
+	}
+}
+
 Topic.prototype.setNav = function(n){
 	this.nav = n;
 }
@@ -243,31 +342,39 @@ Topic.prototype.setEventsVisibility = function(event){
 	console.log('You are still faking the map, but in a better way', event.newValue);
 }
 
-Topic.prototype.setShowHideDescVisibility = function(visible){
-
+Topic.prototype.setShowHideEventsVisibility = function(visible){
+	this.setEltVisibility(this.showHideEvents.get('element'), visible, '-moz-inline-box');
 }
 
 Topic.prototype.setIconPicVisibility = function(visible){
+	this.setEltVisibility(this.iconPic, visible, 'inline');
+}
 
+Topic.prototype.setLoadingIconVisibility = function(visible){
+	this.setEltVisibility(this.loadingIcon, visible, 'inline');
 }
 
 Topic.prototype.setAddButtonVisibility = function(visible){
-
+	this.setEltVisibility(this.addButton.get('element'), visible, '-moz-inline-box');
 }
 
 Topic.prototype.setRemoveButtonVisibility = function(visible){
-
+	this.setEltVisibility(this.removeButton.get('element'), visible, '-moz-inline-box');
 }
 
-Topic.prototype.setEltVisibilityById = function(visible, id){
+Topic.prototype.setEltVisibilityById = function(id, visible){
 	var elt = document.getElementById(id);
-	this.setEltVisibility(visible, elt);
+	this.setEltVisibility(elt, visible);
 }
 
-Topic.prototype.setEltVisibility = function(visible, elt){
+Topic.prototype.setEltVisibility = function(elt, visible, d){
 	var disp = 'none';
 	if(visible){
-		disp = 'block';
+		if(d == null){
+			disp = 'block';
+		}else{
+			disp = d;
+		}
 	}
 	
 	if(elt.style && elt.style.display){
@@ -311,7 +418,9 @@ Topic.colorSets = [
 	];
 Topic.nextColorSet = 0;
 Topic.getNextColorSet = function(){
-
+	if(Topic.nextColorSet >= Topic.colorSets.length){
+		Topic.nextColorSet = 0;
+	}
 	return Topic.colorSets[Topic.nextColorSet++];
 }
 
@@ -326,6 +435,10 @@ Topic.prototype.addEvent = function(event){
 
 Topic.prototype.getId = function(){
 	return this.id;
+}
+
+Topic.prototype.getTitle = function(){
+	return this.title;
 }
 
 Topic.prototype.getRootElement = function(){
