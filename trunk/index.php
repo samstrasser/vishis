@@ -71,7 +71,7 @@
 		'id': <? print $id--; ?>,
 		'title': 'US States',
 		'query': 'http://code.google.com/apis/kml/documentation/us_states.kml',
-		'desc': 'Each of the United States outlined and shown as they joined the Union.<cite><a href="http://code.google.com/apis/kml/documentation/us_states.kml" target="_blank" title="http://code.google.com/apis/kml/documentation/us_states.kml"></a></cite>'
+		'desc': 'Each of the United States outlined and shown as they joined the Union.<cite><a href="http://code.google.com/apis/kml/documentation/us_states.kml" target="_blank" title="http://code.google.com/apis/kml/documentation/us_states.kml">http://code.google.com/apis/kml/documentation/us_states.kml</a></cite>'
 		}
 	);
 	</script>
