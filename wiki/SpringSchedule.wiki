@@ -19,7 +19,7 @@
   * add, remove, then add bug
   * info box when curr topics is empty
   * clear map link
-
+  * (if there is time:)
   * put # of topic's events in the desc
   * link and button titles (hovering)
   * preload images
