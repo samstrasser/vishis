@@ -14,9 +14,21 @@
  * ~~event ui: blurbs and titles~~
  * ~~slider ui~~
 *April* (5 weeks)
- * nav panel ui
- * ~~make map show terrain mode~~
- * temporal <--> geographical link
+ * ~~Week 1: make map show terrain mode~~
+ * Week 2: nav ui bug fixes
+  * add, remove, then add bug
+  * info box when curr topics is empty
+  * clear map link
+
+  * put # of topic's events in the desc
+  * link and button titles (hovering)
+  * preload images
+ * Week 3: slider ui
+ * Week 4: user feedback
+  * verbal feedback (tell me what you are doing or do this task)
+  * formulate and distribute questionnaire 
+ * Week 5: write report
+
 
 = Future =
 If there is time left, I will do these.
