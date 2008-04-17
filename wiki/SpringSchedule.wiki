@@ -19,10 +19,6 @@
   * add, remove, then add bug
   * info box when curr topics is empty
   * clear map link
-  * (if there is time:)
-  * put # of topic's events in the desc
-  * link and button titles (hovering)
-  * preload images
  * Week 3: slider ui
  * Week 4: user feedback
   * verbal feedback (tell me what you are doing or do this task)
