@@ -206,6 +206,38 @@ ul.topic-list li{
 	margin-top:6px;
 }
 
+div.info-box{
+	border:1px solid #004F00;
+	margin:5px;
+	padding:3px;
+	background-color:#FFFABF;
+	font-size:10pt;
+}
+
+div.info-box .close-button{
+	width:16px;
+	height:16px;
+	float:right;
+}
+
+span#info-box-close .yui-push-button{
+	background:url(../img/close.off.png);
+}
+
+span#info-box-close .yui-push-button-hover{
+	background:url(../img/close.hover.png);
+}
+
+span#info-box-close .yui-push-button-active{
+	background:url(../img/close.active.png);
+}
+
+
+div.info-box p{
+	margin:0px;
+	padding:0px;
+}
+
 p.topic-desc{
 	background-color:white;
 	padding:1px;
