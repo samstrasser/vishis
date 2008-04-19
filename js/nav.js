@@ -7,9 +7,8 @@
  /**
   * @class Nav
   **/
-var glob = false;
-var glob2 = false;
-function Nav(map, navElt){
+
+  function Nav(map, navElt){
 	// Keep a reference to the Map so we can add and remove information from it
 	this.map = map;
 	
@@ -20,6 +19,7 @@ function Nav(map, navElt){
 	this.elt = navElt;
 	
 	this.currentTopics = new TopicList('currently-viewing','Currently Viewing', this.elt);
+	this.currentTopics.createInfoBox();
 	
 	this.recentTopics  = new TopicList('recently-viewed', 'Recently Viewed', null);
 	
@@ -37,6 +37,7 @@ Nav.prototype.addTopic = function(topic){
 	
 	// then add the topic to the currently viewing list
 	this.currentTopics.addTopic(topic);
+	this.currentTopics.hideInfoBox();
 	
 	topic.setDisplayMode('current');
 	topic.isShell = false;
@@ -45,6 +46,12 @@ Nav.prototype.addTopic = function(topic){
 
 Nav.prototype.removeCurrentTopic = function(topic){
 	this.currentTopics.removeTopic(topic);
+	
+	console.log('removing', this.currentTopics.getNumTopics());
+	if(this.currentTopics.getNumTopics() == 0){
+		console.log('showing box');
+		this.currentTopics.showInfoBox();
+	}
 	
 	this.map.removeTopic(topic);
 	
@@ -59,6 +66,7 @@ function TopicList(id, title, parent){
 	}
 	
 	this.topics = new Array();
+	this.numTopics = 0; // keep track of length so we can delete keys
 
 	// Initialize the dom elements
 	var titleElt = document.createElement('h2');
@@ -81,6 +89,7 @@ TopicList.prototype.maxLength = 15;
 TopicList.prototype.addTopic = function(topic){
 	// Save the topic in the list
 	this.topics.push(topic);
+	this.numTopics++;
 
 	// Add the topic in the dom
 	this.listElt.appendChild(topic.getRootElement());
@@ -99,6 +108,10 @@ TopicList.prototype.getLength = function(){
 	return this.getAllTopics().length;
 }
 
+TopicList.prototype.getNumTopics = function(){
+	return this.numTopics;
+}
+
 TopicList.prototype.removeTopicByTitle = function(title){
 	var topics = this.getAllTopics();
 	
@@ -108,6 +121,7 @@ TopicList.prototype.removeTopicByTitle = function(title){
 			
 			// delete the tid or else the shellTopic and the realTopic will be present
 			delete this.topics[tid];
+	
 			return this.removeTopic(topic);
 		}
 	}
@@ -117,6 +131,8 @@ TopicList.prototype.removeTopicByTitle = function(title){
 TopicList.prototype.removeTopic = function(topic){
 	this.listElt.removeChild(topic.getRootElement());
 	
+	this.numTopics--;
+	
 	return topic;
 }
 
@@ -124,6 +140,26 @@ TopicList.prototype.clear = function(){
 	console.error("TopicList.clear(): not yet implemented");
 }
 
+TopicList.prototype.createInfoBox = function(){
+	this.infoBoxElt = document.createElement('div');
+	this.infoBoxElt.setAttribute('id', 'info-box');
+	this.infoBoxElt.setAttribute('class', 'info-box');
+	this.infoBoxElt.setAttribute('style', 'display:block;');
+	this.infoBoxElt.appendChild(document.createTextNode('You are not currently viewing any topics.  To start, click the "add" button on any of the topics below'));
+	
+	this.elt.insertBefore(this.infoBoxElt, this.listElt);
+	
+	this.hideInfoBox = function(){
+		this.infoBoxElt.style.display = 'none';
+	}
+	
+	this.showInfoBox = function(){
+		this.infoBoxElt.style.display = 'block';
+	}
+	
+	this.showInfoBox();
+
+}
 
 /** 
  * @class Topic
