@@ -7,6 +7,8 @@
  /**
   * @class Nav
   **/
+var glob = false;
+var glob2 = false;
 function Nav(map, navElt){
 	// Keep a reference to the Map so we can add and remove information from it
 	this.map = map;
@@ -29,32 +31,26 @@ function Nav(map, navElt){
 
 Nav.prototype.addTopic = function(topic){
 	topic.setNav(this);
-	console.log('removing...', topic, topic.getTitle());
+	
 	// remove the topic from the old list
-	var old = this.popularTopics.removeTopicByTitle(topic.getTitle());
-	console.log('adding...');
+	this.popularTopics.removeTopicByTitle(topic.getTitle());
+	
 	// then add the topic to the currently viewing list
 	this.currentTopics.addTopic(topic);
 	
-	console.log('setting mode...');
 	topic.setDisplayMode('current');
 	topic.isShell = false;
-	console.log('adding to map...');
 	this.map.addTopic(topic);
-	console.log('added.');
 }
 
 Nav.prototype.removeCurrentTopic = function(topic){
-	var old = this.currentTopics.removeTopic(topic);
+	this.currentTopics.removeTopic(topic);
 	
-	this.map.removeTopic(old);
-	console.log('topic removed from map');
+	this.map.removeTopic(topic);
 	
-	this.popularTopics.addTopic(old);
-	console.log('topic added');
-	
-	old.setDisplayMode('other');
-	console.log('display mode set');
+	this.popularTopics.addTopic(topic);
+
+	topic.setDisplayMode('other');
 }
  
 function TopicList(id, title, parent){
@@ -105,22 +101,22 @@ TopicList.prototype.getLength = function(){
 
 TopicList.prototype.removeTopicByTitle = function(title){
 	var topics = this.getAllTopics();
-	console.log(topics, this);
 	
 	for(var tid in topics){
 		if(topics[tid].getTitle() == title){
-			console.log('--removing');
-			return this.removeTopic(topics[tid]);
+			var topic = topics[tid];
+			
+			// delete the tid or else the shellTopic and the realTopic will be present
+			delete this.topics[tid];
+			return this.removeTopic(topic);
 		}
 	}
-	console.log(false);
 	return false;
 }
 
 TopicList.prototype.removeTopic = function(topic){
-	console.log('***', topic.getRootElement(), topic, this.listElt, this);
 	this.listElt.removeChild(topic.getRootElement());
-	console.log('~~~', topic);
+	
 	return topic;
 }
 
@@ -137,7 +133,7 @@ function Topic(node){
 	this.nav = false;
 	
 	this.colorSet = Topic.getNextColorSet();
-	console.log(this.colorSet, this);
+
 	for(var k in node){
 		if(k == "start" || k == "end"){
 			this[k] = new Date(node[k]);
@@ -250,7 +246,7 @@ function Topic(node){
 	this.addButton.addClass('piece');
 	this.addButton.addListener("click", 
 		(function(){
-			this.addButton.set('disabled',true);
+			//this.addButton.set('disabled',true);
 			this.setLoadingIconVisibility(true);
 			this.setAddButtonVisibility(false);
 		}),
@@ -317,7 +313,6 @@ Topic.prototype.addToMap = function(){
 		}
 		Server.search(this.query, this.nav.addTopic, this.nav);
 	}else{
-		console.log('adding topic again');
 		this.nav.addTopic(this);
 	}
 }
@@ -363,7 +358,7 @@ Topic.prototype.setDisplayMode = function(mode){
 		this.setAddButtonVisibility(true);
 		this.setRemoveButtonVisibility(false);
 	}else{
-		console.log("Error: unknown mode");
+		console.error("unknown display mode");
 	}
 }
 
