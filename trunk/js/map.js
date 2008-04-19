@@ -45,12 +45,10 @@ Map.prototype.addTopic = function(topic){
 	this.currTopics[topic.getId()] = topic;
 	
 	// Try to adjust map to fit bounds
-	console.log(topic);
 	if(topic.bounds){
 		var sw = new GLatLng(topic.bounds.s, topic.bounds.w);
 		var ne = new GLatLng(topic.bounds.n, topic.bounds.e);
 		
-		console.log(sw, ne);
 		/* 
 		todo: if this is the first topic 
 		if(){
@@ -63,7 +61,6 @@ Map.prototype.addTopic = function(topic){
 		var bounds = this.getBounds();
 		bounds.extend(sw);
 		bounds.extend(ne);
-		console.log(sw, ne, bounds, this.getBounds());
 		this.adjustToFitBounds(bounds);
 	}
 	
@@ -84,7 +81,6 @@ Map.prototype.addTopic = function(topic){
 				this.addOverlay(overlay);
 				overlay.hide();
 			}catch(e){
-				console.log(overlay);
 				throw(e);
 			}
 		}
@@ -109,9 +105,7 @@ Map.prototype.addTopic = function(topic){
 }
 
 Map.prototype.removeTopic = function(topic){
-	console.log(topic);
 	var tid = topic.getId();
-	console.log(tid);
 	if(tid in this.currTopics){
 		var events = topic.getEvents();
 		for(var ek in events){
@@ -277,7 +271,6 @@ function Marker(node, event){
 
 	var icon;
 
-	console.log(this);
 	if(this.e.t.colorSet != undefined){
 		var set = this.e.t.colorSet;
 		var iconOpts = {
