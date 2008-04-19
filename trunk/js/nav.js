@@ -141,11 +141,39 @@ TopicList.prototype.clear = function(){
 }
 
 TopicList.prototype.createInfoBox = function(){
-	this.infoBoxElt = document.createElement('div');
+	this.infoBoxElt = document.createElement('div');	
 	this.infoBoxElt.setAttribute('id', 'info-box');
 	this.infoBoxElt.setAttribute('class', 'info-box');
 	this.infoBoxElt.setAttribute('style', 'display:block;');
-	this.infoBoxElt.appendChild(document.createTextNode('You are not currently viewing any topics.  To start, click the "add" button on any of the topics below'));
+	
+	var closeContainer = document.createElement('span');
+	closeContainer.setAttribute('id', 'info-box-close');
+	this.infoBoxElt.appendChild(closeContainer);
+	
+	var p = document.createElement('p');
+	p.appendChild(document.createTextNode('You are not currently viewing any topics.  To start, click the "add" button on any of the topics below'));
+	this.infoBoxElt.appendChild(p);
+
+	this.hideInfoBoxPermanently = false;
+	var closeButton = new YAHOO.widget.Button({
+			type: "push", 
+			label: " ", 
+			title: "close",
+			name: "todo-name", 
+			container: 'info-box-close'
+	});
+	closeButton.addClass('close-button');
+	closeButton.addListener("click", 
+		(function(event){
+			if(!event.newValue){
+				this.hideInfoBoxPermanently = true;
+				this.hideInfoBox();
+			}
+		}),
+		this,
+		this
+		);
+	
 	
 	this.elt.insertBefore(this.infoBoxElt, this.listElt);
 	
@@ -154,7 +182,9 @@ TopicList.prototype.createInfoBox = function(){
 	}
 	
 	this.showInfoBox = function(){
-		this.infoBoxElt.style.display = 'block';
+		if(!this.hideInfoBoxPermanently){
+			this.infoBoxElt.style.display = 'block';
+		}
 	}
 	
 	this.showInfoBox();
