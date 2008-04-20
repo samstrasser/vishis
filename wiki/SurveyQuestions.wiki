@@ -1,2 +1,7 @@
+Personal Info
+ * email
+ * name
+ * age
+ * computer skills
+
 Questions
- * How would you rank your computer skills?

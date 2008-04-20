@@ -15,10 +15,7 @@
  * ~~slider ui~~
 *April* (5 weeks)
  * ~~Week 1: make map show terrain mode~~
- * Week 2: nav ui bug fixes
-  * add, remove, then add bug
-  * info box when curr topics is empty
-  * clear map link
+ * ~~Week 2: nav ui bug fixes~~
  * Week 3: slider ui
  * Week 4: user feedback
   * verbal feedback (tell me what you are doing or do this task)
