@@ -211,7 +211,6 @@ div.info-box{
 	margin:5px;
 	padding:3px;
 	background-color:#FFFABF;
-	font-size:10pt;
 }
 
 div.info-box .close-button{
@@ -234,6 +233,7 @@ span#info-box-close .yui-push-button-active{
 
 
 div.info-box p{
+	font-size:9pt;
 	margin:0px;
 	padding:0px;
 }
@@ -247,6 +247,7 @@ p.topic-desc{
 	margin-left:2px;
 	margin-right:2px;
 	border-top:1px solid #ccc;
+	font-size:9pt;
 }
 
 p.topic-desc cite{
