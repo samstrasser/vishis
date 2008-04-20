@@ -3,5 +3,13 @@ Personal Info
  * name
  * age
  * computer skills
+ 
+Response Info (not asked)
+ * time started
+ * time ended
+
+Computer info (not asked)
+ * Screen size
+ * browser
 
 Questions
