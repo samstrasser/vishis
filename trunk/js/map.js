@@ -77,12 +77,8 @@ Map.prototype.addTopic = function(topic){
 			var overlay = overlays[ok];
 			
 			// Add all the overlays to the map right at the beginning
-			try{
-				this.addOverlay(overlay);
-				overlay.hide();
-			}catch(e){
-				throw(e);
-			}
+			this.addOverlay(overlay);
+			overlay.hide();
 		}
 	}
 
@@ -135,10 +131,10 @@ Map.prototype.clearTopics = function(){
 
 Map.prototype.displayEvents = function(start, end){
 	if(!start){
-		start = currTimeSpan.start;
+		start = this.currTimeSpan.start;
 	}
 	if(!end){
-		end = currTimeSpan.end;
+		end = this.currTimeSpan.end;
 	}
 
 	var nowStart = start.getTime();
