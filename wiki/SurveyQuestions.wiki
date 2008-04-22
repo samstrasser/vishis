@@ -13,3 +13,9 @@ Computer info (not asked)
  * browser
 
 Questions
+ * perform a basic task (scroll through time)
+ * perform a complex task
+	* load two datasets and make an observation about their relationship
+ * comments/suggestions
+ 
+ * task: zoom-in (on a state)
