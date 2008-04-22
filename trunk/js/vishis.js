@@ -5,7 +5,7 @@ function load(topics){
 	if(urlVars['v'] == 'hidden'){
 		Cookie.set('v', 'hidden');
 	}
-	if(Cookie.get('v') == 'hidden'){
+	if(urlVars['v'] == 'alpha' || urlVars['v'] == 'hidden' || Cookie.get('v') == 'hidden'){
 		var m = new Map();
 		var n = new Nav(m);
 		nav = n;
