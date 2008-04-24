@@ -1,3 +1,20 @@
+= Personalized Version =
+"I'm going to tell you to do some tasks.  If you don't understand or can't figure out how, please ask.  I expect that you won't understand it all and should ask anytime you are in doubt."
+*Task 1: basic usage*
+ * add the Valley of the Shadow to the map
+ * scroll forward and backward in time, narrating
+
+*Task 2: relating info*
+ * add the Major Events of the Civil War
+ * zoom in on the mid-atlantic region
+ * make an observation about the datasets
+ 
+ * hide the Valley of the Shadow dataset
+
+*Last*
+ * clear the map
+ * compare U.S. Presidents & U.S. States
+
 Personal Info
  * email
  * name
