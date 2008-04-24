@@ -18,6 +18,7 @@
  * clear the map
  * compare U.S. Presidents & U.S. States
 
+= Automated Version =
 Personal Info
  * email
  * name
