@@ -1,5 +1,8 @@
+#summary Questions for the survey
+
 = Personalized Version =
 "I'm going to tell you to do some tasks.  If you don't understand or can't figure out how, please ask.  I expect that you won't understand it all and should ask anytime you are in doubt."
+
 *Task 1: basic usage*
  * add the Valley of the Shadow to the map
  * scroll forward and backward in time, narrating
