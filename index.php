@@ -87,6 +87,8 @@
 		<div id="map"></div>
 	</div>
 	<div id="nav-panel">
+	<div style="margin:5px;width:200px;font-size:12pt; color:black;background-color:red;">Thank you for helping me out with my project.  As soon as you are ready, click <a href="feedback/" target="_blank">this link to begin the survey</a>.  A new window should open up.</div>
+
 	</div>
   </div>
  
