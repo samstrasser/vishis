@@ -1,0 +1,59 @@
+# Object Definitions #
+
+**Topic** (dom: TopicList)
+```
+  String title,
+  DateString start,
+  DateString end,
+  String color,
+  Array bounds: {
+    n: String,
+    s: String,
+    e: String,
+    w: String
+  }
+```
+
+**Event** (dom: does not appear)
+```
+  int uid,
+  DateString start,
+  DateString end,
+  String color (inherits),
+  String location,
+  String title,
+  String blurbHtml,
+
+  Array Polygons polygons,
+  Marker marker,
+  
+  Function getOverlays(),
+  Function show(),
+  Function hide()
+```
+
+**Marker** (dom: LabeledMarker)
+```
+  String lat,
+  String lng,
+  String blurb,
+  UrlString icon
+  
+  Event off: label with title and icon
+  Event over: showBlurb(), bringTOFront()
+  Event click: (showDetailedBlurb())
+```
+
+**Polygon**
+```
+  Array coords: 
+    [
+      Array(String lat, String lng),
+      Array(String lat, String lng)
+    ]
+  ColorString color (inherits),
+  ColorString borderColor (computed?),
+  
+  Event off: show polygon
+  Event over: showLabel()
+```
